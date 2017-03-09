@@ -5,7 +5,8 @@
     <vendor email="viartemev@gmail.com" url="https://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
-      Plugin for quick moving to url mapping declaration.
+      Plugin for quick moving to url mapping declaration.<br>
+      Usage: Shift + Ctrl + M
     ]]></description>
 
     <change-notes><![CDATA[
@@ -31,7 +32,7 @@
         <action id="FindRequestMappingAction" class="com.viartemev.requestmapper.FindRequestMappingAction"
                 text="Find request mapping resource" description="Find request mapping resource">
             <add-to-group group-id="GoToCodeGroup" anchor="first"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="shift M"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl M"/>
         </action>
     </actions>
 

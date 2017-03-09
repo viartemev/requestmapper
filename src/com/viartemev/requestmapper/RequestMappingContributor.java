@@ -3,26 +3,22 @@ package com.viartemev.requestmapper;
 import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static com.intellij.psi.search.GlobalSearchScope.projectScope;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang.StringUtils.EMPTY;
 
 public class RequestMappingContributor implements ChooseByNameContributor {
 
     private static final String SPRING_REQUEST_MAPPING_ANNOTATION = "RequestMapping";
-    private static final String SPRING_REQUEST_MAPPING_VALUE_PARAM = "value";
-    private static final String SPRING_REQUEST_MAPPING_PATH_PARAM = "path";
-    private static final String SPRING_REQUEST_MAPPING_METHOD_PARAM = "method";
     private final Map<String, NavigationItem> items;
 
     public RequestMappingContributor() {
@@ -54,59 +50,19 @@ public class RequestMappingContributor implements ChooseByNameContributor {
         Collection<PsiAnnotation> annotations = JavaAnnotationIndex.getInstance().get(annotationName, project, projectScope(project));
         for (PsiAnnotation annotation : annotations) {
             PsiElement annotatedElement = fetchAnnotatedPsiElement(annotation);
-            if (annotatedElement instanceof PsiMethod) {
-                requestMappingItems.addAll(fetchRequestMappingItem(annotation, (PsiMethod) annotatedElement));
-            } else if (annotatedElement instanceof PsiClass) {
-                requestMappingItems.addAll(fetchRequestMappingItem(annotation, (PsiClass) annotatedElement));
-            }
+            SpringRequestMappingAnnotation springRequestMappingAnnotation = new SpringRequestMappingAnnotation(annotation, annotatedElement);
+            requestMappingItems.addAll(springRequestMappingAnnotation.values());
         }
         return requestMappingItems;
     }
 
-    private List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiClass psiClass) {
-        List<String> urls = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_VALUE_PARAM);
-        List<String> paths = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_PATH_PARAM);
-        if (paths.size() != 0) {
-            return paths.stream().map(path -> new RequestMappingItem(psiClass, path, EMPTY)).collect(toList());
-        }
-        return urls.stream().map(url -> new RequestMappingItem(psiClass, url, EMPTY)).collect(toList());
-    }
-
-    private List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiMethod psiMethod) {
-        List<String> urls = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_VALUE_PARAM);
-        List<String> paths = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_PATH_PARAM);
-        String method = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_METHOD_PARAM, "GET");
-        if (paths.size() != 0) {
-            return paths.stream().map(u -> new RequestMappingItem(psiMethod, u, method)).collect(toList());
-        }
-        return urls.stream().map(u -> new RequestMappingItem(psiMethod, u, method)).collect(toList());
-    }
-
     private PsiElement fetchAnnotatedPsiElement(PsiAnnotation psiAnnotation) {
         PsiElement parent;
-        for (parent = psiAnnotation.getParent(); parent != null && !(parent instanceof PsiClass) && !(parent instanceof PsiMethod); parent = parent.getParent()) {
+        for (parent = psiAnnotation.getParent();
+             parent != null && !(parent instanceof PsiClass) && !(parent instanceof PsiMethod);
+             parent = parent.getParent()) {
         }
         return parent;
-    }
-
-    private String fetchParameterFromAnnotation(PsiAnnotation annotation, String parameter, String defaultValue) {
-        PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(parameter);
-        if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText()) && !Objects.equals("{}", valueParam.getText())) {
-            return valueParam.getText();
-        }
-        return defaultValue;
-    }
-
-    private List<String> fetchParameterFromAnnotation(PsiAnnotation annotation, String parameter) {
-        PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(parameter);
-        if (valueParam instanceof PsiArrayInitializerMemberValue) {
-            PsiAnnotationMemberValue[] members = ((PsiArrayInitializerMemberValue) valueParam).getInitializers();
-            return Stream.of(members).map(PsiElement::getText).collect(toList());
-        }
-        if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText())) {
-            return Collections.singletonList(valueParam.getText());
-        }
-        return Collections.emptyList();
     }
 
 }

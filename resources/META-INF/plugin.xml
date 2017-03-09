@@ -1,12 +1,11 @@
 <idea-plugin version="2">
-    <id>com.your.company.unique.plugin.id</id>
+    <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>1.0</version>
-    <vendor email="viartemev@gmail.com" url="http://www.viartemev.com">Vyacheslav Artemyev</vendor>
+    <version>0.1</version>
+    <vendor email="viartemev@gmail.com" url="https://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Plugin for quick moving to url mapping declaration.
     ]]></description>
 
     <change-notes><![CDATA[
@@ -30,8 +29,8 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="FindRequestMapping" class="com.viartemev.requestmapper.FindRequestMappingAction"
-                text="Some name of action" description="Some description of action">
+        <action id="FindRequestMappingAction" class="com.viartemev.requestmapper.FindRequestMappingAction"
+                text="Find request mapping resource" description="Find request mapping resource">
             <add-to-group group-id="GoToCodeGroup" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift M"/>
         </action>

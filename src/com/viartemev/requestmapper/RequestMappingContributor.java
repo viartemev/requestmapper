@@ -8,33 +8,40 @@ import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static com.intellij.psi.search.GlobalSearchScope.projectScope;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 public class RequestMappingContributor implements ChooseByNameContributor {
 
     private static final String SPRING_REQUEST_MAPPING_ANNOTATION = "RequestMapping";
     private static final String SPRING_REQUEST_MAPPING_VALUE_PARAM = "value";
     private static final String SPRING_REQUEST_MAPPING_METHOD_PARAM = "method";
+    private final Map<String, NavigationItem> items;
 
-    private static final List<String> httpMethodList = Arrays.asList("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS");
+    public RequestMappingContributor() {
+        this.items = new HashMap<>();
+    }
 
     @NotNull
     @Override
     public String[] getNames(Project project, boolean includeNonProjectItems) {
-        String[] annotations = findAnnotations(project, SPRING_REQUEST_MAPPING_ANNOTATION);
-        return annotations;
+        items.putAll(
+                findRequestMappingItems(project, SPRING_REQUEST_MAPPING_ANNOTATION)
+                        .stream()
+                        .collect(toMap(RequestMappingItem::getName, Function.identity()))
+        );
+        return items.keySet().toArray(new String[items.size()]);
     }
 
     @NotNull
     @Override
     public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
-        List<RequestMappingItem> requestMappingItems = findRequestMappingItems(project, SPRING_REQUEST_MAPPING_ANNOTATION);
-        return requestMappingItems.toArray(new RequestMappingItem[requestMappingItems.size()]);
+        return new NavigationItem[]{items.get(name)};
     }
 
     @NotNull
@@ -44,38 +51,16 @@ public class RequestMappingContributor implements ChooseByNameContributor {
         for (PsiAnnotation annotation : annotations) {
             PsiElement annotatedElement = fetchAnnotatedPsiElement(annotation);
             if (annotatedElement instanceof PsiMethod) {
-                requestMappingItems.add(fetchRequestMappingItem(annotation, (PsiMethod) annotatedElement));
+                requestMappingItems.addAll(fetchRequestMappingItem(annotation, (PsiMethod) annotatedElement));
             }
         }
-
         return requestMappingItems;
     }
 
-    private String[] findAnnotations(Project project, String annotationName) {
-        Collection<PsiAnnotation> annotations = JavaAnnotationIndex.getInstance().get(annotationName, project, projectScope(project));
-        List<String> valueList = new ArrayList<>(annotations.size());
-        for (PsiAnnotation annotation : annotations) {
-            String value = fetchAnnotationValue(annotation);
-            if (value != null) {
-                valueList.add(value);
-            }
-        }
-        return valueList.toArray(new String[valueList.size()]);
-    }
-
-    private RequestMappingItem fetchRequestMappingItem(PsiAnnotation annotation, PsiMethod psiMethod) {
-        String url = null;
-        String method = null;
-        PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(SPRING_REQUEST_MAPPING_VALUE_PARAM);
-        PsiAnnotationMemberValue methodParam = annotation.findAttributeValue(SPRING_REQUEST_MAPPING_METHOD_PARAM);
-        if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText())) {
-            url = valueParam.getText();
-        }
-        if (methodParam != null && StringUtils.isNotEmpty(methodParam.getText())) {
-            method = methodParam.getText();
-        }
-
-        return new RequestMappingItem(psiMethod, StringUtils.defaultIfEmpty(url, ""), StringUtils.defaultIfEmpty(method, "GET"));
+    private List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiMethod psiMethod) {
+        List<String> urls = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_VALUE_PARAM);
+        String method = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_METHOD_PARAM, "GET");
+        return urls.stream().map(u -> new RequestMappingItem(psiMethod, u, method)).collect(toList());
     }
 
     private PsiElement fetchAnnotatedPsiElement(PsiAnnotation psiAnnotation) {
@@ -85,14 +70,24 @@ public class RequestMappingContributor implements ChooseByNameContributor {
         return parent;
     }
 
-
-    private String fetchAnnotationValue(PsiAnnotation annotation) {
-        PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(SPRING_REQUEST_MAPPING_VALUE_PARAM);
-
+    private String fetchParameterFromAnnotation(PsiAnnotation annotation, String parameter, String defaultValue) {
+        PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(parameter);
         if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText())) {
             return valueParam.getText();
         }
-        return null;
+        return defaultValue;
+    }
+
+    private List<String> fetchParameterFromAnnotation(PsiAnnotation annotation, String parameter) {
+        PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(parameter);
+        if (valueParam instanceof PsiArrayInitializerMemberValue) {
+            PsiAnnotationMemberValue[] members = ((PsiArrayInitializerMemberValue) valueParam).getInitializers();
+            return Stream.of(members).map(PsiElement::getText).collect(toList());
+        }
+        if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText())) {
+            return Collections.singletonList(valueParam.getText());
+        }
+        return Collections.emptyList();
     }
 
 }

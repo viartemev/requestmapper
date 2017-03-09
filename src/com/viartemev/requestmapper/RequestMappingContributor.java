@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import static com.intellij.psi.search.GlobalSearchScope.projectScope;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang.StringUtils.EMPTY;
 
 public class RequestMappingContributor implements ChooseByNameContributor {
 
@@ -56,10 +57,19 @@ public class RequestMappingContributor implements ChooseByNameContributor {
             if (annotatedElement instanceof PsiMethod) {
                 requestMappingItems.addAll(fetchRequestMappingItem(annotation, (PsiMethod) annotatedElement));
             } else if (annotatedElement instanceof PsiClass) {
-
+                requestMappingItems.addAll(fetchRequestMappingItem(annotation, (PsiClass) annotatedElement));
             }
         }
         return requestMappingItems;
+    }
+
+    private List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiClass psiClass) {
+        List<String> urls = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_VALUE_PARAM);
+        List<String> paths = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_PATH_PARAM);
+        if (paths.size() != 0) {
+            return paths.stream().map(path -> new RequestMappingItem(psiClass, path, EMPTY)).collect(toList());
+        }
+        return urls.stream().map(url -> new RequestMappingItem(psiClass, url, EMPTY)).collect(toList());
     }
 
     private List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiMethod psiMethod) {

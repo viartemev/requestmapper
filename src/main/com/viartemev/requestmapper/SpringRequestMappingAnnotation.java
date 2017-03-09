@@ -51,8 +51,12 @@ public class SpringRequestMappingAnnotation {
         String method = fetchParameterFromAnnotation(annotation, METHOD_PARAM, "GET");
         List<RequestMappingItem> result = new ArrayList<>();
         for (String url : urls) {
-            for (String classValue : classValues) {
-                result.add(new RequestMappingItem(psiMethod, unquote(classValue) + unquote(url), method));
+            if (classValues.size() != 0) {
+                for (String classValue : classValues) {
+                    result.add(new RequestMappingItem(psiMethod, unquote(classValue) + unquote(url), method));
+                }
+            } else {
+                result.add(new RequestMappingItem(psiMethod, unquote(url), method));
             }
         }
         return result;

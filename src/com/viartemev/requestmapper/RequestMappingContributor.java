@@ -20,6 +20,7 @@ public class RequestMappingContributor implements ChooseByNameContributor {
 
     private static final String SPRING_REQUEST_MAPPING_ANNOTATION = "RequestMapping";
     private static final String SPRING_REQUEST_MAPPING_VALUE_PARAM = "value";
+    private static final String SPRING_REQUEST_MAPPING_PATH_PARAM = "path";
     private static final String SPRING_REQUEST_MAPPING_METHOD_PARAM = "method";
     private final Map<String, NavigationItem> items;
 
@@ -35,7 +36,9 @@ public class RequestMappingContributor implements ChooseByNameContributor {
                         .stream()
                         .collect(toMap(RequestMappingItem::getName, Function.identity()))
         );
-        return items.keySet().toArray(new String[items.size()]);
+        return items
+                .keySet()
+                .toArray(new String[items.size()]);
     }
 
     @NotNull
@@ -52,6 +55,8 @@ public class RequestMappingContributor implements ChooseByNameContributor {
             PsiElement annotatedElement = fetchAnnotatedPsiElement(annotation);
             if (annotatedElement instanceof PsiMethod) {
                 requestMappingItems.addAll(fetchRequestMappingItem(annotation, (PsiMethod) annotatedElement));
+            } else if (annotatedElement instanceof PsiClass) {
+
             }
         }
         return requestMappingItems;
@@ -59,7 +64,11 @@ public class RequestMappingContributor implements ChooseByNameContributor {
 
     private List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiMethod psiMethod) {
         List<String> urls = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_VALUE_PARAM);
+        List<String> paths = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_PATH_PARAM);
         String method = fetchParameterFromAnnotation(annotation, SPRING_REQUEST_MAPPING_METHOD_PARAM, "GET");
+        if (paths.size() != 0) {
+            return paths.stream().map(u -> new RequestMappingItem(psiMethod, u, method)).collect(toList());
+        }
         return urls.stream().map(u -> new RequestMappingItem(psiMethod, u, method)).collect(toList());
     }
 
@@ -72,7 +81,7 @@ public class RequestMappingContributor implements ChooseByNameContributor {
 
     private String fetchParameterFromAnnotation(PsiAnnotation annotation, String parameter, String defaultValue) {
         PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(parameter);
-        if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText())) {
+        if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText()) && !Objects.equals("{}", valueParam.getText())) {
             return valueParam.getText();
         }
         return defaultValue;

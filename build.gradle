@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:0.2.5"
+    }
+}
+
+apply plugin: "org.jetbrains.intellij"
+apply plugin: "java"
+apply plugin: "idea"
+
+intellij {
+    version "IC-2016.3"
+    pluginName "Request mapper"
+}
+
+group "com.viartemev.requestmapper"
+version "0.1.1"
+
+dependencies {
+    testCompile("junit:junit:4.12")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.4.1'
+}

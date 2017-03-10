@@ -1,6 +1,5 @@
 #folders
 .idea/
 out/
-
-#files
-requestmapper.iml
+.gradle/
+build/

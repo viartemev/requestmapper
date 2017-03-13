@@ -10,7 +10,7 @@ import com.intellij.psi.PsiElement;
 
 import static com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT;
 
-public class FindRequestMappingAction extends GotoActionBase implements DumbAware {
+public class GoToRequestMappingAction extends GotoActionBase implements DumbAware {
 
     @Override
     protected void gotoActionPerformed(AnActionEvent e) {

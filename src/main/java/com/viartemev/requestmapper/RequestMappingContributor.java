@@ -1,5 +1,6 @@
 package com.viartemev.requestmapper;
 
+import com.google.common.collect.ImmutableList;
 import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
@@ -8,18 +9,27 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex;
+import com.viartemev.requestmapper.annotations.MappingAnnotation;
+import com.viartemev.requestmapper.annotations.spring.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.Function;
 
 import static com.intellij.psi.search.GlobalSearchScope.projectScope;
+import static com.viartemev.requestmapper.annotations.AnnotationsFactory.createAnnotation;
 import static java.util.stream.Collectors.toMap;
 
 public class RequestMappingContributor implements ChooseByNameContributor {
 
-    private static final String SPRING_REQUEST_MAPPING_ANNOTATION = "RequestMapping";
     private final Map<String, NavigationItem> items;
+    private static final List<String> supportedAnnotations = ImmutableList.of(
+            RequestMapping.class.getSimpleName(),
+            GetMapping.class.getSimpleName(),
+            PostMapping.class.getSimpleName(),
+            PutMapping.class.getSimpleName(),
+            DeleteMapping.class.getSimpleName()
+    );
 
     public RequestMappingContributor() {
         this.items = new HashMap<>();
@@ -28,11 +38,13 @@ public class RequestMappingContributor implements ChooseByNameContributor {
     @NotNull
     @Override
     public String[] getNames(Project project, boolean includeNonProjectItems) {
-        items.putAll(
-                findRequestMappingItems(project, SPRING_REQUEST_MAPPING_ANNOTATION)
-                        .stream()
-                        .collect(toMap(RequestMappingItem::getName, Function.identity()))
-        );
+        for (String supportedAnnotation : supportedAnnotations) {
+            items.putAll(
+                    findRequestMappingItems(project, supportedAnnotation)
+                            .stream()
+                            .collect(toMap(RequestMappingItem::getName, Function.identity()))
+            );
+        }
         return items
                 .keySet()
                 .toArray(new String[items.size()]);
@@ -50,8 +62,8 @@ public class RequestMappingContributor implements ChooseByNameContributor {
         Collection<PsiAnnotation> annotations = JavaAnnotationIndex.getInstance().get(annotationName, project, projectScope(project));
         for (PsiAnnotation annotation : annotations) {
             PsiElement annotatedElement = fetchAnnotatedPsiElement(annotation);
-            SpringRequestMappingAnnotation springRequestMappingAnnotation = new SpringRequestMappingAnnotation(annotation, annotatedElement);
-            requestMappingItems.addAll(springRequestMappingAnnotation.values());
+            MappingAnnotation mappingAnnotation = createAnnotation(annotationName, annotation, annotatedElement);
+            requestMappingItems.addAll(mappingAnnotation.values());
         }
         return requestMappingItems;
     }

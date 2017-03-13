@@ -1,5 +1,5 @@
-# Request Mapper
-Request mapper is plugin for Intellij IDEA for quick to url mapping declaration.
+#Request Mapper
+Request mapper is plugin for Intellij IDEA for quick navigation to url mapping declaration.
 
 ###Build status
 ![](https://travis-ci.org/viartemev/requestmapper.svg?branch=master)

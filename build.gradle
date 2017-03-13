@@ -17,16 +17,24 @@ repositories {
 apply plugin: "org.jetbrains.intellij"
 apply plugin: "java"
 apply plugin: "idea"
-
-intellij {
-    pluginName "Request mapper"
-}
+apply plugin: "jacoco"
 
 group "com.viartemev.requestmapper"
 version "0.2"
 
 dependencies {
     testCompile("junit:junit:4.+")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+intellij {
+    pluginName "Request mapper"
 }
 
 task wrapper(type: Wrapper) {

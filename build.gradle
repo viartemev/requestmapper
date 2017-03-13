@@ -19,12 +19,11 @@ apply plugin: "java"
 apply plugin: "idea"
 
 intellij {
-    version "IC-2016.3"
     pluginName "Request mapper"
 }
 
 group "com.viartemev.requestmapper"
-version "0.1.1"
+version "0.2"
 
 dependencies {
     testCompile("junit:junit:4.+")

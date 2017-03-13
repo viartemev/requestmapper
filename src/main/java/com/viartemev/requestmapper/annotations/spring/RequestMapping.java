@@ -1,7 +1,11 @@
-package com.viartemev.requestmapper;
+package com.viartemev.requestmapper.annotations.spring;
 
 import com.intellij.psi.*;
+import com.viartemev.requestmapper.RequestMappingItem;
+import com.viartemev.requestmapper.annotations.MappingAnnotation;
+import com.viartemev.requestmapper.utils.CommonUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,42 +13,42 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static com.viartemev.requestmapper.utils.CommonUtils.unquote;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 
-public class SpringRequestMappingAnnotation {
+public class RequestMapping implements MappingAnnotation {
     private static final String VALUE_PARAM = "value";
     private static final String PATH_PARAM = "path";
     private static final String METHOD_PARAM = "method";
     private static final String SPRING_REQUEST_MAPPING_CLASS = "org.springframework.web.bind.annotation.RequestMapping";
     private static final String DEFAULT_METHOD = "GET";
 
-    private final PsiAnnotation psiAnnotation;
-    private final PsiElement psiElement;
+    final PsiAnnotation psiAnnotation;
+    final PsiElement psiElement;
 
-    public SpringRequestMappingAnnotation(PsiAnnotation psiAnnotation,
-                                          PsiElement psiElement) {
+    public RequestMapping(PsiAnnotation psiAnnotation,
+                          PsiElement psiElement) {
         this.psiAnnotation = psiAnnotation;
         this.psiElement = psiElement;
     }
 
     public List<RequestMappingItem> values() {
         if (psiElement instanceof PsiMethod) {
-            return fetchRequestMappingItem(psiAnnotation, (PsiMethod) psiElement);
+            return fetchRequestMappingItem(psiAnnotation, (PsiMethod) psiElement, fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM));
         } else if (psiElement instanceof PsiClass) {
             return fetchRequestMappingItem(psiAnnotation, (PsiClass) psiElement);
         }
         return Collections.emptyList();
     }
 
-    private List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiMethod psiMethod) {
+    List<RequestMappingItem> fetchRequestMappingItem(PsiAnnotation annotation, PsiMethod psiMethod, String method) {
         List<String> classMappings = new ArrayList<>();
         for (PsiAnnotation requestMappingAnnotation : fetchRequestMappingAnnotationsFromParentClass(psiMethod)) {
             classMappings.addAll(fetchMapping(requestMappingAnnotation));
         }
 
         List<String> methodMappings = fetchMapping(annotation);
-        String method = fetchMethodFromAnnotation(annotation, METHOD_PARAM);
         List<RequestMappingItem> result = new ArrayList<>();
         for (String url : methodMappings) {
             if (classMappings.size() != 0) {
@@ -58,6 +62,7 @@ public class SpringRequestMappingAnnotation {
         return result;
     }
 
+    @NotNull
     private PsiAnnotation[] fetchRequestMappingAnnotationsFromParentClass(PsiMethod psiMethod) {
         List<PsiAnnotation> requestMappingAnnotations = new ArrayList<>();
         PsiClass containingClass = psiMethod.getContainingClass();
@@ -97,17 +102,11 @@ public class SpringRequestMappingAnnotation {
         PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(parameter);
         if (valueParam instanceof PsiArrayInitializerMemberValue) {
             PsiAnnotationMemberValue[] members = ((PsiArrayInitializerMemberValue) valueParam).getInitializers();
-            return Stream.of(members).map(PsiElement::getText).map(this::unquote).collect(toList());
+            return Stream.of(members).map(PsiElement::getText).map(CommonUtils::unquote).collect(toList());
         }
         if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText())) {
             return Collections.singletonList(unquote(valueParam.getText()));
         }
         return Collections.emptyList();
-    }
-
-    private String unquote(String s) {
-        return s != null && s.length() >= 2 && s.charAt(0) == '\"'
-                ? s.substring(1, s.length() - 1)
-                : s;
     }
 }

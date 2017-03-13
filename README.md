@@ -5,7 +5,7 @@ Request mapper is plugin for Intellij IDEA for quick to url mapping declaration.
 ![](https://travis-ci.org/viartemev/requestmapper.svg?branch=master)
 
 ###Plugin info
-The plugin can be found in [JetBrains repository](https://plugins.jetbrains.com/plugin/9550-request-mapper)</br>
+The plugin can be found in [JetBrains repository](https://plugins.jetbrains.com/plugin/9557-request-mapper)</br>
 
 #####Supported annotations:
 + Spring

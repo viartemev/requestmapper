@@ -20,7 +20,7 @@ apply plugin: "idea"
 apply plugin: "jacoco"
 
 group "com.viartemev.requestmapper"
-version "0.2"
+version "0.1"
 
 dependencies {
     testCompile("junit:junit:4.+")
@@ -36,7 +36,13 @@ jacocoTestReport {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version '2016.3' //http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html && https://www.jetbrains.com/intellij-repository/releases
+    version '2016.3'
+}
+
+patchPluginXml {
+    version '0.1'
+    sinceBuild '141.0'
+    untilBuild ''
 }
 
 task wrapper(type: Wrapper) {

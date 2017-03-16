@@ -1,11 +1,12 @@
 <idea-plugin version="2">
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.2.1</version>
+    <version>0.1</version>
     <vendor email="viartemev@gmail.com" url="https://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>
+      Shortcut to Shift + Ctrl + Back slash.<br/>
       Support:
       <ul>
         <li>Spring:</li>
@@ -21,8 +22,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Change shortcut to Shift + Ctrl + Back slash</li>
-            <li>Add supporting for Spring new annotations</li>
+            <li>Add supporting for Spring annotations</li>
         </ul>
     ]]>
     </change-notes>
@@ -32,7 +32,7 @@
     </extensions>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="145.0"/>
+    <idea-version since-build="141.0"/>
 
     <actions>
         <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"

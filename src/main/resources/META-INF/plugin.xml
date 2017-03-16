@@ -1,23 +1,29 @@
 <idea-plugin version="2">
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.2</version>
+    <version>0.2.1</version>
     <vendor email="viartemev@gmail.com" url="https://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>
-      Support: <br/>
-        - Spring: <br/>
-            - @RequestMapping <br/>
-            - @GetMapping <br/>
-            - @PostMapping <br/>
-            - @PutMapping <br/>
-            - @DeleteMapping
+      Support:
+      <ul>
+        <li>Spring:</li>
+            <ul>
+                <li>@RequestMapping</li>
+                <li>@GetMapping</li>
+                <li>@PostMapping</li>
+                <li>@PutMapping</li>
+                <li>@DeleteMapping</li>
+            </ul>
+      </ul>
     ]]></description>
 
     <change-notes><![CDATA[
-      - Change shortcut to Shift + Ctrl + Back slash <br/>
-      - Add supporting for Spring new annotations
+        <ul>
+            <li>Change shortcut to Shift + Ctrl + Back slash</li>
+            <li>Add supporting for Spring new annotations</li>
+        </ul>
     ]]>
     </change-notes>
 

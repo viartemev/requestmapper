@@ -13,16 +13,16 @@ import com.viartemev.requestmapper.annotations.MappingAnnotation;
 import com.viartemev.requestmapper.annotations.spring.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import static com.intellij.psi.search.GlobalSearchScope.projectScope;
 import static com.viartemev.requestmapper.annotations.AnnotationsFactory.createAnnotation;
-import static java.util.stream.Collectors.toMap;
 
 public class RequestMappingContributor implements ChooseByNameContributor {
 
-    private final Map<String, NavigationItem> items;
     private static final List<String> supportedAnnotations = ImmutableList.of(
             RequestMapping.class.getSimpleName(),
             GetMapping.class.getSimpleName(),
@@ -31,29 +31,22 @@ public class RequestMappingContributor implements ChooseByNameContributor {
             DeleteMapping.class.getSimpleName()
     );
 
-    public RequestMappingContributor() {
-        this.items = new HashMap<>();
-    }
-
     @NotNull
     @Override
     public String[] getNames(Project project, boolean includeNonProjectItems) {
-        for (String supportedAnnotation : supportedAnnotations) {
-            items.putAll(
-                    findRequestMappingItems(project, supportedAnnotation)
-                            .stream()
-                            .collect(toMap(RequestMappingItem::getName, Function.identity()))
-            );
-        }
-        return items
-                .keySet()
-                .toArray(new String[items.size()]);
+        return supportedAnnotations.stream()
+                .flatMap(ann -> findRequestMappingItems(project, ann).stream())
+                .map(RequestMappingItem::getName)
+                .distinct().toArray(String[]::new);
     }
 
     @NotNull
     @Override
     public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
-        return new NavigationItem[]{items.get(name)};
+        return new NavigationItem[]{supportedAnnotations.stream()
+                .flatMap(ann -> findRequestMappingItems(project, ann).stream())
+                .filter(it -> Objects.equals(it.getName(), name))
+                .findFirst().orElse(null)};
     }
 
     @NotNull

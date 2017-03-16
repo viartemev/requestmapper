@@ -36,7 +36,7 @@ jacocoTestReport {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version '2016.1' //IntelliJ IDEA 2016.1 dependency; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
+    version '2016.3' //http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html && https://www.jetbrains.com/intellij-repository/releases
 }
 
 task wrapper(type: Wrapper) {

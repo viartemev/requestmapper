@@ -2,11 +2,13 @@ package com.viartemev.requestmapper;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
+import com.intellij.pom.Navigatable;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 
 import javax.swing.*;
+import java.util.Optional;
 
 public class RequestMappingItem implements NavigationItem {
     private final PsiElement psiElement;
@@ -38,12 +40,23 @@ public class RequestMappingItem implements NavigationItem {
 
     @Override
     public void navigate(boolean requestFocus) {
-        //TODO fix it
+        navigationElement().ifPresent(navigatable -> navigatable.navigate(requestFocus));
     }
 
     @Override
     public boolean canNavigate() {
-        return true;
+        return navigationElement().map(Navigatable::canNavigate).orElse(false);
+    }
+
+    private Optional<Navigatable> navigationElement() {
+        PsiElement navigationElement;
+        if (getPsiElement() != null
+                && (navigationElement = getPsiElement().getNavigationElement()) != null
+                && navigationElement instanceof Navigatable) {
+            return Optional.of((Navigatable) navigationElement);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

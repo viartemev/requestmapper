@@ -33,6 +33,7 @@ public class RequestMapping implements MappingAnnotation {
         this.psiElement = psiElement;
     }
 
+    @Override
     public List<RequestMappingItem> values() {
         if (psiElement instanceof PsiMethod) {
             return fetchRequestMappingItem(psiAnnotation, (PsiMethod) psiElement, fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM));

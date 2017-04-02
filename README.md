@@ -15,6 +15,10 @@ The plugin can be found in [JetBrains repository](https://plugins.jetbrains.com/
     - ```@PutMapping```
     - ```@DeleteMapping```
 
+### Contributing
+Thanks to all people who have contributed to this plugin:
++ [Dmitry Chuiko](https://github.com/dchuiko)
+
 ### Usage
 Keyboard shortcut: ```Shift + Ctrl + Back slash```
 

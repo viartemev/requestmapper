@@ -20,24 +20,21 @@ public class GoToRequestMappingAction extends GotoActionBase implements DumbAwar
         }
 
         RequestMappingModel requestMappingModel = new RequestMappingModel(project);
-        GotoActionCallback<String> callback = new GotoActionCallback<String>() {
-
-            @Override
-            public void elementChosen(ChooseByNamePopup popup, Object element) {
-                PsiElement navigationElement;
-                if (!(element instanceof RequestMappingItem)) {
-                    return;
-                }
-                RequestMappingItem item = (RequestMappingItem) element;
-                if (item.getPsiElement() != null
-                        && (navigationElement = item.getPsiElement().getNavigationElement()) != null
-                        && navigationElement instanceof Navigatable
-                        && ((Navigatable) navigationElement).canNavigate()) {
-                    ((Navigatable) navigationElement).navigate(true);
-                }
-
-            }
-        };
+        GotoActionCallback<String> callback = new GoToRequestMappingActionCallback();
         showNavigationPopup(e, requestMappingModel, callback, false);
+    }
+
+    private static final class GoToRequestMappingActionCallback extends GotoActionCallback<String> {
+        @Override
+        public void elementChosen(ChooseByNamePopup popup, Object element) {
+            if (!(element instanceof RequestMappingItem)) {
+                return;
+            }
+
+            RequestMappingItem item = (RequestMappingItem) element;
+            if (item.canNavigate()) {
+                item.navigate(true);
+            }
+        }
     }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.intellij.psi.search.GlobalSearchScope.projectScope;
-import static com.viartemev.requestmapper.annotations.AnnotationsFactory.createAnnotation;
+import static com.viartemev.requestmapper.annotations.MappingAnnotation.mappingAnnotation;
 
 public class RequestMappingContributor implements ChooseByNameContributor {
 
@@ -55,7 +55,7 @@ public class RequestMappingContributor implements ChooseByNameContributor {
         Collection<PsiAnnotation> annotations = JavaAnnotationIndex.getInstance().get(annotationName, project, projectScope(project));
         for (PsiAnnotation annotation : annotations) {
             PsiElement annotatedElement = fetchAnnotatedPsiElement(annotation);
-            MappingAnnotation mappingAnnotation = createAnnotation(annotationName, annotation, annotatedElement);
+            MappingAnnotation mappingAnnotation = mappingAnnotation(project, annotationName, annotation, annotatedElement);
             requestMappingItems.addAll(mappingAnnotation.values());
         }
         return requestMappingItems;

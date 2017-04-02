@@ -1,17 +1,21 @@
 package com.viartemev.requestmapper.annotations.spring;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.viartemev.requestmapper.RequestMappingItem;
 import com.viartemev.requestmapper.annotations.MappingAnnotation;
-import com.viartemev.requestmapper.utils.CommonUtils;
+import com.viartemev.requestmapper.annotations.spring.extraction.BasePsiAnnotationValueVisitor;
+import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMemberValueExtractor;
+import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor;
+import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import static com.viartemev.requestmapper.utils.CommonUtils.unquote;
 import static java.util.stream.Collectors.toList;
@@ -26,11 +30,14 @@ public class RequestMapping implements MappingAnnotation {
 
     final PsiAnnotation psiAnnotation;
     final PsiElement psiElement;
+    final Project project;
 
     public RequestMapping(PsiAnnotation psiAnnotation,
-                          PsiElement psiElement) {
+                          PsiElement psiElement,
+                          Project project) {
         this.psiAnnotation = psiAnnotation;
         this.psiElement = psiElement;
+        this.project = project;
     }
 
     @Override
@@ -93,21 +100,28 @@ public class RequestMapping implements MappingAnnotation {
 
     private List<String> fetchMapping(PsiAnnotation annotation) {
         List<String> pathMapping = fetchMappingsFromAnnotation(annotation, PATH_PARAM);
-        if (pathMapping.size() != 0) {
+        if (!pathMapping.isEmpty()) {
             return pathMapping;
         }
         return fetchMappingsFromAnnotation(annotation, VALUE_PARAM);
     }
 
     private List<String> fetchMappingsFromAnnotation(PsiAnnotation annotation, String parameter) {
-        PsiAnnotationMemberValue valueParam = annotation.findAttributeValue(parameter);
-        if (valueParam instanceof PsiArrayInitializerMemberValue) {
-            PsiAnnotationMemberValue[] members = ((PsiArrayInitializerMemberValue) valueParam).getInitializers();
-            return Stream.of(members).map(PsiElement::getText).map(CommonUtils::unquote).collect(toList());
-        }
-        if (valueParam != null && StringUtils.isNotEmpty(valueParam.getText())) {
-            return Collections.singletonList(unquote(valueParam.getText()));
-        }
-        return Collections.emptyList();
+        return new BasePsiAnnotationValueVisitor() {
+            @Override
+            public List<String> visitPsiArrayInitializerMemberValue(@NotNull PsiArrayInitializerMemberValue memberValue) {
+                return new PsiArrayInitializerMemberValueExtractor().extract(memberValue);
+            }
+
+            @Override
+            public List<String> visitPsiReferenceExpression(@NotNull PsiReferenceExpression expression) {
+                return new PsiReferenceExpressionExtractor(project).extract(expression);
+            }
+
+            @Override
+            public List<String> visitPsiAnnotationMemberValue(@NotNull PsiAnnotationMemberValue value) {
+                return new PsiAnnotationMemberValueExtractor().extract(value);
+            }
+        }.visit(annotation, parameter);
     }
 }

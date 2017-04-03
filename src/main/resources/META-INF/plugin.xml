@@ -1,13 +1,13 @@
-<idea-plugin version="2">
+<idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.2</version>
+    <version>0.3</version>
     <vendor email="viartemev@gmail.com" url="http://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>
       Shortcut: <code>Shift + Ctrl + Back slash</code><br/>
-      Support:
+      Supported annotations:
       <ul>
         <li>Spring:</li>
             <ul>
@@ -22,7 +22,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Add support for urls from constants</li>
+            <li>Added a full URL search</li>
         </ul>
     ]]>
     </change-notes>

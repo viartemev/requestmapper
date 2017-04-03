@@ -5,8 +5,6 @@ import com.intellij.ide.util.gotoByName.ChooseByNamePopup;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.pom.Navigatable;
-import com.intellij.psi.PsiElement;
 
 import static com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT;
 
@@ -19,9 +17,7 @@ public class GoToRequestMappingAction extends GotoActionBase implements DumbAwar
             return;
         }
 
-        RequestMappingModel requestMappingModel = new RequestMappingModel(project);
-        GotoActionCallback<String> callback = new GoToRequestMappingActionCallback();
-        showNavigationPopup(e, requestMappingModel, callback, false);
+        showNavigationPopup(e, new RequestMappingModel(project), new GoToRequestMappingActionCallback(), false);
     }
 
     private static final class GoToRequestMappingActionCallback extends GotoActionCallback<String> {

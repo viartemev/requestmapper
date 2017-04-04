@@ -4,12 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiElement;
 import com.viartemev.requestmapper.RequestMappingItem;
-import com.viartemev.requestmapper.annotations.spring.DeleteMapping;
-import com.viartemev.requestmapper.annotations.spring.GetMapping;
-import com.viartemev.requestmapper.annotations.spring.PostMapping;
-import com.viartemev.requestmapper.annotations.spring.PutMapping;
-import com.viartemev.requestmapper.annotations.spring.RequestMapping;
-import org.apache.commons.lang.StringUtils;
+import com.viartemev.requestmapper.annotations.spring.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,9 +19,6 @@ public interface MappingAnnotation {
                                                @Nullable String annotationName,
                                                PsiAnnotation psiAnnotation,
                                                PsiElement psiElement) {
-        if (StringUtils.isEmpty(annotationName)) {
-            return UnknownAnnotation.getInstance();
-        }
         if (Objects.equals(annotationName, RequestMapping.class.getSimpleName())) {
             return new RequestMapping(psiAnnotation, psiElement, project);
         } else if (Objects.equals(annotationName, GetMapping.class.getSimpleName())) {

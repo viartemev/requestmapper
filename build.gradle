@@ -48,3 +48,15 @@ patchPluginXml {
 task wrapper(type: Wrapper) {
     gradleVersion = '3.4.1'
 }
+
+buildPlugin.dependsOn 'validate'
+
+task validate() {
+    new File(".").eachDirRecurse() { dir ->
+        dir.eachFileMatch(~/.*.java/) { file ->
+            if (file.getText().contains("System.out.print")) {
+                throw new GradleException('Project has invalid constructions')
+            }
+        }
+    }
+}

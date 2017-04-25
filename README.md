@@ -13,6 +13,7 @@ The plugin can be found in [JetBrains repository](https://plugins.jetbrains.com/
     - ```@GetMapping```
     - ```@PostMapping```
     - ```@PutMapping```
+    - ```@PatchMapping```
     - ```@DeleteMapping```
 
 ### Contributing

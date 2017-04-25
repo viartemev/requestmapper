@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.3.1</version>
+    <version>0.4</version>
     <vendor email="viartemev@gmail.com" url="http://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -15,6 +15,7 @@
                 <li>@GetMapping</li>
                 <li>@PostMapping</li>
                 <li>@PutMapping</li>
+                <li>@PatchMapping</li>
                 <li>@DeleteMapping</li>
             </ul>
       </ul>
@@ -22,8 +23,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Bug fixes</li>
-            <li>Added a full URL search</li>
+            <li>Add @PatchMapping support</li>
         </ul>
     ]]>
     </change-notes>

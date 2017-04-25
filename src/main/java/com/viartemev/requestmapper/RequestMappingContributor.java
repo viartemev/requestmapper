@@ -28,6 +28,7 @@ public class RequestMappingContributor implements ChooseByNameContributor {
             GetMapping.class.getSimpleName(),
             PostMapping.class.getSimpleName(),
             PutMapping.class.getSimpleName(),
+            PatchMapping.class.getSimpleName(),
             DeleteMapping.class.getSimpleName()
     );
 

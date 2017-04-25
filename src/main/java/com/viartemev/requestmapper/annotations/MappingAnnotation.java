@@ -27,6 +27,8 @@ public interface MappingAnnotation {
             return new PostMapping(psiAnnotation, psiElement, project);
         } else if (Objects.equals(annotationName, PutMapping.class.getSimpleName())) {
             return new PutMapping(psiAnnotation, psiElement, project);
+        } else if (Objects.equals(annotationName, PatchMapping.class.getSimpleName())) {
+            return new PatchMapping(psiAnnotation, psiElement, project);
         } else if (Objects.equals(annotationName, DeleteMapping.class.getSimpleName())) {
             return new DeleteMapping(psiAnnotation, psiElement, project);
         }

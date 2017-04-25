@@ -20,7 +20,7 @@ apply plugin: "idea"
 apply plugin: "jacoco"
 
 group "com.viartemev.requestmapper"
-version "0.3.1"
+version "0.4"
 
 dependencies {
     testCompile("junit:junit:4.+")
@@ -40,7 +40,7 @@ intellij {
 }
 
 patchPluginXml {
-    version '0.3.1'
+    version '0.4'
     sinceBuild '141.0'
     untilBuild ''
 }

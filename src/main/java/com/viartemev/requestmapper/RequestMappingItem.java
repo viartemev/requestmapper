@@ -13,12 +13,14 @@ import java.util.Optional;
 public class RequestMappingItem implements NavigationItem {
     private final PsiElement psiElement;
     private final String urlPath;
+    private final String requestMethod;
     private final Alias alias;
     private final RequestMappingItemPresentation mItemPresentation;
 
     public RequestMappingItem(PsiElement psiElement, String urlPath, String requestMethod) {
         this.psiElement = psiElement;
         this.urlPath = urlPath;
+        this.requestMethod = requestMethod;
         this.alias = new Alias(psiElement, requestMethod);
         this.mItemPresentation = new RequestMappingItemPresentation();
     }
@@ -29,7 +31,7 @@ public class RequestMappingItem implements NavigationItem {
 
     @Override
     public String getName() {
-        return this.urlPath;
+        return this.requestMethod + " " + this.urlPath;
     }
 
     @Override

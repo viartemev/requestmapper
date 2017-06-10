@@ -42,8 +42,8 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         }
 
         val requiredPath = userPattern.substring(
-                userPattern.indexOf('/'),
-                if (userPattern.indexOf('?') == -1) userPattern.length else userPattern.indexOf('?')
+                userPattern.indexOfLast { it == '/' },
+                if (userPattern.indexOfFirst { it == '?' } == -1) userPattern.length else userPattern.indexOfFirst { it == '?' }
         )
 
         val itemList = popupItem.split("/").filter { it.isNotBlank() }

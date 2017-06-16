@@ -17,11 +17,7 @@ class GoToRequestMappingAction : GotoActionBase(), DumbAware {
     private class GoToRequestMappingActionCallback : GotoActionBase.GotoActionCallback<String>() {
 
         override fun elementChosen(popup: ChooseByNamePopup, element: Any) {
-            if (element !is RequestMappingItem) {
-                return
-            }
-
-            if (element.canNavigate()) {
+            if (element is RequestMappingItem && element.canNavigate()) {
                 element.navigate(true)
             }
         }

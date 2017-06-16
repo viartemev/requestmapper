@@ -11,10 +11,7 @@ import java.util.Collections
 class GetMapping(psiAnnotation: PsiAnnotation, psiElement: PsiElement, project: Project) : RequestMapping(psiAnnotation, psiElement, project) {
 
     override fun values(): List<RequestMappingItem> {
-        if (psiElement is PsiMethod) {
-            return fetchRequestMappingItem(psiAnnotation, psiElement, METHOD)
-        }
-        return emptyList()
+        return if (psiElement is PsiMethod) fetchRequestMappingItem(psiAnnotation, psiElement, METHOD) else emptyList()
     }
 
     companion object {

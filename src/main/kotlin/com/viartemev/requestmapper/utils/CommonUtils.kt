@@ -2,7 +2,7 @@ package com.viartemev.requestmapper.utils
 
 
 fun String.unquote(): String {
-    return if (this.length >= 2 && this[0] == '\"' && this[this.length - 1] == '\"') this.substring(1, this.length - 1) else this
+    return if (this.length >= 2 && this[0] == '\"' && this[this.lastIndex] == '\"') this.substring(1, this.length - 1) else this
 }
 
 fun isSimilar(patternList: List<String>, itemList: List<String>): Boolean {
@@ -13,7 +13,7 @@ fun isSimilar(patternList: List<String>, itemList: List<String>): Boolean {
     while (i < patternList.size && i < itemList.size) {
         val pattern = patternList[i]
         val item = itemList[i]
-        if (!item.startsWith("{") || !item.endsWith("}")) {
+        if (item[0] != '{' || item[item.length - 1] != '}') {
             if (pattern != item) {
                 return false
             }

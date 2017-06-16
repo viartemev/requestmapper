@@ -9,7 +9,6 @@ import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMe
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
 import com.viartemev.requestmapper.utils.unquote
-import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.StringUtils.EMPTY
 import java.util.*
 
@@ -18,12 +17,11 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
                           internal val project: Project) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
-        if (psiElement is PsiMethod) {
-            return fetchRequestMappingItem(psiAnnotation, psiElement, fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM))
-        } else if (psiElement is PsiClass) {
-            return fetchRequestMappingItem(psiAnnotation, psiElement)
+        return when (psiElement) {
+            is PsiMethod -> fetchRequestMappingItem(psiAnnotation, psiElement, fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM))
+            is PsiClass -> fetchRequestMappingItem(psiAnnotation, psiElement)
+            else -> emptyList()
         }
-        return emptyList()
     }
 
     internal fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
@@ -35,10 +33,8 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
         val methodMappings = fetchMapping(annotation)
         val result = ArrayList<RequestMappingItem>()
         for (url in methodMappings) {
-            if (classMappings.size != 0) {
-                for (classValue in classMappings) {
-                    result.add(RequestMappingItem(psiMethod, classValue + url, method))
-                }
+            if (classMappings.isNotEmpty()) {
+                classMappings.mapTo(result) { RequestMappingItem(psiMethod, it + url, method) }
             } else {
                 result.add(RequestMappingItem(psiMethod, url, method))
             }
@@ -51,44 +47,37 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
         val containingClass = psiMethod.containingClass
         if (containingClass != null && containingClass.modifierList != null) {
             val annotations = containingClass.modifierList!!.annotations
-            for (annotation in annotations) {
-                if (annotation != null && annotation.qualifiedName == SPRING_REQUEST_MAPPING_CLASS) {
-                    requestMappingAnnotations.add(annotation)
-                }
-            }
+            annotations.filterTo(requestMappingAnnotations) { it != null && it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
         }
         return requestMappingAnnotations.toTypedArray()
     }
 
     private fun fetchMethodFromAnnotation(annotation: PsiAnnotation, parameter: String): String {
         val valueParam = annotation.findAttributeValue(parameter)
-        if (valueParam != null && StringUtils.isNotEmpty(valueParam.text) && "{}" != valueParam.text) {
+        if (valueParam != null && valueParam.text.isNotEmpty() && "{}" != valueParam.text) {
             return valueParam.text.replace("RequestMethod.", "")
         }
         return DEFAULT_METHOD
     }
 
     private fun fetchRequestMappingItem(annotation: PsiAnnotation, psiClass: PsiClass): List<RequestMappingItem> {
-        val classMappings = fetchMapping(annotation)
-        return classMappings.map { url -> RequestMappingItem(psiClass, url.unquote(), EMPTY) }
+        return fetchMapping(annotation).map { RequestMappingItem(psiClass, it.unquote(), EMPTY) }
     }
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
         val pathMapping = fetchMappingsFromAnnotation(annotation, PATH_PARAM)
-        if (!pathMapping.isEmpty()) {
-            return pathMapping
-        }
-        return fetchMappingsFromAnnotation(annotation, VALUE_PARAM)
+        return if (!pathMapping.isEmpty()) pathMapping else fetchMappingsFromAnnotation(annotation, VALUE_PARAM)
     }
 
     private fun fetchMappingsFromAnnotation(annotation: PsiAnnotation, parameter: String): List<String> {
         return object : BasePsiAnnotationValueVisitor() {
-            override fun visitPsiArrayInitializerMemberValue(memberValue: PsiArrayInitializerMemberValue): List<String> {
-                return PsiArrayInitializerMemberValueExtractor().extract(memberValue)
+            override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue): List<String> {
+                return PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
             }
 
             override fun visitPsiReferenceExpression(expression: PsiReferenceExpression): List<String> {
-                return PsiReferenceExpressionExtractor(project).extract(expression)
+                val extract = PsiReferenceExpressionExtractor(project).extract(expression)
+                return extract
             }
 
             override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue): List<String> {

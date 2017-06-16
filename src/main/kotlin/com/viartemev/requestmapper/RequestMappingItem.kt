@@ -15,7 +15,7 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
 
     override fun getPresentation(): ItemPresentation = RequestMappingItemPresentation()
 
-    override fun navigate(requestFocus: Boolean) = navigationElement().ifPresent { navigatable -> navigatable.navigate(requestFocus) }
+    override fun navigate(requestFocus: Boolean) = navigationElement().ifPresent { navigation -> navigation.navigate(requestFocus) }
 
     override fun canNavigate(): Boolean = navigationElement().map { it.canNavigate() }.orElse(false)
 
@@ -33,11 +33,11 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
     private inner class RequestMappingItemPresentation : ItemPresentation {
 
         override fun getPresentableText(): String {
-            return this@RequestMappingItem.urlPath
+            return this@RequestMappingItem.requestMethod + " " + this@RequestMappingItem.urlPath
         }
 
         override fun getLocationString(): String {
-            return this@RequestMappingItem.Alias(this@RequestMappingItem.psiElement, this@RequestMappingItem.requestMethod).alias
+            return extractLocation(this@RequestMappingItem.psiElement)
         }
 
         override fun getIcon(b: Boolean): Icon {
@@ -45,20 +45,12 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
         }
     }
 
-    private inner class Alias(private val psiElement: PsiElement, private val requestMethod: String) {
-
-        val alias: String
-            get() {
-                if (psiElement is PsiMethod) {
-                    val method: PsiMethod = this.psiElement
-                    val clss = method.containingClass
-                    return requestMethod + " " + (if ((clss) == null) "" else clss.name!! + ".") + method.name
-                } else if (psiElement is PsiClass) {
-                    return psiElement.name!!
-                } else {
-                    return "undefined"
-                }
-            }
+    private fun extractLocation(psiElement: PsiElement): String {
+        return when (psiElement) {
+            is PsiMethod -> (psiElement.containingClass?.name ?: psiElement.containingFile.name) + "." + psiElement.name
+            is PsiClass -> psiElement.name ?: psiElement.containingFile.name
+            else -> "Ops..no location here"
+        }
     }
 
 }

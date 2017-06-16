@@ -5,9 +5,11 @@ import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.intellij.psi.PsiReferenceExpression
 
 interface PsiAnnotationValueVisitor {
+
     fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue): List<String>
 
     fun visitPsiReferenceExpression(expression: PsiReferenceExpression): List<String>
 
     fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue): List<String>
+    
 }

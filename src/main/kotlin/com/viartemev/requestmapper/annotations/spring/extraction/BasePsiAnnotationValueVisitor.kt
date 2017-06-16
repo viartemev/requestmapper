@@ -6,16 +6,19 @@ import com.intellij.psi.PsiReferenceExpression
 import org.apache.commons.lang.StringUtils
 
 abstract class BasePsiAnnotationValueVisitor : PsiAnnotationValueVisitor {
+
     fun visit(annotation: PsiAnnotation, parameter: String): List<String> {
-        var result = emptyList<String>()
         val valueParam = annotation.findAttributeValue(parameter)
-        if (valueParam is PsiArrayInitializerMemberValue) {
-            result = visitPsiArrayInitializerMemberValue((valueParam as PsiArrayInitializerMemberValue?)!!)
+        return if (valueParam is PsiArrayInitializerMemberValue) {
+            visitPsiArrayInitializerMemberValue(valueParam)
         } else if (valueParam is PsiReferenceExpression) {
-            result = visitPsiReferenceExpression((valueParam as PsiReferenceExpression?)!!)
-        } else if (valueParam != null && StringUtils.isNotEmpty(valueParam.text)) {
-            result = visitPsiAnnotationMemberValue(valueParam)
+            val visitPsiReferenceExpression = visitPsiReferenceExpression((valueParam))
+            visitPsiReferenceExpression
+        } else if (valueParam != null && valueParam.text.isNotEmpty()) {
+            visitPsiAnnotationMemberValue(valueParam)
+        } else {
+            emptyList()
         }
-        return result
     }
+
 }

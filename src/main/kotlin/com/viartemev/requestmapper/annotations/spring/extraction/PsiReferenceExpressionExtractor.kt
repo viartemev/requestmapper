@@ -14,9 +14,10 @@ class PsiReferenceExpressionExtractor(project: Project) : PsiAnnotationValueExtr
     private val project: Project = requireNonNull(project)
 
     override fun extract(value: PsiReferenceExpression): List<String> {
-        return Optional.ofNullable(value.referenceName).map<List<String>> { referenceName ->
-            JavaStaticMemberNameIndex.getInstance()
+        return Optional.ofNullable(value.referenceName).map { referenceName ->
+            val get = JavaStaticMemberNameIndex.getInstance()
                     .get(referenceName, project, GlobalSearchScope.projectScope(project))
+            get
                     .filter { PsiField::class.java.isInstance(it) }
                     .map { PsiField::class.java.cast(it) }
                     .flatMap { m -> (m.children.toList()) }

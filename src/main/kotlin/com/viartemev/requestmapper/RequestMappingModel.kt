@@ -12,9 +12,7 @@ import com.viartemev.requestmapper.utils.isSimilar
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
 
-    override fun filterValueFor(item: NavigationItem): FileType? {
-        return null
-    }
+    override fun filterValueFor(item: NavigationItem): FileType? = null
 
     override fun getPromptText(): String = "Enter mapping url"
 

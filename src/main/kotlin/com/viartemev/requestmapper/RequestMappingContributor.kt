@@ -3,7 +3,6 @@ package com.viartemev.requestmapper
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
@@ -15,19 +14,19 @@ import java.util.*
 
 class RequestMappingContributor : ChooseByNameContributor {
 
-    override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String?> {
+    override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         return supportedAnnotations.
-                flatMap { ann -> findRequestMappingItems(project, ann) }.
+                flatMap { annotation -> findRequestMappingItems(project, annotation) }.
                 map { it.name }.
                 distinct().
                 toTypedArray()
     }
 
     override fun getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean): Array<NavigationItem> {
-        return arrayOf(supportedAnnotations.
-                flatMap { ann -> findRequestMappingItems(project, ann) }.
-                filter({ it -> it.name == name })
-                .first())
+        return supportedAnnotations.
+                flatMap { annotation -> findRequestMappingItems(project, annotation) }.
+                filter { it.name == name }.
+                toTypedArray()
     }
 
     private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> {
@@ -35,19 +34,18 @@ class RequestMappingContributor : ChooseByNameContributor {
         val annotations = JavaAnnotationIndex.getInstance().get(annotationName, project, projectScope(project))
         for (annotation in annotations) {
             val annotatedElement = fetchAnnotatedPsiElement(annotation)
-            val mappingAnnotation = mappingAnnotation(project, annotationName, annotation, annotatedElement)
+            val mappingAnnotation = mappingAnnotation(annotationName, project, annotation, annotatedElement)
             requestMappingItems.addAll(mappingAnnotation.values())
         }
         return requestMappingItems
     }
 
-    private fun fetchAnnotatedPsiElement(psiAnnotation: PsiAnnotation): PsiElement {
-        var parent: PsiElement
-        parent = psiAnnotation.parent
-        while (parent != null && parent !is PsiClass && parent !is PsiMethod) {
-            parent = parent.parent
+    private tailrec fun fetchAnnotatedPsiElement(psiElement: PsiElement): PsiElement {
+        val parent = psiElement.parent
+        if (parent == null || parent is PsiClass || parent is PsiMethod) {
+            return parent
         }
-        return parent
+        return fetchAnnotatedPsiElement(parent)
     }
 
     companion object {

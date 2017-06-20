@@ -37,20 +37,16 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
         }
 
         override fun getLocationString(): String {
-            return extractLocation(this@RequestMappingItem.psiElement)
+            val psiElement = this@RequestMappingItem.psiElement
+            return when (psiElement) {
+                is PsiMethod -> (psiElement.containingClass?.name ?: psiElement.containingFile.name) + "." + psiElement.name
+                is PsiClass -> psiElement.name ?: psiElement.containingFile.name
+                else -> "Ops..no location here"
+            }
         }
 
         override fun getIcon(b: Boolean): Icon {
             return RequestMapperIcons.SEARCH
         }
     }
-
-    private fun extractLocation(psiElement: PsiElement): String {
-        return when (psiElement) {
-            is PsiMethod -> (psiElement.containingClass?.name ?: psiElement.containingFile.name) + "." + psiElement.name
-            is PsiClass -> psiElement.name ?: psiElement.containingFile.name
-            else -> "Ops..no location here"
-        }
-    }
-
 }

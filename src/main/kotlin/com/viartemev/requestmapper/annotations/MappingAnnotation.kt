@@ -11,17 +11,26 @@ interface MappingAnnotation {
     fun values(): List<RequestMappingItem>
 
     companion object {
+
+        val supportedAnnotations = listOf<String>(
+                RequestMapping::class.java.simpleName,
+                GetMapping::class.java.simpleName,
+                PostMapping::class.java.simpleName,
+                PutMapping::class.java.simpleName,
+                PatchMapping::class.java.simpleName,
+                DeleteMapping::class.java.simpleName
+        )
+
         fun mappingAnnotation(annotationName: String,
                               project: Project,
-                              psiAnnotation: PsiAnnotation,
-                              psiElement: PsiElement): MappingAnnotation {
+                              psiAnnotation: PsiAnnotation): MappingAnnotation {
             return when (annotationName) {
-                RequestMapping::class.java.simpleName -> RequestMapping(psiAnnotation, psiElement, project)
-                GetMapping::class.java.simpleName -> GetMapping(psiAnnotation, psiElement, project)
-                PostMapping::class.java.simpleName -> PostMapping(psiAnnotation, psiElement, project)
-                PutMapping::class.java.simpleName -> PutMapping(psiAnnotation, psiElement, project)
-                PatchMapping::class.java.simpleName -> PatchMapping(psiAnnotation, psiElement, project)
-                DeleteMapping::class.java.simpleName -> DeleteMapping(psiAnnotation, psiElement, project)
+                RequestMapping::class.java.simpleName -> RequestMapping(psiAnnotation, project)
+                GetMapping::class.java.simpleName -> GetMapping(psiAnnotation, project)
+                PostMapping::class.java.simpleName -> PostMapping(psiAnnotation, project)
+                PutMapping::class.java.simpleName -> PutMapping(psiAnnotation, project)
+                PatchMapping::class.java.simpleName -> PatchMapping(psiAnnotation, project)
+                DeleteMapping::class.java.simpleName -> DeleteMapping(psiAnnotation, project)
                 else -> UnknownAnnotation.instance
             }
         }

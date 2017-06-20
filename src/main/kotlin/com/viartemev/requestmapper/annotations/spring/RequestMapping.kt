@@ -13,10 +13,10 @@ import org.apache.commons.lang.StringUtils.EMPTY
 import java.util.*
 
 open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
-                          internal val psiElement: PsiElement,
                           internal val project: Project) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
+        val psiElement = fetchAnnotatedPsiElement(psiAnnotation)
         return when (psiElement) {
             is PsiMethod -> fetchRequestMappingItem(psiAnnotation, psiElement, fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM))
             is PsiClass -> fetchRequestMappingItem(psiAnnotation, psiElement)
@@ -24,15 +24,19 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
         }
     }
 
-    internal fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
-        val classMappings = ArrayList<String>()
-        for (requestMappingAnnotation in fetchRequestMappingAnnotationsFromParentClass(psiMethod)) {
-            classMappings.addAll(fetchMapping(requestMappingAnnotation))
+    internal tailrec fun fetchAnnotatedPsiElement(psiElement: PsiElement): PsiElement {
+        val parent = psiElement.parent
+        if (parent == null || parent is PsiClass || parent is PsiMethod) {
+            return parent
         }
+        return fetchAnnotatedPsiElement(parent)
+    }
 
-        val methodMappings = fetchMapping(annotation)
+    internal fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
+        val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod).
+                flatMap { annotation -> fetchMapping(annotation) }
         val result = ArrayList<RequestMappingItem>()
-        for (url in methodMappings) {
+        for (url in fetchMapping(annotation)) {
             if (classMappings.isNotEmpty()) {
                 classMappings.mapTo(result) { RequestMappingItem(psiMethod, it + url, method) }
             } else {
@@ -43,13 +47,12 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
     }
 
     private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): Array<PsiAnnotation> {
-        val requestMappingAnnotations = ArrayList<PsiAnnotation>()
-        val containingClass = psiMethod.containingClass
-        if (containingClass != null && containingClass.modifierList != null) {
-            val annotations = containingClass.modifierList!!.annotations
-            annotations.filterTo(requestMappingAnnotations) { it != null && it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
-        }
-        return requestMappingAnnotations.toTypedArray()
+        return psiMethod.
+                containingClass?.
+                modifierList?.
+                annotations?.
+                filter { it != null && it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }?.
+                toTypedArray() ?: emptyArray()
     }
 
     private fun fetchMethodFromAnnotation(annotation: PsiAnnotation, parameter: String): String {

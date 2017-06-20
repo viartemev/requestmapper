@@ -8,9 +8,10 @@ import com.viartemev.requestmapper.RequestMappingItem
 
 import java.util.Collections
 
-class GetMapping(psiAnnotation: PsiAnnotation, psiElement: PsiElement, project: Project) : RequestMapping(psiAnnotation, psiElement, project) {
+class GetMapping(psiAnnotation: PsiAnnotation, project: Project) : RequestMapping(psiAnnotation, project) {
 
     override fun values(): List<RequestMappingItem> {
+        val psiElement = fetchAnnotatedPsiElement(psiAnnotation)
         return if (psiElement is PsiMethod) fetchRequestMappingItem(psiAnnotation, psiElement, METHOD) else emptyList()
     }
 

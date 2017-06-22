@@ -8,7 +8,6 @@ import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMe
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
 import com.viartemev.requestmapper.utils.fetchAnnotatedElement
-import java.util.*
 
 open class RequestMapping(internal val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
@@ -19,15 +18,10 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation) : MappingAn
     internal fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
         val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod).
                 flatMap { annotation -> fetchMapping(annotation) }
-        val result = ArrayList<RequestMappingItem>()
-        for (url in fetchMapping(annotation)) {
-            if (classMappings.isNotEmpty()) {
-                classMappings.mapTo(result) { RequestMappingItem(psiMethod, it + url, method) }
-            } else {
-                result.add(RequestMappingItem(psiMethod, url, method))
-            }
-        }
-        return result
+
+        return fetchMapping(annotation).
+                flatMap { methodMapping -> (if (classMappings.isEmpty()) listOf("") else classMappings).
+                            map { classMapping -> RequestMappingItem(psiMethod, classMapping + methodMapping, method) } }
     }
 
     private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): Array<PsiAnnotation> {
@@ -49,7 +43,10 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation) : MappingAn
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
         val pathMapping = fetchMappingsFromAnnotation(annotation, PATH_PARAM)
-        return if (!pathMapping.isEmpty()) pathMapping else fetchMappingsFromAnnotation(annotation, VALUE_PARAM)
+        return if (!pathMapping.isEmpty()) pathMapping else {
+            val valueMapping = fetchMappingsFromAnnotation(annotation, VALUE_PARAM)
+            if (valueMapping.isNotEmpty()) valueMapping else listOf("")
+        }
     }
 
     private fun fetchMappingsFromAnnotation(annotation: PsiAnnotation, parameter: String): List<String> {

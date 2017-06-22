@@ -1,6 +1,5 @@
 package com.viartemev.requestmapper.annotations.spring
 
-import com.intellij.openapi.project.Project
 import com.intellij.psi.*
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
@@ -12,8 +11,7 @@ import com.viartemev.requestmapper.utils.unquote
 import org.apache.commons.lang.StringUtils.EMPTY
 import java.util.*
 
-open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
-                          internal val project: Project) : MappingAnnotation {
+open class RequestMapping(internal val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
         val psiElement = fetchAnnotatedPsiElement(psiAnnotation)
@@ -79,7 +77,7 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation,
             }
 
             override fun visitPsiReferenceExpression(expression: PsiReferenceExpression): List<String> {
-                val extract = PsiReferenceExpressionExtractor(project).extract(expression)
+                val extract = PsiReferenceExpressionExtractor().extract(expression)
                 return extract
             }
 

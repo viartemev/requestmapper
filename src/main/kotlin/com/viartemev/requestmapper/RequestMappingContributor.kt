@@ -29,7 +29,7 @@ class RequestMappingContributor : ChooseByNameContributor {
         return JavaAnnotationIndex.
                 getInstance().
                 get(annotationName, project, projectScope(project)).
-                map { annotation -> mappingAnnotation(annotationName, project, annotation) }.
+                map { annotation -> mappingAnnotation(annotationName, annotation) }.
                 flatMap { mappingAnnotation -> mappingAnnotation.values() }
     }
 

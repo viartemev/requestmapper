@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.4</version>
+    <version>0.5</version>
     <vendor email="viartemev@gmail.com" url="http://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -23,7 +23,13 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Add @PatchMapping support</li>
+            <li>Improvement: add caching</li>
+            <li>Improvement: navigation for search (add HTTP method)</li>
+            <li>Improvement: removed class mapping (only methods will be shown)</li>
+            <li>Improvement: move from Java to Kotlin</li>
+            <li>Bug fix: support of urls from constants</li>
+            <li>Bug fix: mapping with the same URL, but different methods</li>
+            <li>Bug fix: methods without value & path will be shown</li>
         </ul>
     ]]>
     </change-notes>

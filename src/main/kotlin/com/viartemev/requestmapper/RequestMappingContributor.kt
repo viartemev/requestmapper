@@ -12,17 +12,20 @@ import com.viartemev.requestmapper.utils.fetchAnnotatedElement
 
 class RequestMappingContributor : ChooseByNameContributor {
 
+    private var navigationItems: List<RequestMappingItem> = emptyList()
+
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
-        return supportedAnnotations.
-                flatMap { annotation -> findRequestMappingItems(project, annotation) }.
+        navigationItems = supportedAnnotations.
+                flatMap { annotation -> findRequestMappingItems(project, annotation) }
+
+        return navigationItems.
                 map { it.name }.
                 distinct().
                 toTypedArray()
     }
 
     override fun getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean): Array<NavigationItem> {
-        return supportedAnnotations.
-                flatMap { annotation -> findRequestMappingItems(project, annotation) }.
+        return navigationItems.
                 filter { it.name == name }.
                 toTypedArray()
     }

@@ -7,27 +7,13 @@ import com.viartemev.requestmapper.annotations.spring.extraction.BasePsiAnnotati
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
-import com.viartemev.requestmapper.utils.unquote
-import org.apache.commons.lang.StringUtils.EMPTY
+import com.viartemev.requestmapper.utils.fetchAnnotatedElement
 import java.util.*
 
 open class RequestMapping(internal val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
-        val psiElement = fetchAnnotatedPsiElement(psiAnnotation)
-        return when (psiElement) {
-            is PsiMethod -> fetchRequestMappingItem(psiAnnotation, psiElement, fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM))
-            is PsiClass -> fetchRequestMappingItem(psiAnnotation, psiElement)
-            else -> emptyList()
-        }
-    }
-
-    internal tailrec fun fetchAnnotatedPsiElement(psiElement: PsiElement): PsiElement {
-        val parent = psiElement.parent
-        if (parent == null || parent is PsiClass || parent is PsiMethod) {
-            return parent
-        }
-        return fetchAnnotatedPsiElement(parent)
+        return fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedElement() as PsiMethod, fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM))
     }
 
     internal fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
@@ -55,14 +41,10 @@ open class RequestMapping(internal val psiAnnotation: PsiAnnotation) : MappingAn
 
     private fun fetchMethodFromAnnotation(annotation: PsiAnnotation, parameter: String): String {
         val valueParam = annotation.findAttributeValue(parameter)
-        if (valueParam != null && valueParam.text.isNotEmpty() && "{}" != valueParam.text) {
+        if (valueParam != null && valueParam.text.isNotBlank() && "{}" != valueParam.text) {
             return valueParam.text.replace("RequestMethod.", "")
         }
         return DEFAULT_METHOD
-    }
-
-    private fun fetchRequestMappingItem(annotation: PsiAnnotation, psiClass: PsiClass): List<RequestMappingItem> {
-        return fetchMapping(annotation).map { RequestMappingItem(psiClass, it.unquote(), EMPTY) }
     }
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {

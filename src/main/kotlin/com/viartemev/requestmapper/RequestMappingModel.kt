@@ -1,16 +1,13 @@
 package com.viartemev.requestmapper
 
-import com.intellij.ide.util.gotoByName.CustomMatcherModel
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.viartemev.requestmapper.utils.contains
-import com.viartemev.requestmapper.utils.isSimilar
 
-class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
+class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware {
 
     override fun filterValueFor(item: NavigationItem): FileType? = null
 
@@ -33,24 +30,5 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
     override fun getFullName(element: Any): String? = getElementName(element)
 
     override fun willOpenEditor(): Boolean = false
-
-    override fun matches(popupItem: String, userPattern: String): Boolean {
-        if (!userPattern.contains(" ") && !userPattern.contains("/")) {
-            return popupItem.contains(userPattern)
-        }
-
-        val requiredPath = userPattern.substring(
-                userPattern.indexOfLast { it == '/' },
-                if (userPattern.indexOfFirst { it == '?' } == -1) userPattern.length else userPattern.indexOfFirst { it == '?' }
-        )
-
-        val itemList = popupItem.split("/").filter { it.isNotBlank() }
-        val requiredPathList = requiredPath.split("/").filter { it.isNotBlank() }
-
-        if (requiredPathList.isNotEmpty() && itemList.isNotEmpty() && contains(requiredPathList, 0, itemList, 0)) {
-            return true
-        }
-        return isSimilar(requiredPathList, itemList)
-    }
 
 }

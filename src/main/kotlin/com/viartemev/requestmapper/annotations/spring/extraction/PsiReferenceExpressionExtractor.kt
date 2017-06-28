@@ -1,6 +1,5 @@
 package com.viartemev.requestmapper.annotations.spring.extraction
 
-import com.intellij.psi.PsiField
 import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.impl.java.stubs.index.JavaFieldNameIndex
@@ -14,7 +13,6 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
                 map { referenceName ->
                     val fields = JavaFieldNameIndex.getInstance().get(referenceName, value.project, value.resolveScope)
                     fields.
-                            filter { it is PsiField }.
                             flatMap { field -> field.children.toList() }.
                             filter { it is PsiLiteralExpression }.
                             map { it.text.unquote() }

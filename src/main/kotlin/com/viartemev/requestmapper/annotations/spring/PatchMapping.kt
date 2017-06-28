@@ -1,17 +1,15 @@
 package com.viartemev.requestmapper.annotations.spring
 
 import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiMethod
-import com.viartemev.requestmapper.RequestMappingItem
-import com.viartemev.requestmapper.utils.fetchAnnotatedElement
 
-class PatchMapping(psiAnnotation: PsiAnnotation) : RequestMapping(psiAnnotation) {
+class PatchMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnnotation) {
 
-    override fun values(): List<RequestMappingItem> {
-        return fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedElement() as PsiMethod, METHOD)
+    override fun extractMethod(): String {
+        return METHOD
     }
 
     companion object {
         private val METHOD = "PATCH"
     }
+
 }

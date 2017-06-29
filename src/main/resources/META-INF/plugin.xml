@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.5</version>
+    <version>0.6</version>
     <vendor email="viartemev@gmail.com" url="http://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -19,17 +19,23 @@
                 <li>@DeleteMapping</li>
             </ul>
       </ul>
+      <ul>
+        <li>JAX-RS:</li>
+            <ul>
+                <li>@GET</li>
+                <li>@POST</li>
+                <li>@PUT</li>
+                <li>@DELETE</li>
+                <li>@HEAD</li>
+                <li>@OPTIONS</li>
+            </ul>
+      </ul>
     ]]></description>
 
     <change-notes><![CDATA[
         <ul>
-            <li>Improvement: add caching</li>
-            <li>Improvement: navigation for search (add HTTP method)</li>
-            <li>Improvement: removed class mapping (only methods will be shown)</li>
-            <li>Improvement: move from Java to Kotlin</li>
-            <li>Bug fix: support of urls from constants</li>
-            <li>Bug fix: mapping with the same URL, but different methods</li>
-            <li>Bug fix: methods without value & path will be shown</li>
+            <li>Improvement: add JAX-RS support</li>
+            <li>Improvement: improve user pattern matching</li>
         </ul>
     ]]>
     </change-notes>

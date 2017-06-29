@@ -1,8 +1,8 @@
-package com.viartemev.requestmapper.annotations.spring
+package com.viartemev.requestmapper.annotations.jaxrs
 
 import com.intellij.psi.PsiAnnotation
 
-class PutMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnnotation) {
+class Put(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) {
 
     override fun extractMethod(): String {
         return METHOD

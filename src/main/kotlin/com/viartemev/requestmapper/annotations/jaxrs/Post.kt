@@ -1,8 +1,8 @@
-package com.viartemev.requestmapper.annotations.spring
+package com.viartemev.requestmapper.annotations.jaxrs
 
 import com.intellij.psi.PsiAnnotation
 
-class PostMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnnotation) {
+class Post(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) {
 
     override fun extractMethod(): String {
         return METHOD

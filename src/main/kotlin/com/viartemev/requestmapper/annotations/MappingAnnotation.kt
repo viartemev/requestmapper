@@ -2,6 +2,7 @@ package com.viartemev.requestmapper.annotations
 
 import com.intellij.psi.PsiAnnotation
 import com.viartemev.requestmapper.RequestMappingItem
+import com.viartemev.requestmapper.annotations.jaxrs.*
 import com.viartemev.requestmapper.annotations.spring.*
 
 interface MappingAnnotation {
@@ -16,7 +17,13 @@ interface MappingAnnotation {
                 PostMapping::class.java.simpleName,
                 PutMapping::class.java.simpleName,
                 PatchMapping::class.java.simpleName,
-                DeleteMapping::class.java.simpleName
+                DeleteMapping::class.java.simpleName,
+                Get::class.java.simpleName.toUpperCase(),
+                Put::class.java.simpleName.toUpperCase(),
+                Post::class.java.simpleName.toUpperCase(),
+                Options::class.java.simpleName.toUpperCase(),
+                Head::class.java.simpleName.toUpperCase(),
+                Delete::class.java.simpleName.toUpperCase()
         )
 
         fun mappingAnnotation(annotationName: String,
@@ -28,6 +35,12 @@ interface MappingAnnotation {
                 PutMapping::class.java.simpleName -> PutMapping(psiAnnotation)
                 PatchMapping::class.java.simpleName -> PatchMapping(psiAnnotation)
                 DeleteMapping::class.java.simpleName -> DeleteMapping(psiAnnotation)
+                Get::class.java.simpleName.toUpperCase() -> Get(psiAnnotation)
+                Put::class.java.simpleName.toUpperCase() -> Put(psiAnnotation)
+                Post::class.java.simpleName.toUpperCase() -> Post(psiAnnotation)
+                Options::class.java.simpleName.toUpperCase() -> Options(psiAnnotation)
+                Head::class.java.simpleName.toUpperCase() -> Head(psiAnnotation)
+                Delete::class.java.simpleName.toUpperCase() -> Delete(psiAnnotation)
                 else -> UnknownAnnotation.instance
             }
         }

@@ -1,5 +1,6 @@
 package com.viartemev.requestmapper
 
+import com.intellij.ide.util.gotoByName.CustomMatcherModel
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.NavigationItem
@@ -7,8 +8,7 @@ import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 
-class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware {
-
+class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
     override fun filterValueFor(item: NavigationItem): FileType? = null
 
     override fun getPromptText(): String = "Enter mapping url"
@@ -30,5 +30,7 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
     override fun getFullName(element: Any): String? = getElementName(element)
 
     override fun willOpenEditor(): Boolean = false
+
+    override fun matches(popupItem: String, userPattern: String) = if (userPattern == "/") true else userPattern in popupItem
 
 }

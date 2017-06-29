@@ -4,9 +4,7 @@ import com.intellij.psi.PsiAnnotation
 
 class GetMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnnotation) {
 
-    override fun extractMethod(): String {
-        return METHOD
-    }
+    override fun extractMethod() = METHOD
 
     companion object {
         private val METHOD = "GET"

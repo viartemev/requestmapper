@@ -17,24 +17,23 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
 
     abstract fun extractMethod(): String
 
-    fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
-        val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod).
-                flatMap { ann -> fetchMapping(ann) }
-
-        return fetchMapping(annotation).
-                flatMap { methodMapping ->
-                    (if (classMappings.isEmpty()) listOf("") else classMappings).
-                            map { classMapping -> RequestMappingItem(psiMethod, classMapping + methodMapping, method) }
-                }
+    fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, methodName: String): List<RequestMappingItem> {
+        val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod)
+        val methodMappings = fetchMapping(annotation)
+        return classMappings.map { clazz ->
+            methodMappings.map { RequestMappingItem(psiMethod, if (clazz.isBlank() && it.isBlank()) "/" else clazz + it, methodName) }
+        }.flatten()
     }
 
-    private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): Array<PsiAnnotation> {
-        return psiMethod.
+    private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): List<String> {
+        val classMapping = psiMethod.
                 containingClass?.
                 modifierList?.
                 annotations?.
-                filter { it != null && it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }?.
-                toTypedArray() ?: emptyArray()
+                filterNotNull()?.
+                filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }?.
+                flatMap { fetchMapping(it) } ?: emptyList()
+        return if (classMapping.isEmpty()) listOf("") else classMapping
     }
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
@@ -47,17 +46,14 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
 
     private fun fetchMappingsFromAnnotation(annotation: PsiAnnotation, parameter: String): List<String> {
         return object : BasePsiAnnotationValueVisitor() {
-            override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue): List<String> {
-                return PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
-            }
+            override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue)
+                    = PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
 
-            override fun visitPsiReferenceExpression(expression: PsiReferenceExpression): List<String> {
-                return PsiReferenceExpressionExtractor().extract(expression)
-            }
+            override fun visitPsiReferenceExpression(expression: PsiReferenceExpression)
+                    = PsiReferenceExpressionExtractor().extract(expression)
 
-            override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue): List<String> {
-                return PsiAnnotationMemberValueExtractor().extract(value)
-            }
+            override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue)
+                    = PsiAnnotationMemberValueExtractor().extract(value)
         }.visit(annotation, parameter)
     }
 

@@ -11,7 +11,7 @@ abstract class BasePsiAnnotationValueVisitor : PsiAnnotationValueVisitor {
         return when (attributeValue) {
             is PsiArrayInitializerMemberValue -> visitPsiArrayInitializerMemberValue(attributeValue)
             is PsiReferenceExpression -> visitPsiReferenceExpression(attributeValue)
-            else -> if (attributeValue != null && attributeValue.text.isNotEmpty()) visitPsiAnnotationMemberValue(attributeValue) else emptyList()
+            else -> if (attributeValue != null && attributeValue.text.isNotBlank()) visitPsiAnnotationMemberValue(attributeValue) else emptyList()
         }
     }
 

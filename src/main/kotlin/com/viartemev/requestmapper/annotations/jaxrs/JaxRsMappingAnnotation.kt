@@ -16,27 +16,33 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
     abstract fun extractMethod(): String
 
     internal fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
-        return listOf(RequestMappingItem(psiMethod, fetchClassMapping(psiMethod) + fetchMethodMapping(psiMethod), method))
+        val classMapping = fetchClassMapping(psiMethod)
+        val methodMapping = fetchMethodMapping(psiMethod)
+        return listOf(RequestMappingItem(psiMethod, if (classMapping.isBlank() && methodMapping.isBlank()) "/" else classMapping + methodMapping, method))
     }
 
     private fun fetchClassMapping(psiMethod: PsiMethod): String {
-        val annotations = psiMethod.
+        val modifierList = psiMethod.
                 containingClass?.
-                modifierList?.
-                annotations ?: emptyArray()
-        val attributes = annotations.
-                filter { it != null && it.qualifiedName == PATH_ANNOTATION }.
-                map { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() ?: "" }
-        return if (attributes.isNotEmpty()) attributes.first() else ""
+                modifierList ?: return ""
+        return modifierList.
+                annotations.
+                asSequence().
+                filter { it.qualifiedName == PATH_ANNOTATION }.
+                map { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }.
+                filterNotNull().
+                firstOrNull() ?: ""
+
     }
 
     private fun fetchMethodMapping(psiMethod: PsiMethod): String {
-        val paths = psiMethod.
+        return psiMethod.
                 modifierList.
                 annotations.
                 filter { it.qualifiedName == PATH_ANNOTATION }.
-                map { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() ?: "" }
-        return if (paths.isNotEmpty()) paths.first() else ""
+                map { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }.
+                filterNotNull().
+                firstOrNull() ?: ""
     }
 
     companion object {

@@ -34,9 +34,12 @@ class RequestMappingContributor : ChooseByNameContributor {
         return JavaAnnotationIndex.
                 getInstance().
                 get(annotationName, project, projectScope(project)).
+                asSequence().
                 filter { annotation -> annotation.fetchAnnotatedElement() is PsiMethod }.
+                filterNotNull().
                 map { annotation -> mappingAnnotation(annotationName, annotation) }.
-                flatMap { mappingAnnotation -> mappingAnnotation.values() }
+                flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }.
+                toList()
     }
 
 }

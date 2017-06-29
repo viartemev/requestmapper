@@ -10,20 +10,19 @@ interface MappingAnnotation {
     fun values(): List<RequestMappingItem>
 
     companion object {
-
-        val supportedAnnotations = listOf<String>(
+        val supportedAnnotations = listOf(
                 RequestMapping::class.java.simpleName,
                 GetMapping::class.java.simpleName,
                 PostMapping::class.java.simpleName,
                 PutMapping::class.java.simpleName,
                 PatchMapping::class.java.simpleName,
                 DeleteMapping::class.java.simpleName,
-                Get::class.java.simpleName.toUpperCase(),
-                Put::class.java.simpleName.toUpperCase(),
-                Post::class.java.simpleName.toUpperCase(),
-                Options::class.java.simpleName.toUpperCase(),
-                Head::class.java.simpleName.toUpperCase(),
-                Delete::class.java.simpleName.toUpperCase()
+                GET::class.java.simpleName,
+                PUT::class.java.simpleName,
+                POST::class.java.simpleName,
+                OPTIONS::class.java.simpleName,
+                HEAD::class.java.simpleName,
+                DELETE::class.java.simpleName
         )
 
         fun mappingAnnotation(annotationName: String,
@@ -35,13 +34,13 @@ interface MappingAnnotation {
                 PutMapping::class.java.simpleName -> PutMapping(psiAnnotation)
                 PatchMapping::class.java.simpleName -> PatchMapping(psiAnnotation)
                 DeleteMapping::class.java.simpleName -> DeleteMapping(psiAnnotation)
-                Get::class.java.simpleName.toUpperCase() -> Get(psiAnnotation)
-                Put::class.java.simpleName.toUpperCase() -> Put(psiAnnotation)
-                Post::class.java.simpleName.toUpperCase() -> Post(psiAnnotation)
-                Options::class.java.simpleName.toUpperCase() -> Options(psiAnnotation)
-                Head::class.java.simpleName.toUpperCase() -> Head(psiAnnotation)
-                Delete::class.java.simpleName.toUpperCase() -> Delete(psiAnnotation)
-                else -> UnknownAnnotation.instance
+                GET::class.java.simpleName -> GET(psiAnnotation)
+                PUT::class.java.simpleName -> PUT(psiAnnotation)
+                POST::class.java.simpleName -> POST(psiAnnotation)
+                OPTIONS::class.java.simpleName -> OPTIONS(psiAnnotation)
+                HEAD::class.java.simpleName -> HEAD(psiAnnotation)
+                DELETE::class.java.simpleName -> DELETE(psiAnnotation)
+                else -> UnknownAnnotation
             }
         }
     }

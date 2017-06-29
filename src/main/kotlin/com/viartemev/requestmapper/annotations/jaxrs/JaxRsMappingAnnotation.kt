@@ -16,10 +16,7 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
     abstract fun extractMethod(): String
 
     internal fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
-        val classMapping = fetchClassMapping(psiMethod)
-
-        return fetchMethodMapping(psiMethod).
-                map { RequestMappingItem(psiMethod, classMapping + it, method) }
+        return listOf(RequestMappingItem(psiMethod, fetchClassMapping(psiMethod) + fetchMethodMapping(psiMethod), method))
     }
 
     private fun fetchClassMapping(psiMethod: PsiMethod): String {
@@ -33,13 +30,13 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
         return if (attributes.isNotEmpty()) attributes.first() else ""
     }
 
-    private fun fetchMethodMapping(psiMethod: PsiMethod): List<String> {
+    private fun fetchMethodMapping(psiMethod: PsiMethod): String {
         val paths = psiMethod.
                 modifierList.
                 annotations.
                 filter { it.qualifiedName == PATH_ANNOTATION }.
                 map { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() ?: "" }
-        return if (paths.isNotEmpty()) paths else listOf("")
+        return if (paths.isNotEmpty()) paths.first() else ""
     }
 
     companion object {

@@ -20,9 +20,17 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, methodName: String): List<RequestMappingItem> {
         val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod)
         val methodMappings = fetchMapping(annotation)
+        val paramsMappings = fetchParamMapping(annotation)
         return classMappings.map { clazz ->
-            methodMappings.map { RequestMappingItem(psiMethod, if (clazz.isBlank() && it.isBlank()) "/" else clazz + it, methodName) }
+            methodMappings.map {
+                paramsMappings.map { param -> RequestMappingItem(psiMethod, if (clazz.isBlank() && it.isBlank()) "/" else "$clazz$it${if (param.isNotBlank()) " params=$param" else ""}", methodName) }
+            }.flatten()
         }.flatten()
+    }
+
+    private fun fetchParamMapping(annotation: PsiAnnotation): List<String> {
+        val fetchMappingsFromAnnotation = fetchMappingsFromAnnotation(annotation, PARAMS)
+        return if (fetchMappingsFromAnnotation.isNotEmpty()) fetchMappingsFromAnnotation else listOf("")
     }
 
     private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): List<String> {
@@ -37,9 +45,9 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
-        val pathMapping = fetchMappingsFromAnnotation(annotation, PATH_PARAM)
+        val pathMapping = fetchMappingsFromAnnotation(annotation, PATH)
         return if (!pathMapping.isEmpty()) pathMapping else {
-            val valueMapping = fetchMappingsFromAnnotation(annotation, VALUE_PARAM)
+            val valueMapping = fetchMappingsFromAnnotation(annotation, VALUE)
             if (valueMapping.isNotEmpty()) valueMapping else listOf("")
         }
     }
@@ -58,8 +66,9 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     companion object {
-        private val VALUE_PARAM = "value"
-        private val PATH_PARAM = "path"
+        private val VALUE = "value"
+        private val PATH = "path"
+        private val PARAMS = "params"
         private val SPRING_REQUEST_MAPPING_CLASS = "org.springframework.web.bind.annotation.RequestMapping"
     }
 

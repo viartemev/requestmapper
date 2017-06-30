@@ -35,6 +35,7 @@
     <change-notes><![CDATA[
         <ul>
             <li>Improvement: add JAX-RS support</li>
+            <li>Improvement: add params handling for Spring annotations</li>
             <li>Improvement: improve user pattern matching</li>
         </ul>
     ]]>

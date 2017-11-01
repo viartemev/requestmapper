@@ -7,6 +7,7 @@ import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.viartemev.requestmapper.utils.isCurlyBrackets
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
     override fun filterValueFor(item: NavigationItem): FileType? = null
@@ -31,6 +32,63 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
 
     override fun willOpenEditor(): Boolean = false
 
-    override fun matches(popupItem: String, userPattern: String) = if (userPattern == "/") true else userPattern in popupItem
+    override fun matches(popupItem: String, userPattern: String): Boolean {
+        return if (userPattern == "/") {
+            true
+        } else if (!userPattern.contains('/')) {
+            userPattern in popupItem
+        } else {
+            isSimilarUrlPaths(popupItem, userPattern)
+        }
+    }
+
+    private fun isSimilarUrlPaths(popupItem: String, userPattern: String): Boolean {
+        val popupItemList = popupItem
+                .split('/')
+                .filter { it.isNotBlank() }
+                .drop(1)
+        val userPatternList = userPattern
+                .split('/')
+                .filter { it.isNotBlank() }
+        return isSimilarLists(popupItemList, userPatternList)
+    }
+
+    private tailrec fun isSimilarLists(popupItemList: List<String>,
+                                       userPatternList: List<String>,
+                                       matches: Boolean = false): Boolean {
+        if (matches) {
+            return true
+        }
+        if (popupItemList.size < userPatternList.size) {
+            return false
+        }
+        return isSimilarLists(
+                popupItemList.drop(1),
+                userPatternList,
+                matches(popupItemList, userPatternList)
+        )
+    }
+
+    private fun matches(popupItemList: List<String>,
+                        userPatternList: List<String>): Boolean {
+        val popupItemIterator = popupItemList.iterator()
+        val userPatternIterator = userPatternList.iterator()
+
+        while (popupItemIterator.hasNext()) {
+            if (userPatternIterator.hasNext()) {
+                val popupElement = popupItemIterator.next()
+                val userPatternElement = userPatternIterator.next()
+                if (!userPatternIterator.hasNext()) {
+                    return popupElement.isCurlyBrackets() || popupElement.startsWith(userPatternElement)
+                }
+                if (!popupElement.isCurlyBrackets() && popupElement != userPatternElement) {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
+        return true
+    }
 
 }

@@ -7,7 +7,7 @@ import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.viartemev.requestmapper.utils.isCurlyBrackets
+import com.viartemev.requestmapper.utils.inCurlyBrackets
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
     override fun filterValueFor(item: NavigationItem): FileType? = null
@@ -45,12 +45,12 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
     private fun isSimilarUrlPaths(popupItem: String, userPattern: String): Boolean {
         val popupItemList = popupItem
                 .split('/')
-                .filter { it.isNotBlank() }
-                .drop(1)
+                .drop(1) //drop method name
+
         val userPatternList = userPattern
                 .split('/')
-                .filter { it.isNotBlank() }
-        return isSimilarLists(popupItemList, userPatternList)
+
+        return isSimilarLists(popupItemList, if (userPatternList.first().isEmpty()) userPatternList.drop(1) else userPatternList)
     }
 
     private tailrec fun isSimilarLists(popupItemList: List<String>,
@@ -62,11 +62,9 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         if (popupItemList.size < userPatternList.size) {
             return false
         }
-        return isSimilarLists(
-                popupItemList.drop(1),
-                userPatternList,
-                matches(popupItemList, userPatternList)
-        )
+        val listMatches = matches(popupItemList, userPatternList)
+
+        return isSimilarLists(popupItemList.drop(1), userPatternList, listMatches)
     }
 
     private fun matches(popupItemList: List<String>,
@@ -79,9 +77,9 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
                 val popupElement = popupItemIterator.next()
                 val userPatternElement = userPatternIterator.next()
                 if (!userPatternIterator.hasNext()) {
-                    return popupElement.isCurlyBrackets() || popupElement.startsWith(userPatternElement)
+                    return popupElement.inCurlyBrackets() || (userPatternElement.isNotBlank() && popupElement.startsWith(userPatternElement))
                 }
-                if (!popupElement.isCurlyBrackets() && popupElement != userPatternElement) {
+                if (!popupElement.inCurlyBrackets() && popupElement != userPatternElement) {
                     return false
                 }
             } else {

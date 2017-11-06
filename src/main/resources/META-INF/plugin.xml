@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.6</version>
+    <version>0.7</version>
     <vendor email="viartemev@gmail.com" url="http://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -34,9 +34,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Improvement: add JAX-RS support</li>
-            <li>Improvement: add params handling for Spring annotations</li>
-            <li>Improvement: improve user pattern matching</li>
+            <li>Improvement: url matching</li>
         </ul>
     ]]>
     </change-notes>

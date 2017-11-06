@@ -33,11 +33,6 @@ class RequestMappingModelTest {
     }
 
     @Test
-    fun `two first parts of path with slash on the end`() {
-        assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/api/v1/"))
-    }
-
-    @Test
     fun `two middle parts of path with slash on the end`() {
         assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/product/123"))
     }

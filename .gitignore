@@ -3,6 +3,7 @@
 out/
 .gradle/
 build/
+demo/
 
 #files
 *.iml

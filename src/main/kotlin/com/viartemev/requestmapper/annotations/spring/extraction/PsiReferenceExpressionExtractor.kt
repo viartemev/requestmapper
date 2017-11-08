@@ -12,7 +12,7 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
 
     private fun extractPath(value: PsiReferenceExpression): String {
         return value.referenceName?.let {
-            val element = JavaFieldNameIndex
+            JavaFieldNameIndex
                     .getInstance()
                     //TODO fix scopes
                     .get(it, value.project, value.resolveScope)
@@ -20,26 +20,35 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
                     .filterIsInstance<PsiField>()
                     .flatMap { it.children.asSequence() }
                     .filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }
+                    .map { doMagin(it) }
                     .toList()[0]
-            extractPath(element)
         } ?: ""
         //TODO replace empty string
     }
 
-    private fun extractPath(psiElement: PsiElement): String {
+    private fun doMagin(psiElement: PsiElement): String {
         if (psiElement is PsiLiteralExpression) {
             return psiElement.text.unquote()
         }
         if (psiElement is PsiBinaryExpression) {
             return if (psiElement.lOperand is PsiLiteralExpression && psiElement.rOperand is PsiReferenceExpression) {
-                (psiElement.lOperand as PsiLiteralExpression).text.unquote() + extractPath(psiElement.rOperand as PsiReferenceExpression)
+                doMagin(psiElement.lOperand as PsiLiteralExpression) + extractPath(psiElement.rOperand as PsiReferenceExpression)
+            } else if (psiElement.lOperand is PsiReferenceExpression && psiElement.rOperand is PsiLiteralExpression) {
+                extractPath(psiElement.lOperand as PsiReferenceExpression) + doMagin(psiElement.rOperand as PsiLiteralExpression)
             } else {
-                extractPath(psiElement.lOperand as PsiReferenceExpression) + (psiElement.rOperand as PsiLiteralExpression).text.unquote()
+                doMagin(psiElement.lOperand as PsiLiteralExpression) + doMagin(psiElement.rOperand as PsiLiteralExpression)
             }
         }
         if (psiElement is PsiPolyadicExpression) {
-            //TODO implement this case
-            return "PsiPolyadicExpression"
+            var result = ""
+            for (operand in psiElement.operands) {
+                if (operand is PsiLiteralExpression) {
+                    result += doMagin(operand)
+                } else if (operand is PsiReferenceExpression) {
+                    result += extractPath(operand)
+                }
+            }
+            return result
         }
         //TODO replace empty string
         return ""

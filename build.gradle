@@ -40,7 +40,7 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 
 group "com.viartemev.requestmapper"
-version "0.7"
+version "0.8"
 
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
@@ -69,7 +69,7 @@ intellij {
 }
 
 patchPluginXml {
-    version '0.7'
+    version '0.8'
     sinceBuild '141.0'
     untilBuild ''
 }

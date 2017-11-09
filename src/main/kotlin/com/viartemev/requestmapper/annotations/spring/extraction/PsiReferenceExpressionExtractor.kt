@@ -1,7 +1,6 @@
 package com.viartemev.requestmapper.annotations.spring.extraction
 
 import com.intellij.psi.*
-import com.intellij.psi.impl.java.stubs.index.JavaFieldNameIndex
 import com.viartemev.requestmapper.utils.unquote
 
 class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReferenceExpression> {
@@ -11,47 +10,50 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
     }
 
     private fun extractPath(value: PsiReferenceExpression): String {
-        return value.referenceName?.let {
-            JavaFieldNameIndex
-                    .getInstance()
-                    //TODO fix scopes
-                    .get(it, value.project, value.resolveScope)
+        return value.resolve()?.let {
+            it
+                    .children
                     .asSequence()
-                    .filterIsInstance<PsiField>()
-                    .flatMap { it.children.asSequence() }
                     .filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }
-                    .map { doMagin(it) }
-                    .toList()[0]
+                    .map { extractExpression(it) }
+                    .toList()
+                    //only one exists
+                    .first()
         } ?: ""
-        //TODO replace empty string
     }
 
-    private fun doMagin(psiElement: PsiElement): String {
-        if (psiElement is PsiLiteralExpression) {
-            return psiElement.text.unquote()
+    private fun extractExpression(psiElement: PsiElement): String {
+        return when (psiElement) {
+            is PsiLiteralExpression -> extractLiteralExpression(psiElement)
+            is PsiBinaryExpression -> extractBinaryExpression(psiElement)
+            is PsiPolyadicExpression -> extractPsiPolyadicExpression(psiElement)
+            is PsiReferenceExpression -> extractPath(psiElement)
+            else -> ""
         }
-        if (psiElement is PsiBinaryExpression) {
-            return if (psiElement.lOperand is PsiLiteralExpression && psiElement.rOperand is PsiReferenceExpression) {
-                doMagin(psiElement.lOperand as PsiLiteralExpression) + extractPath(psiElement.rOperand as PsiReferenceExpression)
-            } else if (psiElement.lOperand is PsiReferenceExpression && psiElement.rOperand is PsiLiteralExpression) {
-                extractPath(psiElement.lOperand as PsiReferenceExpression) + doMagin(psiElement.rOperand as PsiLiteralExpression)
-            } else {
-                doMagin(psiElement.lOperand as PsiLiteralExpression) + doMagin(psiElement.rOperand as PsiLiteralExpression)
-            }
-        }
-        if (psiElement is PsiPolyadicExpression) {
-            var result = ""
-            for (operand in psiElement.operands) {
-                if (operand is PsiLiteralExpression) {
-                    result += doMagin(operand)
-                } else if (operand is PsiReferenceExpression) {
-                    result += extractPath(operand)
-                }
-            }
-            return result
-        }
-        //TODO replace empty string
-        return ""
+    }
+
+    private fun extractLiteralExpression(psiElement: PsiLiteralExpression): String {
+        return psiElement.text.unquote()
+    }
+
+    private fun extractBinaryExpression(psiElement: PsiBinaryExpression): String {
+        //rOperand always present in static final variables
+        return extractExpression(psiElement.lOperand) + extractExpression(psiElement.rOperand!!)
+    }
+
+    private fun extractPsiPolyadicExpression(psiElement: PsiPolyadicExpression): String {
+        return psiElement
+                .operands
+                .asSequence()
+                .joinToString(
+                        separator = "",
+                        transform = {
+                            when (it) {
+                                is PsiLiteralExpression -> extractLiteralExpression(it)
+                                is PsiReferenceExpression -> extractPath(it)
+                                else -> ""
+                            }
+                        })
     }
 
 }

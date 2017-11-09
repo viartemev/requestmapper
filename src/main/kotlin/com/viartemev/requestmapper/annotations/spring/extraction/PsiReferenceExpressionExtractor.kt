@@ -32,29 +32,24 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
         }
     }
 
-    private fun extractLiteralExpression(psiElement: PsiLiteralExpression): String {
-        return psiElement.text.unquote()
-    }
+    private fun extractLiteralExpression(psiElement: PsiLiteralExpression) = psiElement.text.unquote()
 
-    private fun extractBinaryExpression(psiElement: PsiBinaryExpression): String {
-        //rOperand always present in static final variables
-        return extractExpression(psiElement.lOperand) + extractExpression(psiElement.rOperand!!)
-    }
+    /** rOperand always present in static final variables */
+    private fun extractBinaryExpression(psiElement: PsiBinaryExpression) =
+            extractExpression(psiElement.lOperand) + extractExpression(psiElement.rOperand!!)
 
-    private fun extractPsiPolyadicExpression(psiElement: PsiPolyadicExpression): String {
-        return psiElement
-                .operands
-                .asSequence()
-                .joinToString(
-                        separator = "",
-                        transform = {
-                            when (it) {
-                                is PsiLiteralExpression -> extractLiteralExpression(it)
-                                is PsiReferenceExpression -> extractPath(it)
-                                else -> ""
-                            }
-                        })
-    }
+    private fun extractPsiPolyadicExpression(psiElement: PsiPolyadicExpression) =
+            psiElement
+                    .operands
+                    .joinToString(
+                            separator = "",
+                            transform = {
+                                when (it) {
+                                    is PsiLiteralExpression -> extractLiteralExpression(it)
+                                    is PsiReferenceExpression -> extractPath(it)
+                                    else -> ""
+                                }
+                            })
 
 }
 

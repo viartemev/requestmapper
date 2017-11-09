@@ -69,24 +69,20 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
 
     private fun matches(popupItemList: List<String>,
                         userPatternList: List<String>): Boolean {
-        val popupItemIterator = popupItemList.iterator()
-        val userPatternIterator = userPatternList.iterator()
-
-        while (popupItemIterator.hasNext()) {
-            if (userPatternIterator.hasNext()) {
-                val popupElement = popupItemIterator.next()
-                val userPatternElement = userPatternIterator.next()
-                if (!userPatternIterator.hasNext()) {
-                    return popupElement.inCurlyBrackets() || (userPatternElement.isNotBlank() && popupElement.startsWith(userPatternElement))
-                }
-                if (!popupElement.inCurlyBrackets() && popupElement != userPatternElement) {
-                    return false
-                }
-            } else {
-                return false
+        val size = userPatternList.size
+        popupItemList.forEachIndexed { index, value ->
+            if (index == size) {
+                return@matches false
+            }
+            val userPatternElement = userPatternList[index]
+            if (index == size - 1) {
+                return@matches value.inCurlyBrackets() || (userPatternElement.isNotBlank() && value.startsWith(userPatternElement))
+            }
+            if (!value.inCurlyBrackets() && value != userPatternElement) {
+                return@matches false
             }
         }
-        return true
+        return false
     }
 
 }

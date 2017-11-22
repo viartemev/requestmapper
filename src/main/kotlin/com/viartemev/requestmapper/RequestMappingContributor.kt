@@ -15,31 +15,29 @@ class RequestMappingContributor : ChooseByNameContributor {
     private var navigationItems: List<RequestMappingItem> = emptyList()
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
-        navigationItems = supportedAnnotations.
-                flatMap { annotation -> findRequestMappingItems(project, annotation) }
-
-        return navigationItems.
-                map { it.name }.
-                distinct().
-                toTypedArray()
+        return supportedAnnotations
+                .flatMap { annotation -> findRequestMappingItems(project, annotation) }
+                .map { it.name }
+                .distinct()
+                .toTypedArray()
     }
 
     override fun getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean): Array<NavigationItem> {
-        return navigationItems.
-                filter { it.name == name }.
-                toTypedArray()
+        return navigationItems
+                .filter { it.name == name }
+                .toTypedArray()
     }
 
     private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> {
-        return JavaAnnotationIndex.
-                getInstance().
-                get(annotationName, project, projectScope(project)).
-                asSequence().
-                filter { annotation -> annotation.fetchAnnotatedElement() is PsiMethod }.
-                filterNotNull().
-                map { annotation -> mappingAnnotation(annotationName, annotation) }.
-                flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }.
-                toList()
+        return JavaAnnotationIndex
+                .getInstance()
+                .get(annotationName, project, projectScope(project))
+                .asSequence()
+                .filter { annotation -> annotation.fetchAnnotatedElement() is PsiMethod }
+                .filterNotNull()
+                .map { annotation -> mappingAnnotation(annotationName, annotation) }
+                .flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }
+                .toList()
     }
 
 }

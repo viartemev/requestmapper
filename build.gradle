@@ -1,7 +1,7 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.1.51'
+        kotlin_version = '1.1.60'
         junit_jupiter_version = '5.0.1'
         junit_platform_version = '1.0.1'
         junit_vintage_engine_version = '4.12.1'
@@ -50,7 +50,6 @@ dependencies {
     testCompile("org.hamcrest:hamcrest-library:$hamcrest_version")
 
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
-    testRuntime("org.junit.vintage:junit-vintage-engine:$junit_vintage_engine_version")
     testRuntime("org.junit.platform:junit-platform-launcher:$junit_platform_version")
     testRuntime("org.junit.platform:junit-platform-runner:$junit_platform_version")
 }
@@ -79,13 +78,3 @@ task wrapper(type: Wrapper) {
 }
 
 buildPlugin.dependsOn 'validate'
-
-task validate() {
-    new File(".").eachDirRecurse() { dir ->
-        dir.eachFileMatch(~/.*.java/) { file ->
-            if (file.getText().contains("System.out.print")) {
-                throw new GradleException('Project has invalid constructions')
-            }
-        }
-    }
-}

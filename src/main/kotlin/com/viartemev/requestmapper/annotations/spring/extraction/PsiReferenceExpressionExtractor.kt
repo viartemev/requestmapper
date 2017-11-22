@@ -5,9 +5,7 @@ import com.viartemev.requestmapper.utils.unquote
 
 class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReferenceExpression> {
 
-    override fun extract(value: PsiReferenceExpression): List<String> {
-        return listOf(extractPath(value))
-    }
+    override fun extract(value: PsiReferenceExpression): List<String> = listOf(extractPath(value))
 
     private fun extractPath(value: PsiReferenceExpression): String {
         return value.resolve()?.let {
@@ -22,14 +20,12 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
         } ?: ""
     }
 
-    private fun extractExpression(psiElement: PsiElement): String {
-        return when (psiElement) {
-            is PsiLiteralExpression -> extractLiteralExpression(psiElement)
-            is PsiBinaryExpression -> extractBinaryExpression(psiElement)
-            is PsiPolyadicExpression -> extractPsiPolyadicExpression(psiElement)
-            is PsiReferenceExpression -> extractPath(psiElement)
-            else -> ""
-        }
+    private fun extractExpression(psiElement: PsiElement): String = when (psiElement) {
+        is PsiLiteralExpression -> extractLiteralExpression(psiElement)
+        is PsiBinaryExpression -> extractBinaryExpression(psiElement)
+        is PsiPolyadicExpression -> extractPsiPolyadicExpression(psiElement)
+        is PsiReferenceExpression -> extractPath(psiElement)
+        else -> ""
     }
 
     private fun extractLiteralExpression(psiElement: PsiLiteralExpression) = psiElement.text.unquote()

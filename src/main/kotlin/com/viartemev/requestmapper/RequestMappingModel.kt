@@ -7,9 +7,11 @@ import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.inCurlyBrackets
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
+
     override fun filterValueFor(item: NavigationItem): FileType? = null
 
     override fun getPromptText(): String = "Enter mapping url"
@@ -49,8 +51,9 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
 
         val userPatternList = userPattern
                 .split('/')
+                .dropFirstEmptyStringIfExists()
 
-        return isSimilarLists(popupItemList, if (userPatternList.first().isEmpty()) userPatternList.drop(1) else userPatternList)
+        return isSimilarLists(popupItemList, userPatternList)
     }
 
     private tailrec fun isSimilarLists(popupItemList: List<String>,

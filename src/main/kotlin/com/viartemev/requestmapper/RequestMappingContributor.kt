@@ -15,8 +15,10 @@ class RequestMappingContributor : ChooseByNameContributor {
     private var navigationItems: List<RequestMappingItem> = emptyList()
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
-        return supportedAnnotations
-                .flatMap { annotation -> findRequestMappingItems(project, annotation) }
+        navigationItems = supportedAnnotations.
+                flatMap { annotation -> findRequestMappingItems(project, annotation) }
+
+        return navigationItems
                 .map { it.name }
                 .distinct()
                 .toTypedArray()
@@ -33,8 +35,8 @@ class RequestMappingContributor : ChooseByNameContributor {
                 .getInstance()
                 .get(annotationName, project, projectScope(project))
                 .asSequence()
-                .filter { annotation -> annotation.fetchAnnotatedElement() is PsiMethod }
                 .filterNotNull()
+                .filter { annotation -> annotation.fetchAnnotatedElement() is PsiMethod }
                 .map { annotation -> mappingAnnotation(annotationName, annotation) }
                 .flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }
                 .toList()

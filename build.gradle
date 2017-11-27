@@ -1,7 +1,7 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.1.60'
+        kotlin_version = '1.1.61'
         junit_jupiter_version = '5.0.1'
         junit_platform_version = '1.0.1'
         junit_vintage_engine_version = '4.12.1'
@@ -74,7 +74,7 @@ patchPluginXml {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.3'
+    gradleVersion = '4.3.1'
 }
 
 buildPlugin.dependsOn 'validate'

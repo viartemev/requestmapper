@@ -11,19 +11,21 @@ import com.viartemev.requestmapper.utils.fetchAnnotatedElement
 
 abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
-    override fun values(): List<RequestMappingItem> {
-        return fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedElement() as PsiMethod, extractMethod())
-    }
+    override fun values(): List<RequestMappingItem> =
+            fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedElement() as PsiMethod, extractMethod())
 
     abstract fun extractMethod(): String
 
-    fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, methodName: String): List<RequestMappingItem> {
+    private fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, methodName: String): List<RequestMappingItem> {
         val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod)
         val methodMappings = fetchMapping(annotation)
         val paramsMappings = fetchParamMapping(annotation)
         return classMappings.map { clazz ->
             methodMappings.map {
-                paramsMappings.map { param -> RequestMappingItem(psiMethod, if (clazz.isBlank() && it.isBlank()) "/" else "$clazz$it${if (param.isNotBlank()) " params=$param" else ""}", methodName) }
+                paramsMappings.map { param ->
+                    val urlPath = if (clazz.isBlank() && it.isBlank()) "/" else "$clazz$it${if (param.isNotBlank()) " params=$param" else ""}"
+                    RequestMappingItem(psiMethod, urlPath, methodName)
+                }
             }.flatten()
         }.flatten()
     }

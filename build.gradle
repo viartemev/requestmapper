@@ -78,3 +78,13 @@ task wrapper(type: Wrapper) {
 }
 
 buildPlugin.dependsOn 'validate'
+
+task validate() {
+    new File(".").eachDirRecurse() { dir ->
+        dir.eachFileMatch(~/.*.java/) { file ->
+            if (file.getText().contains("System.out.print")) {
+                throw new GradleException('Project has invalid constructions')
+            }
+        }
+    }
+}

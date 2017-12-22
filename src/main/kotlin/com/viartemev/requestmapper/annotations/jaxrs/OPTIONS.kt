@@ -9,5 +9,4 @@ class OPTIONS(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotati
     companion object {
         private val METHOD = "OPTIONS"
     }
-
 }

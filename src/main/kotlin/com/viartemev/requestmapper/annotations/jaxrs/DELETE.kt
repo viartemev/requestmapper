@@ -9,5 +9,4 @@ class DELETE(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotatio
     companion object {
         private val METHOD = "DELETE"
     }
-
 }

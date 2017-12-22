@@ -9,5 +9,4 @@ class PostMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnn
     companion object {
         private val METHOD = "POST"
     }
-
 }

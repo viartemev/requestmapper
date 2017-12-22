@@ -9,5 +9,4 @@ class GET(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) 
     companion object {
         private val METHOD = "GET"
     }
-
 }

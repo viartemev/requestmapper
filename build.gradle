@@ -1,7 +1,7 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.1.61'
+        kotlin_version = '1.2.0'
         junit_jupiter_version = '5.0.1'
         junit_platform_version = '1.0.1'
         junit_vintage_engine_version = '4.12.1'
@@ -9,6 +9,7 @@ buildscript {
         hamcrest_version = '1.3'
         gradle_intellij_plugin = '0.2.17'
         gradle_plugin = '2.5'
+        kotlinter_gradle_plugin = '1.6.0'
     }
 
     repositories {
@@ -18,6 +19,7 @@ buildscript {
         }
     }
     dependencies {
+        classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:$kotlinter_gradle_plugin"
         classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:$gradle_intellij_plugin"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$gradle_plugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -37,6 +39,7 @@ apply plugin: "idea"
 apply plugin: "org.sonarqube"
 apply plugin: "jacoco"
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "org.jmailen.kotlinter"
 
 
 group "com.viartemev.requestmapper"
@@ -74,17 +77,5 @@ patchPluginXml {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.3.1'
-}
-
-buildPlugin.dependsOn 'validate'
-
-task validate() {
-    new File(".").eachDirRecurse() { dir ->
-        dir.eachFileMatch(~/.*.java/) { file ->
-            if (file.getText().contains("System.out.print")) {
-                throw new GradleException('Project has invalid constructions')
-            }
-        }
-    }
+    gradleVersion = '4.4.1'
 }

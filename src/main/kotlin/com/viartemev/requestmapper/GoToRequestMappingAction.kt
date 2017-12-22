@@ -21,6 +21,5 @@ class GoToRequestMappingAction : GotoActionBase(), DumbAware {
                 element.navigate(true)
             }
         }
-
     }
 }

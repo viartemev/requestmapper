@@ -9,5 +9,4 @@ class PutMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnno
     companion object {
         private val METHOD = "PUT"
     }
-
 }

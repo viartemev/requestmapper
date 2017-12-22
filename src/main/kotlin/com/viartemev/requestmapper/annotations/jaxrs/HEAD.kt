@@ -9,5 +9,4 @@ class HEAD(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation)
     companion object {
         private val METHOD = "HEAD"
     }
-
 }

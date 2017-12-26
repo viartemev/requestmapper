@@ -9,5 +9,4 @@ class GetMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnno
     companion object {
         private val METHOD = "GET"
     }
-
 }

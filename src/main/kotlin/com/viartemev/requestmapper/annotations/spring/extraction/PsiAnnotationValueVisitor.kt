@@ -11,5 +11,4 @@ interface PsiAnnotationValueVisitor {
     fun visitPsiReferenceExpression(expression: PsiReferenceExpression): List<String>
 
     fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue): List<String>
-    
 }

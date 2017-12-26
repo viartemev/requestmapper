@@ -9,5 +9,4 @@ class PUT(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) 
     companion object {
         private val METHOD = "PUT"
     }
-
 }

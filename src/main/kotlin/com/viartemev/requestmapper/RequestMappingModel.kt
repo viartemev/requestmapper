@@ -87,5 +87,4 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         }
         return false
     }
-
 }

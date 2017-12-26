@@ -9,5 +9,4 @@ class DeleteMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiA
     companion object {
         private val METHOD = "DELETE"
     }
-
 }

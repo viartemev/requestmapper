@@ -1,6 +1,10 @@
 package com.viartemev.requestmapper.annotations.spring
 
-import com.intellij.psi.*
+import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiAnnotationMemberValue
+import com.intellij.psi.PsiArrayInitializerMemberValue
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.spring.extraction.BasePsiAnnotationValueVisitor
@@ -36,13 +40,13 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): List<String> {
-        val classMapping = psiMethod.
-                containingClass?.
-                modifierList?.
-                annotations?.
-                filterNotNull()?.
-                filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }?.
-                flatMap { fetchMapping(it) } ?: emptyList()
+        val classMapping = psiMethod
+                .containingClass
+                ?.modifierList
+                ?.annotations
+                ?.filterNotNull()
+                ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
+                ?.flatMap { fetchMapping(it) } ?: emptyList()
         return if (classMapping.isEmpty()) listOf("") else classMapping
     }
 
@@ -56,14 +60,14 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
 
     private fun fetchMappingsFromAnnotation(annotation: PsiAnnotation, parameter: String): List<String> {
         return object : BasePsiAnnotationValueVisitor() {
-            override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue)
-                    = PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
+            override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue) =
+                    PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
 
-            override fun visitPsiReferenceExpression(expression: PsiReferenceExpression)
-                    = PsiReferenceExpressionExtractor().extract(expression)
+            override fun visitPsiReferenceExpression(expression: PsiReferenceExpression) =
+                    PsiReferenceExpressionExtractor().extract(expression)
 
-            override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue)
-                    = PsiAnnotationMemberValueExtractor().extract(value)
+            override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue) =
+                    PsiAnnotationMemberValueExtractor().extract(value)
         }.visit(annotation, parameter)
     }
 
@@ -73,5 +77,4 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
         private val PARAMS = "params"
         private val SPRING_REQUEST_MAPPING_CLASS = "org.springframework.web.bind.annotation.RequestMapping"
     }
-
 }

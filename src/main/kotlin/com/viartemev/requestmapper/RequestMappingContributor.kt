@@ -15,8 +15,8 @@ class RequestMappingContributor : ChooseByNameContributor {
     private var navigationItems: List<RequestMappingItem> = emptyList()
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
-        navigationItems = supportedAnnotations.
-                flatMap { annotation -> findRequestMappingItems(project, annotation) }
+        navigationItems = supportedAnnotations
+                .flatMap { annotation -> findRequestMappingItems(project, annotation) }
 
         return navigationItems
                 .map { it.name }
@@ -41,5 +41,4 @@ class RequestMappingContributor : ChooseByNameContributor {
                 .flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }
                 .toList()
     }
-
 }

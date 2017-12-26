@@ -9,5 +9,4 @@ class PatchMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAn
     companion object {
         private val METHOD = "PATCH"
     }
-
 }

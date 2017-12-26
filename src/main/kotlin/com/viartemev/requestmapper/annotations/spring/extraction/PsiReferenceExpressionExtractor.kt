@@ -1,6 +1,10 @@
 package com.viartemev.requestmapper.annotations.spring.extraction
 
-import com.intellij.psi.*
+import com.intellij.psi.PsiBinaryExpression
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiLiteralExpression
+import com.intellij.psi.PsiPolyadicExpression
+import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.utils.unquote
 
 class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReferenceExpression> {
@@ -46,7 +50,4 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
                                     else -> ""
                                 }
                             })
-
 }
-
-

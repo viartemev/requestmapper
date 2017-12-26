@@ -10,7 +10,7 @@ fun PsiAnnotation.fetchAnnotatedElement(): PsiElement? {
 }
 
 private tailrec fun fetchAnnotatedPsiElement(psiElement: PsiElement): PsiElement? {
-    val parent:PsiElement? = psiElement.parent
+    val parent: PsiElement? = psiElement.parent
     if (parent == null || parent is PsiClass || parent is PsiMethod) {
         return parent
     }

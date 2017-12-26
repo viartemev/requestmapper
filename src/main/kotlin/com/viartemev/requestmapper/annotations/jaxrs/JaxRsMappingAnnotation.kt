@@ -15,39 +15,33 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
 
     abstract fun extractMethod(): String
 
-    internal fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
+    private fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
         val classMapping = fetchClassMapping(psiMethod)
         val methodMapping = fetchMethodMapping(psiMethod)
         return listOf(RequestMappingItem(psiMethod, if (classMapping.isBlank() && methodMapping.isBlank()) "/" else classMapping + methodMapping, method))
     }
 
     private fun fetchClassMapping(psiMethod: PsiMethod): String {
-        val modifierList = psiMethod.
-                containingClass?.
-                modifierList ?: return ""
-        return modifierList.
-                annotations.
-                asSequence().
-                filter { it.qualifiedName == PATH_ANNOTATION }.
-                map { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }.
-                filterNotNull().
-                firstOrNull() ?: ""
-
+        val modifierList = psiMethod.containingClass?.modifierList ?: return ""
+        return modifierList
+                .annotations
+                .asSequence()
+                .filter { it.qualifiedName == PATH_ANNOTATION }
+                .mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
+                .firstOrNull() ?: ""
     }
 
     private fun fetchMethodMapping(psiMethod: PsiMethod): String {
-        return psiMethod.
-                modifierList.
-                annotations.
-                filter { it.qualifiedName == PATH_ANNOTATION }.
-                map { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }.
-                filterNotNull().
-                firstOrNull() ?: ""
+        return psiMethod
+                .modifierList
+                .annotations
+                .filter { it.qualifiedName == PATH_ANNOTATION }
+                .mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
+                .firstOrNull() ?: ""
     }
 
     companion object {
         private val PATH_ANNOTATION = "javax.ws.rs.Path"
         private val ATTRIBUTE_NAME = "value"
     }
-
 }

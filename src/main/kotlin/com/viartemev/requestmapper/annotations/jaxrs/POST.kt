@@ -9,5 +9,4 @@ class POST(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation)
     companion object {
         private val METHOD = "POST"
     }
-
 }

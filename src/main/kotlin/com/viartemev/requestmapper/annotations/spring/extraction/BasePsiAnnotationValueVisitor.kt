@@ -14,5 +14,4 @@ abstract class BasePsiAnnotationValueVisitor : PsiAnnotationValueVisitor {
             else -> if (attributeValue != null && attributeValue.text.isNotBlank()) visitPsiAnnotationMemberValue(attributeValue) else emptyList()
         }
     }
-
 }

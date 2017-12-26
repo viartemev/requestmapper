@@ -2,8 +2,18 @@ package com.viartemev.requestmapper.annotations
 
 import com.intellij.psi.PsiAnnotation
 import com.viartemev.requestmapper.RequestMappingItem
-import com.viartemev.requestmapper.annotations.jaxrs.*
-import com.viartemev.requestmapper.annotations.spring.*
+import com.viartemev.requestmapper.annotations.jaxrs.DELETE
+import com.viartemev.requestmapper.annotations.jaxrs.GET
+import com.viartemev.requestmapper.annotations.jaxrs.HEAD
+import com.viartemev.requestmapper.annotations.jaxrs.OPTIONS
+import com.viartemev.requestmapper.annotations.jaxrs.POST
+import com.viartemev.requestmapper.annotations.jaxrs.PUT
+import com.viartemev.requestmapper.annotations.spring.DeleteMapping
+import com.viartemev.requestmapper.annotations.spring.GetMapping
+import com.viartemev.requestmapper.annotations.spring.PatchMapping
+import com.viartemev.requestmapper.annotations.spring.PostMapping
+import com.viartemev.requestmapper.annotations.spring.PutMapping
+import com.viartemev.requestmapper.annotations.spring.RequestMapping
 
 interface MappingAnnotation {
 
@@ -44,5 +54,4 @@ interface MappingAnnotation {
             }
         }
     }
-
 }

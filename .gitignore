@@ -1,9 +1,11 @@
-#folders
+### IntelliJ IDEA ###
 .idea/
+*.iml
+
+### Gradle ###
 out/
 .gradle/
 build/
-demo/
 
-#files
-*.iml
+### Custom ###
+demo/

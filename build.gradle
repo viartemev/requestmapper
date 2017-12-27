@@ -1,7 +1,7 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.2.0'
+        kotlin_version = '1.2.10'
         junit_jupiter_version = '5.0.1'
         junit_plugin_version = '1.0.1'
         spek_version = '1.1.5'
@@ -32,6 +32,7 @@ buildscript {
 
 repositories {
     mavenCentral()
+    jcenter()
     maven { url "http://dl.bintray.com/jetbrains/spek" }
 }
 
@@ -61,6 +62,8 @@ dependencies {
     // To use Log4J's LogManager
     testRuntime("org.apache.logging.log4j:log4j-core:$log4jVersion")
     testRuntime("org.apache.logging.log4j:log4j-jul:$log4jVersion")
+
+    testImplementation "org.amshove.kluent:kluent:$kluent_version"
 }
 
 jacocoTestReport {

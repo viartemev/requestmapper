@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class RequestMappingModelTest {
 
-    val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+    private val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
 
     @Test
     fun `one slash`() {

@@ -3,13 +3,13 @@ buildscript {
     ext {
         kotlin_version = '1.2.0'
         junit_jupiter_version = '5.0.1'
-        junit_platform_version = '1.0.1'
-        junit_vintage_engine_version = '4.12.1'
         junit_plugin_version = '1.0.1'
-        hamcrest_version = '1.3'
+        spek_version = '1.1.5'
+        assertj_version = '3.8.0'
         gradle_intellij_plugin = '0.2.17'
         gradle_plugin = '2.5'
         kotlinter_gradle_plugin = '1.6.0'
+        kluent_version = '1.32'
     }
 
     repositories {
@@ -31,6 +31,7 @@ buildscript {
 
 repositories {
     mavenCentral()
+    maven { url "http://dl.bintray.com/jetbrains/spek" }
 }
 
 apply plugin: "org.jetbrains.intellij"
@@ -50,18 +51,23 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
 
-    testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
-    testCompile("org.hamcrest:hamcrest-library:$hamcrest_version")
-
+    testCompile("org.jetbrains.spek:spek-api:$spek_version")
+    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:$spek_version")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
-    testRuntime("org.junit.platform:junit-platform-launcher:$junit_platform_version")
-    testRuntime("org.junit.platform:junit-platform-runner:$junit_platform_version")
 }
 
 jacocoTestReport {
     reports {
         xml.enabled true
         html.enabled false
+    }
+}
+
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
     }
 }
 

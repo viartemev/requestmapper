@@ -74,22 +74,22 @@ object CommonUtilsSpek : Spek({
             }
         }
         on("inCurlyBrackets on string in curly brackets in reverse order") {
-            it("should return false"){
+            it("should return false") {
                 assertFalse("}hello{".inCurlyBrackets())
             }
         }
         on("inCurlyBrackets on string with only first curly bracket") {
-            it("should return false"){
+            it("should return false") {
                 assertFalse("{hello".inCurlyBrackets())
             }
         }
         on("inCurlyBrackets on string with only last curly bracket") {
-            it("should return false"){
+            it("should return false") {
                 assertFalse("hello}".inCurlyBrackets())
             }
         }
         on("inCurlyBrackets on string in curly brackets in the middle of string") {
-            it("should return false"){
+            it("should return false") {
                 assertFalse("hello this {is} test spring".inCurlyBrackets())
             }
         }

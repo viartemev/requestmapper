@@ -40,7 +40,7 @@ apply plugin: "kotlin"
 apply plugin: "idea"
 apply plugin: "org.sonarqube"
 apply plugin: "jacoco"
-apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "org.junit.platform.gradle.plugin"
 apply plugin: "org.jmailen.kotlinter"
 
 

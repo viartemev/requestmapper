@@ -5,11 +5,7 @@ import com.intellij.psi.PsiAnnotation
 open class RequestMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnnotation) {
 
     override fun extractMethod(): String {
-        return fetchMethodFromAnnotation(psiAnnotation, METHOD_PARAM)
-    }
-
-    private fun fetchMethodFromAnnotation(annotation: PsiAnnotation, parameter: String): String {
-        val valueParam = annotation.findAttributeValue(parameter)
+        val valueParam = psiAnnotation.findAttributeValue(METHOD_PARAM)
         if (valueParam != null && valueParam.text.isNotBlank() && "{}" != valueParam.text) {
             return valueParam.text.replace("RequestMethod.", "")
         }

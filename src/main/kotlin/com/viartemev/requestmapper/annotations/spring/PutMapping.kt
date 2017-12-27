@@ -2,7 +2,7 @@ package com.viartemev.requestmapper.annotations.spring
 
 import com.intellij.psi.PsiAnnotation
 
-class PutMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotation(psiAnnotation) {
+class PutMapping(psiAnnotation: PsiAnnotation) : RequestMapping(psiAnnotation) {
 
     override fun extractMethod() = METHOD
 

@@ -17,8 +17,10 @@ before_script:
 script:
   - ./gradlew check
   - ./gradlew lintKotlin
+
+after_success:
   - ./gradlew jacocoTestReport
-  - ./gradlew sonarqube
+  - ./gradlew coveralls
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

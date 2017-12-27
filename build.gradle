@@ -10,7 +10,8 @@ buildscript {
         gradle_plugin = '2.5'
         kotlinter_gradle_plugin = '1.6.0'
         kluent_version = '1.32'
-        log4jVersion = '2.9.0'
+        log4j_version = '2.9.0'
+        coveralls_plugin = '2.8.2'
     }
 
     repositories {
@@ -21,10 +22,10 @@ buildscript {
     }
     dependencies {
         classpath files('libs/ktlint-print-rule.jar')
+        classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:$coveralls_plugin"
         classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:$kotlinter_gradle_plugin"
         classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:$gradle_intellij_plugin"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$gradle_plugin"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.junit.platform:junit-platform-gradle-plugin:$junit_plugin_version"
     }
@@ -44,6 +45,7 @@ apply plugin: "org.sonarqube"
 apply plugin: "jacoco"
 apply plugin: "org.junit.platform.gradle.plugin"
 apply plugin: "org.jmailen.kotlinter"
+apply plugin: "com.github.kt3k.coveralls"
 
 
 group "com.viartemev.requestmapper"
@@ -60,8 +62,8 @@ dependencies {
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
 
     // To use Log4J's LogManager
-    testRuntime("org.apache.logging.log4j:log4j-core:$log4jVersion")
-    testRuntime("org.apache.logging.log4j:log4j-jul:$log4jVersion")
+    testRuntime("org.apache.logging.log4j:log4j-core:$log4j_version")
+    testRuntime("org.apache.logging.log4j:log4j-jul:$log4j_version")
 
     testImplementation "org.amshove.kluent:kluent:$kluent_version"
 }
@@ -69,7 +71,7 @@ dependencies {
 jacocoTestReport {
     reports {
         xml.enabled true
-        html.enabled false
+        html.enabled true
     }
 }
 

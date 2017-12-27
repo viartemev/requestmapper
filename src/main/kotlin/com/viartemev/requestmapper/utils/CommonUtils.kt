@@ -4,4 +4,4 @@ fun String.unquote(): String = if (length >= 2 && first() == '"' && last() == '"
 
 fun String.inCurlyBrackets(): Boolean = length >= 2 && first() == '{' && last() == '}'
 
-fun List<String>.dropFirstEmptyStringIfExists(): List<String> = if (this.first().isEmpty()) this.drop(1) else this
+fun List<String>.dropFirstEmptyStringIfExists(): List<String> = if (this.isNotEmpty() && this.first().isEmpty()) this.drop(1) else this

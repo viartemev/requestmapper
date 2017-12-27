@@ -1,4 +1,4 @@
-language: java
+language: kotlin
 sudo: false
 install: true
 

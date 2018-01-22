@@ -5,6 +5,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 
+// @todo rewrite fetchAnnotatedElement method
 fun PsiAnnotation.fetchAnnotatedElement(): PsiElement? {
     return fetchAnnotatedPsiElement(this)
 }

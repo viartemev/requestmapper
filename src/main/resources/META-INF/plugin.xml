@@ -48,7 +48,7 @@
 
     <actions>
         <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"
-                text="Go to request mapping" description="Go to request mapping">
+                text="Request mapping" description="Request mapping">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
         </action>

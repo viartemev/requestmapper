@@ -29,6 +29,8 @@ Thanks to all people who have contributed to this plugin:
 + [Paul Finkelshteyn](https://github.com/asm0dey)
 
 ### Usage
-Keyboard shortcut: ```Shift + Ctrl + Back slash```
+- Keyboard shortcut: ```Shift + Ctrl + Back slash```
+- Navigate (menu bar) -> Request Mapping
+- Click ```Shift``` twice -> request mapping
 
 ![](art/requestmapper.gif)

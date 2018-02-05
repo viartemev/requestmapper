@@ -7,6 +7,6 @@ class HEAD(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation)
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "HEAD"
+        private const val METHOD = "HEAD"
     }
 }

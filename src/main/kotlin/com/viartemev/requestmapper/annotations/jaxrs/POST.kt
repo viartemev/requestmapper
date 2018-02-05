@@ -7,6 +7,6 @@ class POST(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation)
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "POST"
+        private const val METHOD = "POST"
     }
 }

@@ -7,6 +7,6 @@ class PUT(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) 
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "PUT"
+        private const val METHOD = "PUT"
     }
 }

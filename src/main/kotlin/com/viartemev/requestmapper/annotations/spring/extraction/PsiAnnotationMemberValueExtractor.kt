@@ -5,5 +5,5 @@ import com.viartemev.requestmapper.utils.unquote
 
 class PsiAnnotationMemberValueExtractor : PsiAnnotationValueExtractor<PsiAnnotationMemberValue> {
 
-    override fun extract(value: PsiAnnotationMemberValue): List<String> = if (value.text.isNotBlank()) listOf(value.text.unquote()) else emptyList<String>()
+    override fun extract(value: PsiAnnotationMemberValue): List<String> = if (value.text.isNotBlank()) listOf(value.text.unquote()) else emptyList()
 }

@@ -7,6 +7,6 @@ class PatchMapping(psiAnnotation: PsiAnnotation) : RequestMapping(psiAnnotation)
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "PATCH"
+        private const val METHOD = "PATCH"
     }
 }

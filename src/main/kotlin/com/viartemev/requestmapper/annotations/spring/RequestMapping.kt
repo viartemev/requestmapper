@@ -13,7 +13,7 @@ open class RequestMapping(psiAnnotation: PsiAnnotation) : SpringMappingAnnotatio
     }
 
     companion object {
-        private val METHOD_PARAM = "method"
-        private val DEFAULT_METHOD = "GET"
+        private const val METHOD_PARAM = "method"
+        private const val DEFAULT_METHOD = "GET"
     }
 }

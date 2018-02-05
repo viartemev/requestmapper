@@ -7,6 +7,6 @@ class OPTIONS(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotati
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "OPTIONS"
+        private const val METHOD = "OPTIONS"
     }
 }

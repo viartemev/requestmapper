@@ -7,6 +7,6 @@ class DELETE(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotatio
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "DELETE"
+        private const val METHOD = "DELETE"
     }
 }

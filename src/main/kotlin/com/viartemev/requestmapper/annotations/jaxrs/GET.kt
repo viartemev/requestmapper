@@ -7,6 +7,6 @@ class GET(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) 
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "GET"
+        private const val METHOD = "GET"
     }
 }

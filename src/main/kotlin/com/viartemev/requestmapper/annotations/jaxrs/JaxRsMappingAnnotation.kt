@@ -41,7 +41,7 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
     }
 
     companion object {
-        private val PATH_ANNOTATION = "javax.ws.rs.Path"
-        private val ATTRIBUTE_NAME = "value"
+        private const val PATH_ANNOTATION = "javax.ws.rs.Path"
+        private const val ATTRIBUTE_NAME = "value"
     }
 }

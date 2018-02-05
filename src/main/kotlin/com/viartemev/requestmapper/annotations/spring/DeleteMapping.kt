@@ -7,6 +7,6 @@ class DeleteMapping(psiAnnotation: PsiAnnotation) : RequestMapping(psiAnnotation
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "DELETE"
+        private const val METHOD = "DELETE"
     }
 }

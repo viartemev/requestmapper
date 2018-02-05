@@ -72,9 +72,9 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     companion object {
-        private val VALUE = "value"
-        private val PATH = "path"
-        private val PARAMS = "params"
-        private val SPRING_REQUEST_MAPPING_CLASS = "org.springframework.web.bind.annotation.RequestMapping"
+        private const val VALUE = "value"
+        private const val PATH = "path"
+        private const val PARAMS = "params"
+        private const val SPRING_REQUEST_MAPPING_CLASS = "org.springframework.web.bind.annotation.RequestMapping"
     }
 }

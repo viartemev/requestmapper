@@ -7,6 +7,6 @@ class GetMapping(psiAnnotation: PsiAnnotation) : RequestMapping(psiAnnotation) {
     override fun extractMethod() = METHOD
 
     companion object {
-        private val METHOD = "GET"
+        private const val METHOD = "GET"
     }
 }

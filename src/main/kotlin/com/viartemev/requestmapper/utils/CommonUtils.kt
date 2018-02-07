@@ -9,3 +9,5 @@ fun String.unquoteCurlyBrackets(): String = if (this.inCurlyBrackets()) this.dro
 fun List<String>.dropFirstEmptyStringIfExists(): List<String> = if (this.isNotEmpty() && this.first().isEmpty()) this.drop(1) else this
 
 fun String.containsCurlyBrackets(): Boolean = this.contains('{') && this.contains('}')
+
+fun String.isLong(): Boolean = this.toLongOrNull() != null

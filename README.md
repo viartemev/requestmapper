@@ -29,7 +29,10 @@ Thanks to all people who have contributed to this plugin:
 + [Paul Finkelshteyn](https://github.com/asm0dey)
 
 ### Usage
-- Keyboard shortcut: ```Cmd + Shift + Back slash```
+- Keyboard shortcuts: 
+    - MacOS: ```Cmd + Shift + Back slash```
+    - Linux: ```Win + Shift + Back slash```
+    - Windows: ```Win + Shift + Back slash```
 - Navigate (menu bar) -> Request Mapping
 - Click ```Shift``` twice -> request mapping
 

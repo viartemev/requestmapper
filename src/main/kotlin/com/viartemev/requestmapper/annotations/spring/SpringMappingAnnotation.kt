@@ -15,6 +15,7 @@ import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExp
 import com.viartemev.requestmapper.utils.containsCurlyBrackets
 import com.viartemev.requestmapper.utils.fetchAnnotatedElement
 import com.viartemev.requestmapper.utils.unquote
+import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
@@ -78,11 +79,18 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
                 .mapNotNull { extractParameterNameWithType(it) }
                 .toMap()
 
-        parametersNameWithType.forEach { parameter ->
-            pathMethodMapping.replaceAll { it.replace("{${parameter.key}}", "{${parameter.value}:${parameter.key}}") }
-        }
+        val regex = Regex("\\{([^\\/]*)\\}")
 
-        return pathMethodMapping.toList()
+        return pathMethodMapping.map { pathMapping ->
+            var resultPathMapping: String = pathMapping
+            val wildCards = regex.findAll(pathMapping)
+            wildCards.forEach { wildCard ->
+                //TODO is Object preferable?
+                val wildCardType = parametersNameWithType[wildCard.value.unquoteCurlyBrackets()] ?: "String"
+                resultPathMapping = resultPathMapping.replace(wildCard.value, "{$wildCardType:${wildCard.value.unquoteCurlyBrackets()}}")
+            }
+            resultPathMapping
+        }
     }
 
     private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {

@@ -10,4 +10,4 @@ fun List<String>.dropFirstEmptyStringIfExists(): List<String> = if (this.isNotEm
 
 fun String.containsCurlyBrackets(): Boolean = this.contains('{') && this.contains('}')
 
-fun String.isLong(): Boolean = this.toLongOrNull() != null
+fun String.isNumeric(): Boolean = this.toBigDecimalOrNull() != null

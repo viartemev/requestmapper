@@ -9,7 +9,7 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.inCurlyBrackets
-import com.viartemev.requestmapper.utils.isLong
+import com.viartemev.requestmapper.utils.isNumeric
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
@@ -91,8 +91,7 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
     }
 
     private fun haveSimilarType(userPatternElement: String, originalElement: String) =
-            (userPatternElement.isLong() && isDigit(originalElement))
-                    || (!userPatternElement.isLong() && !isDigit(originalElement))
+            (isDigit(originalElement) && userPatternElement.isNumeric()) || !isDigit(originalElement)
 
     /**
      * Format of curly brackets values:

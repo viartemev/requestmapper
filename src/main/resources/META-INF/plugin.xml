@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.8</version>
+    <version>0.9</version>
     <vendor email="viartemev@gmail.com" url="http://viartemev.com">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -44,7 +44,8 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Improvement: search static variables</li>
+            <li>Improvement: add type for PathVariables</li>
+            <li>Improvement: update documentation</li>
         </ul>
     ]]>
     </change-notes>

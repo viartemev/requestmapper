@@ -6,7 +6,17 @@
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>
-      Shortcut: <code>Shift + Ctrl + Back slash</code><br/>
+      Usage:
+      <ul>
+        <li>Keyboard shortcuts:</li>
+            <ul>
+                <li>MacOS: <code>Cmd + Shift + Back slash</li>
+                <li>Linux: <code>Win + Shift + Back slash</li>
+                <li>Windows: <code>Win + Shift + Back slash</li>
+            </ul>
+        <li>Navigate (menu bar) -> Request Mapping</li>
+        <li>Click <b>Shift</b> twice -> request mapping</li>
+      </ul>
       Supported annotations:
       <ul>
         <li>Spring:</li>

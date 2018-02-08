@@ -9,39 +9,35 @@ import org.junit.jupiter.api.Assertions.assertTrue
 
 object RequestMappingModelSpek : Spek({
 
+    val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+
     describe("RequestMappingModel") {
-        on("TODO") {
-            val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+        on("TODO1") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/"))
             }
         }
-        on("TODO") {
-            val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+        on("TODO2") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "product"))
             }
         }
-        on("TODO") {
-            val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+        on("TODO3") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/api"))
             }
         }
-        on("TODO") {
-            val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+        on("TODO4") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/product"))
             }
         }
-        on("TODO") {
-            val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+        on("TODO5") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/api/v1"))
             }
         }
-        on("TODO") {
-            val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
+        on("TODO6") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/product/123"))
             }

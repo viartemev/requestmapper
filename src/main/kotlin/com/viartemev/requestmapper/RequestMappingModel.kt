@@ -9,6 +9,8 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.inCurlyBrackets
+import com.viartemev.requestmapper.utils.isNumeric
+import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
 
@@ -79,7 +81,7 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
             }
             val userPatternElement = userPatternList[index]
             if (index == size - 1) {
-                return@matches value.inCurlyBrackets() || (userPatternElement.isNotBlank() && value.startsWith(userPatternElement))
+                return@matches (value.inCurlyBrackets() && haveSimilarType(userPatternElement, value)) || (userPatternElement.isNotBlank() && value.startsWith(userPatternElement))
             }
             if (!value.inCurlyBrackets() && value != userPatternElement) {
                 return@matches false
@@ -87,4 +89,18 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         }
         return false
     }
+
+    private fun haveSimilarType(userPatternElement: String, originalElement: String) =
+            (isDigit(originalElement) && userPatternElement.isNumeric()) || !isDigit(originalElement)
+
+    /**
+     * Format of curly brackets values:
+     * String:items
+     * Int:itemId
+     * Long:itemId
+     */
+    private fun isDigit(originalElement: String) = originalElement
+            .unquoteCurlyBrackets()
+            .split(":")
+            .first() != "String"
 }

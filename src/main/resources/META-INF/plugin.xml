@@ -10,9 +10,9 @@
       <ul>
         <li>Keyboard shortcuts:</li>
             <ul>
-                <li>MacOS: <code>Cmd + Shift + Back slash</li>
-                <li>Linux: <code>Win + Shift + Back slash</li>
-                <li>Windows: <code>Win + Shift + Back slash</li>
+                <li>MacOS: <code>Cmd + Shift + Back slash</code></li>
+                <li>Linux: <code>Win + Shift + Back slash</code></li>
+                <li>Windows: <code>Win + Shift + Back slash</code></li>
             </ul>
         <li>Navigate (menu bar) -> Request Mapping</li>
         <li>Click <b>Shift</b> twice -> request mapping</li>

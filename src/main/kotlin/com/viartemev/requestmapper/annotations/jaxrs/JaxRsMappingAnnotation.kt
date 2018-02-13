@@ -4,13 +4,13 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
-import com.viartemev.requestmapper.utils.fetchAnnotatedElement
+import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 import com.viartemev.requestmapper.utils.unquote
 
 abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
-        return fetchRequestMappingItem(psiAnnotation.fetchAnnotatedElement() as PsiMethod, extractMethod())
+        return fetchRequestMappingItem(psiAnnotation.fetchAnnotatedMethod(), extractMethod())
     }
 
     abstract fun extractMethod(): String

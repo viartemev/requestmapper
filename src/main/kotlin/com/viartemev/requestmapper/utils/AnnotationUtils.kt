@@ -4,15 +4,15 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.util.PsiUtilCore
 
-// @todo #41 rewrite fetchAnnotatedElement method
-fun PsiAnnotation.fetchAnnotatedElement(): PsiElement? {
-    return fetchAnnotatedPsiElement(this)
-}
+fun PsiAnnotation.isMethodAnnotation() = fetchAnnotatedPsiElement(this) is PsiMethod
 
-private tailrec fun fetchAnnotatedPsiElement(psiElement: PsiElement): PsiElement? {
-    val parent: PsiElement? = psiElement.parent
-    if (parent == null || parent is PsiClass || parent is PsiMethod) {
+fun PsiAnnotation.fetchAnnotatedMethod() = fetchAnnotatedPsiElement(this) as PsiMethod
+
+private tailrec fun fetchAnnotatedPsiElement(psiElement: PsiElement): PsiElement {
+    val parent: PsiElement = psiElement.parent ?: return PsiUtilCore.NULL_PSI_ELEMENT
+    if (parent is PsiMethod || parent is PsiClass) {
         return parent
     }
     return fetchAnnotatedPsiElement(parent)

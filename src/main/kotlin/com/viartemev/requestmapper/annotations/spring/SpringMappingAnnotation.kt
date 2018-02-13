@@ -13,14 +13,14 @@ import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMe
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
 import com.viartemev.requestmapper.utils.containsCurlyBrackets
-import com.viartemev.requestmapper.utils.fetchAnnotatedElement
+import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 import com.viartemev.requestmapper.utils.unquote
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> =
-            fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedElement() as PsiMethod, extractMethod())
+            fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedMethod(), extractMethod())
 
     abstract fun extractMethod(): String
 

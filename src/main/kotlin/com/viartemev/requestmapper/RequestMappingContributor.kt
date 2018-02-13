@@ -3,12 +3,11 @@ package com.viartemev.requestmapper
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex
 import com.intellij.psi.search.GlobalSearchScope.projectScope
 import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.mappingAnnotation
 import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.supportedAnnotations
-import com.viartemev.requestmapper.utils.fetchAnnotatedElement
+import com.viartemev.requestmapper.utils.isMethodAnnotation
 
 class RequestMappingContributor : ChooseByNameContributor {
 
@@ -36,7 +35,7 @@ class RequestMappingContributor : ChooseByNameContributor {
                 .get(annotationName, project, projectScope(project))
                 .asSequence()
                 .filterNotNull()
-                .filter { annotation -> annotation.fetchAnnotatedElement() is PsiMethod }
+                .filter { it.isMethodAnnotation() }
                 .map { annotation -> mappingAnnotation(annotationName, annotation) }
                 .flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }
                 .toList()

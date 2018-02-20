@@ -6,7 +6,6 @@ import com.intellij.psi.PsiType
 import com.intellij.testFramework.LightIdeaTestCase
 import com.intellij.testFramework.LightPlatformTestCase
 
-
 class AnnotationUtilsTest : LightIdeaTestCase() {
 
     fun testIsMethodAnnotationWithoutParent() {
@@ -43,5 +42,4 @@ class AnnotationUtilsTest : LightIdeaTestCase() {
         val manager = LightPlatformTestCase.getPsiManager()
         return JavaPsiFacade.getInstance(manager.project).elementFactory
     }
-
 }

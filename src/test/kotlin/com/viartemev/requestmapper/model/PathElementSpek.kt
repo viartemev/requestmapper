@@ -3,6 +3,7 @@ package com.viartemev.requestmapper.model
 import org.amshove.kluent.shouldBeFalse
 import org.amshove.kluent.shouldBeTrue
 import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldNotEqual
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -35,6 +36,57 @@ object PathElementSpek : Spek({
         on("addPathVariableType on path element with curly brackets with blank type") {
             it("should return original element with type String") {
                 PathElement("{id}").addPathVariableType("").value shouldEqual "{String:id}"
+            }
+        }
+
+        on("equals with empty element") {
+            it("should return true") {
+                PathElement("api") shouldEqual PathElement("api")
+            }
+        }
+        on("equals with string") {
+            it("should return true") {
+                PathElement("api") shouldEqual PathElement("api")
+            }
+        }
+        on("equals on element with String type path variable and digital") {
+            it("should return true") {
+                PathElement("{String:id}") shouldEqual PathElement("123")
+            }
+        }
+        on("equals on element with String type path variable and string") {
+            it("equals 1") {
+                PathElement("{String:id}") shouldEqual PathElement("string")
+            }
+        }
+        on("equals on element with Long type path variable and digital") {
+            it("equals 1") {
+                PathElement("{Long:id}") shouldEqual PathElement("123")
+            }
+        }
+        on("equals on element with Long type path variable and string") {
+            it("equals 1") {
+                PathElement("{Long:id}") shouldNotEqual PathElement("string")
+            }
+        }
+        on("equals on element with String type path variable and digital with inverted order") {
+            it("should return true") {
+                PathElement("123") shouldEqual PathElement("{String:id}")
+            }
+        }
+        on("equals on element with String type path variable and string with inverted order") {
+            it("equals 1") {
+                PathElement("string") shouldEqual PathElement("{String:id}")
+            }
+        }
+        on("equals on element with Long type path variable and digital with inverted order") {
+            it("equals 1") {
+                PathElement("123") shouldEqual PathElement("{Long:id}")
+            }
+        }
+        on("equals on element with Long type path variable and string with inverted order") {
+            it("equals 1") {
+                PathElement("string") shouldNotEqual PathElement("{Long:id}")
             }
         }
     }

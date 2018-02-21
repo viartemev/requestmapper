@@ -12,12 +12,9 @@ import com.viartemev.requestmapper.annotations.spring.extraction.BasePsiAnnotati
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
-import com.viartemev.requestmapper.utils.addCurlyBrackets
-import com.viartemev.requestmapper.utils.containsCurlyBrackets
+import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
-import com.viartemev.requestmapper.utils.inCurlyBrackets
 import com.viartemev.requestmapper.utils.unquote
-import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
@@ -72,22 +69,10 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
                 .toMap()
 
         return fetchMapping(annotation)
-                .map { if (it.containsCurlyBrackets()) addPathVariablesTypes(it, parametersNameWithType) else it }
-                .toList()
-    }
-
-    private fun addPathVariablesTypes(pathMapping: String, parametersNameWithType: Map<String, String>): String {
-        return pathMapping
-                .split("/")
-                .joinToString(separator = "/") {
-                    if (it.inCurlyBrackets()) {
-                        it
-                                .unquoteCurlyBrackets()
-                                .let { parametersNameWithType.getOrDefault(it, "String") + ":" + it }
-                                .addCurlyBrackets()
-                    } else {
-                        it
-                    }
+                .map {
+                    Path(it)
+                            .addPathVariablesTypes(parametersNameWithType)
+                            .toFullPath()
                 }
     }
 

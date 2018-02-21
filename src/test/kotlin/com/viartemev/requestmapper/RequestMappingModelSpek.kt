@@ -12,34 +12,14 @@ object RequestMappingModelSpek : Spek({
     val requestMappingModel = RequestMappingModel(DummyProject.getInstance())
 
     describe("RequestMappingModel") {
-        on("TODO1") {
+        on("matches on pattern only with slash") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/"))
             }
         }
-        on("TODO2") {
+        on("matches on pattern without slash") {
             it("should return true") {
                 assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "product"))
-            }
-        }
-        on("TODO3") {
-            it("should return true") {
-                assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/api"))
-            }
-        }
-        on("TODO4") {
-            it("should return true") {
-                assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/product"))
-            }
-        }
-        on("TODO5") {
-            it("should return true") {
-                assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/api/v1"))
-            }
-        }
-        on("TODO6") {
-            it("should return true") {
-                assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/product/123"))
             }
         }
     }

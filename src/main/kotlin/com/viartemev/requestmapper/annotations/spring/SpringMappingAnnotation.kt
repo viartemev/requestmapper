@@ -69,11 +69,7 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
                 .toMap()
 
         return fetchMapping(annotation)
-                .map {
-                    Path(it)
-                            .addPathVariablesTypes(parametersNameWithType)
-                            .toFullPath()
-                }
+                .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
     }
 
     private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {

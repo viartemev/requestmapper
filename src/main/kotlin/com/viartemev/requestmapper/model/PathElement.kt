@@ -11,5 +11,4 @@ data class PathElement(val value: String) {
             else this
 
     private fun hasPathVariable() = value.inCurlyBrackets()
-
 }

@@ -99,6 +99,18 @@ object CommonUtilsSpek : Spek({
                 "{}".inCurlyBrackets().shouldBeTrue()
             }
         }
+
+        on("addCurlyBrackets on an empty string") {
+            it("should return empty string with curly brackets") {
+                "".addCurlyBrackets() shouldBeEqualTo "{}"
+            }
+        }
+
+        on("addCurlyBrackets on a string") {
+            it("should return string with curly brackets") {
+                "some".addCurlyBrackets() shouldBeEqualTo "{some}"
+            }
+        }
     }
 
     describe("list of strings") {

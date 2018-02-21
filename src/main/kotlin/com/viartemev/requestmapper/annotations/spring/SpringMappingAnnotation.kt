@@ -12,8 +12,10 @@ import com.viartemev.requestmapper.annotations.spring.extraction.BasePsiAnnotati
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
 import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
+import com.viartemev.requestmapper.utils.addCurlyBrackets
 import com.viartemev.requestmapper.utils.containsCurlyBrackets
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
+import com.viartemev.requestmapper.utils.inCurlyBrackets
 import com.viartemev.requestmapper.utils.unquote
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
@@ -63,51 +65,45 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     private fun fetchMethodMapping(annotation: PsiAnnotation, method: PsiMethod): List<String> {
-        val pathMethodMapping = fetchMapping(annotation)
-
-        if (pathMethodMapping.any { it.containsCurlyBrackets() }) {
-            return addPathVariablesTypes(method, pathMethodMapping.toMutableList())
-        }
-
-        return pathMethodMapping
-    }
-
-    private fun addPathVariablesTypes(method: PsiMethod, pathMethodMapping: MutableList<String>): List<String> {
         val parametersNameWithType = method
                 .parameterList
                 .parameters
                 .mapNotNull { extractParameterNameWithType(it) }
                 .toMap()
 
-        val regex = Regex("\\{([^\\/]*)\\}")
+        return fetchMapping(annotation)
+                .map { if (it.containsCurlyBrackets()) addPathVariablesTypes(it, parametersNameWithType) else it }
+                .toList()
+    }
 
-        return pathMethodMapping.map { pathMapping ->
-            var resultPathMapping: String = pathMapping
-            val wildCards = regex.findAll(pathMapping)
-            wildCards.forEach { wildCard ->
-                //TODO is Object preferable?
-                val wildCardType = parametersNameWithType[wildCard.value.unquoteCurlyBrackets()] ?: "String"
-                resultPathMapping = resultPathMapping.replace(wildCard.value, "{$wildCardType:${wildCard.value.unquoteCurlyBrackets()}}")
-            }
-            resultPathMapping
-        }
+    private fun addPathVariablesTypes(pathMapping: String, parametersNameWithType: Map<String, String>): String {
+        return pathMapping
+                .split("/")
+                .joinToString(separator = "/") {
+                    if (it.inCurlyBrackets()) {
+                        it
+                                .unquoteCurlyBrackets()
+                                .let { parametersNameWithType.getOrDefault(it, "String") + ":" + it }
+                                .addCurlyBrackets()
+                    } else {
+                        it
+                    }
+                }
     }
 
     private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {
-        val parameterType = parameter.type.presentableText
+        val parameterType = parameter.type.presentableText.unquote()
         val pathVariableAnnotations = parameter
                 .modifierList
                 ?.annotations
                 ?.filter { it.qualifiedName == SPRING_PATH_VARIABLE_CLASS }
+                .orEmpty()
 
-        return if (pathVariableAnnotations == null || pathVariableAnnotations.isEmpty()) {
+        return if (pathVariableAnnotations.isEmpty()) {
             null
         } else {
             pathVariableAnnotations
-                    .map {
-                        Pair((extractParameterNameFromAnnotation(it)
-                                ?: parameter.name!!).unquote(), parameterType.unquote())
-                    }
+                    .map { Pair((extractParameterNameFromAnnotation(it) ?: parameter.name!!), parameterType) }
                     //only one PathVariable annotation possible
                     .first()
         }
@@ -116,12 +112,10 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation): String? {
         val pathVariableValue = annotation.findAttributeValue(VALUE)
         val pathVariableName = annotation.findAttributeValue(NAME)
-        return if (pathVariableValue != null && pathVariableValue.text.isNotBlank()) {
-            pathVariableValue.text
-        } else if (pathVariableName != null && pathVariableName.text.isNotBlank()) {
-            pathVariableName.text
-        } else {
-            null
+        return when {
+            pathVariableValue?.text?.unquote()?.isNotBlank() == true -> pathVariableValue.text.unquote()
+            pathVariableName?.text?.unquote()?.isNotBlank() == true -> pathVariableName.text.unquote()
+            else -> null
         }
     }
 

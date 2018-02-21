@@ -8,11 +8,11 @@ data class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
     fun addPathVariablesTypes(parametersNameWithType: Map<String, String>) =
-            this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value, "String")) })
+            this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 
-    // @todo #58 rewrite isSimilarTo method
+    // @todo #57 rewrite isSimilarTo method
     fun isSimilarTo(anotherPath: Path): Boolean {
         return isSimilarPaths(this, anotherPath)
     }

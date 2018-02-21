@@ -12,12 +12,12 @@ object PathElementSpek : Spek({
     describe("PathElement") {
         on("hasPathVariable with path in curly brackets") {
             it("should return true") {
-                PathElement("{id}").hasPathVariable().shouldBeTrue()
+                PathElement("{id}").isPathVariable.shouldBeTrue()
             }
         }
         on("hasPathVariable without curly brackets") {
             it("should return false") {
-                PathElement("id").hasPathVariable().shouldBeFalse()
+                PathElement("id").isPathVariable.shouldBeFalse()
             }
         }
 

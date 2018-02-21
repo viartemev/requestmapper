@@ -34,7 +34,7 @@ class PsiReferenceExpressionExtractor : PsiAnnotationValueExtractor<PsiReference
 
     private fun extractLiteralExpression(psiElement: PsiLiteralExpression) = psiElement.text.unquote()
 
-    /** rOperand always present in static final variables */
+    /** rOperand always presents in static final variables */
     private fun extractBinaryExpression(psiElement: PsiBinaryExpression) =
             extractExpression(psiElement.lOperand) + extractExpression(psiElement.rOperand!!)
 

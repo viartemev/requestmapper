@@ -7,10 +7,7 @@ import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
-import com.viartemev.requestmapper.utils.inCurlyBrackets
-import com.viartemev.requestmapper.utils.isNumeric
-import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
+import com.viartemev.requestmapper.model.Path
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
 
@@ -42,65 +39,7 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         } else if (!userPattern.contains('/')) {
             userPattern in popupItem
         } else {
-            isSimilarUrlPaths(popupItem, userPattern)
+            Path(popupItem).isSimilarTo(Path(userPattern))
         }
     }
-
-    private fun isSimilarUrlPaths(popupItem: String, userPattern: String): Boolean {
-        val popupItemList = popupItem
-                .split('/')
-                .drop(1) //drop method name
-
-        val userPatternList = userPattern
-                .split('/')
-                .dropFirstEmptyStringIfExists()
-
-        return isSimilarLists(popupItemList, userPatternList)
-    }
-
-    private tailrec fun isSimilarLists(popupItemList: List<String>,
-                                       userPatternList: List<String>,
-                                       matches: Boolean = false): Boolean {
-        if (matches) {
-            return true
-        }
-        if (popupItemList.size < userPatternList.size) {
-            return false
-        }
-        val listMatches = matches(popupItemList, userPatternList)
-
-        return isSimilarLists(popupItemList.drop(1), userPatternList, listMatches)
-    }
-
-    private fun matches(popupItemList: List<String>,
-                        userPatternList: List<String>): Boolean {
-        val size = userPatternList.size
-        popupItemList.forEachIndexed { index, value ->
-            if (index == size) {
-                return@matches false
-            }
-            val userPatternElement = userPatternList[index]
-            if (index == size - 1) {
-                return@matches (value.inCurlyBrackets() && haveSimilarType(userPatternElement, value)) || (userPatternElement.isNotBlank() && value.startsWith(userPatternElement))
-            }
-            if (!value.inCurlyBrackets() && value != userPatternElement) {
-                return@matches false
-            }
-        }
-        return false
-    }
-
-    private fun haveSimilarType(userPatternElement: String, originalElement: String) =
-            (isDigit(originalElement) && userPatternElement.isNumeric()) || !isDigit(originalElement)
-
-    /**
-     * Format of curly brackets values:
-     * String:items
-     * Int:itemId
-     * Long:itemId
-     */
-    private fun isDigit(originalElement: String) = originalElement
-            .unquoteCurlyBrackets()
-            .split(":")
-            .first() != "String"
 }

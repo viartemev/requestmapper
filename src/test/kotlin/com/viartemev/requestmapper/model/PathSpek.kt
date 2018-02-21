@@ -149,7 +149,7 @@ object PathSpek : Spek({
         }
         on("isSimilarTo 19") {
             it("19") {
-                Path("/api/v1/items/{String:itemId}/{Long:productId}").isSimilarTo(Path("/items/123")).shouldBeFalse()
+                Path("/api/v1/items/{String:itemId}/{Long:productId}").isSimilarTo(Path("/items/123")).shouldBeTrue()
             }
         }
         on("isSimilarTo 20") {
@@ -184,17 +184,17 @@ object PathSpek : Spek({
         }
         on("isSimilarTo 26") {
             it("26") {
-                Path("/api/v1/items/{String:itemId}/{Long:productId}/price").isSimilarTo(Path("http://localhost:8080/api/v1")).shouldBeTrue()
+                Path("/api/v1/items/{String:itemId}/{Long:productId}/price").isSimilarTo(Path("/api/")).shouldBeTrue()
             }
         }
         on("isSimilarTo 27") {
             it("27") {
-                Path("/api/v1/items/{String:itemId}/{Long:productId}/price").isSimilarTo(Path("http://www.some-api.com/api/v1")).shouldBeTrue()
+                Path("/api/v1/items/{String:itemId}/{Long:productId}/price").isSimilarTo(Path("/ap")).shouldBeTrue()
             }
         }
         on("isSimilarTo 28") {
             it("28") {
-                Path("/api/v1/items/{String:itemId}/{Long:productId}/price params=head").isSimilarTo(Path("/price")).shouldBeTrue()
+                Path("/api/v1/items/{String:itemId}/{Long:productId}/price").isSimilarTo(Path("/price/")).shouldBeFalse()
             }
         }
     }

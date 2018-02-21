@@ -37,16 +37,27 @@ data class Path(private val pathElements: List<PathElement>) {
     private fun matches(popupItemList: List<PathElement>,
                         userPatternList: List<PathElement>): Boolean {
         val size = userPatternList.size
+        var hasExactMatching = false
         popupItemList.forEachIndexed { index, pathElement ->
             if (index == size) {
                 return@matches false
             }
             val userPatternElement = userPatternList[index]
             if (index == size - 1) {
-                return@matches userPatternElement == pathElement || (userPatternElement.value.isNotBlank() && pathElement.value.startsWith(userPatternElement.value))
+                val elementsEqual = userPatternElement == pathElement
+                val elementsAreNotPathVariables = !userPatternElement.isPathVariable && !pathElement.isPathVariable
+                val elementsPartiallyEqual = pathElement.value.startsWith(userPatternElement.value)
+                if ((elementsEqual && elementsAreNotPathVariables) || (elementsPartiallyEqual && elementsAreNotPathVariables)) {
+                    hasExactMatching = true
+                }
+                return@matches (elementsEqual || elementsPartiallyEqual) && hasExactMatching
             }
             if (pathElement != userPatternElement) {
                 return@matches false
+            }
+            val elementsEqual = userPatternElement == pathElement
+            if (elementsEqual && !userPatternElement.isPathVariable && !pathElement.isPathVariable) {
+                hasExactMatching = true
             }
         }
         return false

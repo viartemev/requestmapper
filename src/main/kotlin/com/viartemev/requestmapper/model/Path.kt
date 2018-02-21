@@ -1,6 +1,5 @@
 package com.viartemev.requestmapper.model
 
-import com.viartemev.requestmapper.utils.inCurlyBrackets
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 data class Path(private val pathElements: List<PathElement>) {
@@ -13,23 +12,25 @@ data class Path(private val pathElements: List<PathElement>) {
 
     // @todo #57 rewrite isSimilarTo method
     fun isSimilarTo(anotherPath: Path): Boolean {
-        //TODO implement it
-        return true
+        return isSimilarPaths(
+                Path(this.pathElements.drop(1)),
+                Path(anotherPath.pathElements.drop(1))
+        )
     }
 
     //TODO rewrite it
-    private tailrec fun isSimilarPaths(popupItemPath: Path,
-                                       userPatternPath: Path,
+    private tailrec fun isSimilarPaths(path1: Path,
+                                       path2: Path,
                                        matches: Boolean = false): Boolean {
         if (matches) {
             return true
         }
-        if (popupItemPath.pathElements.size < userPatternPath.pathElements.size) {
+        if (path1.pathElements.size < path2.pathElements.size) {
             return false
         }
-        val listMatches = matches(popupItemPath.pathElements, userPatternPath.pathElements)
+        val listMatches = matches(path1.pathElements, path2.pathElements)
 
-        return isSimilarPaths(Path(popupItemPath.pathElements.drop(1)), userPatternPath, listMatches)
+        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, listMatches)
     }
 
     //TODO rewrite it
@@ -42,11 +43,9 @@ data class Path(private val pathElements: List<PathElement>) {
             }
             val userPatternElement = userPatternList[index]
             if (index == size - 1) {
-                val b = pathElement.isPathVariable && userPatternElement == pathElement
-                return@matches b
-                        || (userPatternElement.value.isNotBlank() && pathElement.value.startsWith(userPatternElement.value))
+                return@matches userPatternElement == pathElement || (userPatternElement.value.isNotBlank() && pathElement.value.startsWith(userPatternElement.value))
             }
-            if (!pathElement.value.inCurlyBrackets() && pathElement != userPatternElement) {
+            if (pathElement != userPatternElement) {
                 return@matches false
             }
         }

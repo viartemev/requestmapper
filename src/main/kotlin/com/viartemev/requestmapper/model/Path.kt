@@ -1,7 +1,6 @@
 package com.viartemev.requestmapper.model
 
 import com.viartemev.requestmapper.utils.inCurlyBrackets
-import com.viartemev.requestmapper.utils.isNumeric
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 data class Path(private val pathElements: List<PathElement>) {
@@ -14,9 +13,11 @@ data class Path(private val pathElements: List<PathElement>) {
 
     // @todo #57 rewrite isSimilarTo method
     fun isSimilarTo(anotherPath: Path): Boolean {
-        return isSimilarPaths(this, anotherPath)
+        //TODO implement it
+        return true
     }
 
+    //TODO rewrite it
     private tailrec fun isSimilarPaths(popupItemPath: Path,
                                        userPatternPath: Path,
                                        matches: Boolean = false): Boolean {
@@ -31,6 +32,7 @@ data class Path(private val pathElements: List<PathElement>) {
         return isSimilarPaths(Path(popupItemPath.pathElements.drop(1)), userPatternPath, listMatches)
     }
 
+    //TODO rewrite it
     private fun matches(popupItemList: List<PathElement>,
                         userPatternList: List<PathElement>): Boolean {
         val size = userPatternList.size
@@ -40,7 +42,8 @@ data class Path(private val pathElements: List<PathElement>) {
             }
             val userPatternElement = userPatternList[index]
             if (index == size - 1) {
-                return@matches (pathElement.value.inCurlyBrackets() && haveSimilarType(userPatternElement.value, pathElement.value))
+                val b = pathElement.isPathVariable && userPatternElement == pathElement
+                return@matches b
                         || (userPatternElement.value.isNotBlank() && pathElement.value.startsWith(userPatternElement.value))
             }
             if (!pathElement.value.inCurlyBrackets() && pathElement != userPatternElement) {
@@ -49,18 +52,4 @@ data class Path(private val pathElements: List<PathElement>) {
         }
         return false
     }
-
-    private fun haveSimilarType(userPatternElement: String, originalElement: String) =
-            (isDigit(originalElement) && userPatternElement.isNumeric()) || !isDigit(originalElement)
-
-    /**
-     * Format of curly brackets values:
-     * String:items
-     * Int:itemId
-     * Long:itemId
-     */
-    private fun isDigit(originalElement: String) = originalElement
-            .unquoteCurlyBrackets()
-            .split(":")
-            .first() != "String"
 }

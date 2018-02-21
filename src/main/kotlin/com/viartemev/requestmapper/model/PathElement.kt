@@ -53,5 +53,4 @@ class PathElement(val value: String) {
     override fun toString(): String {
         return "PathElement(value='$value', isPathVariable=$isPathVariable)"
     }
-
 }

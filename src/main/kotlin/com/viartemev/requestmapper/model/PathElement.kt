@@ -7,8 +7,8 @@ import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 data class PathElement(val value: String) {
 
     fun addPathVariableType(type: String) =
-            if (hasPathVariable()) this.copy(value = value.unquoteCurlyBrackets().let { "$type:$it" }.addCurlyBrackets())
+            if (hasPathVariable()) this.copy(value = value.unquoteCurlyBrackets().let { "${if (type.isBlank()) "String" else type}:$it" }.addCurlyBrackets())
             else this
 
-    private fun hasPathVariable() = value.inCurlyBrackets()
+    fun hasPathVariable() = value.inCurlyBrackets()
 }

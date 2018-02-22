@@ -1,53 +1,62 @@
 package com.viartemev.requestmapper.model
 
-import com.viartemev.requestmapper.utils.inCurlyBrackets
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
 data class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
-    fun addPathVariablesTypes(parametersNameWithType: Map<String, String>) =
-            this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
+    fun addPathVariablesTypes(parametersNameWithType: Map<String, String>) = this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 
     // @todo #57 rewrite isSimilarTo method
     fun isSimilarTo(anotherPath: Path): Boolean {
-        //TODO implement it
-        return true
+        val allElementsIsPathVariables = this.pathElements.drop(1).all { it.isPathVariable }
+        return isSimilarPaths(Path(this.pathElements.drop(1)), Path(anotherPath.pathElements.drop(1)), allElementsIsPathVariables)
     }
 
     //TODO rewrite it
-    private tailrec fun isSimilarPaths(popupItemPath: Path,
-                                       userPatternPath: Path,
-                                       matches: Boolean = false): Boolean {
-        if (matches) {
-            return true
-        }
-        if (popupItemPath.pathElements.size < userPatternPath.pathElements.size) {
+    private tailrec fun isSimilarPaths(path1: Path,
+                                       path2: Path,
+                                       allElementsIsPathVariables: Boolean): Boolean {
+        if (path1.pathElements.size < path2.pathElements.size) {
             return false
         }
-        val listMatches = matches(popupItemPath.pathElements, userPatternPath.pathElements)
 
-        return isSimilarPaths(Path(popupItemPath.pathElements.drop(1)), userPatternPath, listMatches)
+        val listMatches = matches(path1.pathElements, path2.pathElements, allElementsIsPathVariables)
+
+        if (listMatches) {
+            return true
+        }
+
+        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, allElementsIsPathVariables)
     }
 
     //TODO rewrite it
     private fun matches(popupItemList: List<PathElement>,
-                        userPatternList: List<PathElement>): Boolean {
+                        userPatternList: List<PathElement>,
+                        allElementsIsPathVariables: Boolean): Boolean {
         val size = userPatternList.size
+        var hasExactMatching = false
         popupItemList.forEachIndexed { index, pathElement ->
             if (index == size) {
                 return@matches false
             }
             val userPatternElement = userPatternList[index]
+            val elementsEqual = userPatternElement == pathElement
+            val elementsAreNotPathVariables = !userPatternElement.isPathVariable && !pathElement.isPathVariable
             if (index == size - 1) {
-                val b = pathElement.isPathVariable && userPatternElement == pathElement
-                return@matches b
-                        || (userPatternElement.value.isNotBlank() && pathElement.value.startsWith(userPatternElement.value))
+                val elementsPartiallyEqual = pathElement.value.startsWith(userPatternElement.value)
+                if ((elementsEqual || elementsPartiallyEqual) && elementsAreNotPathVariables) {
+                    hasExactMatching = true
+                }
+                return@matches (elementsEqual || elementsPartiallyEqual) && (hasExactMatching || allElementsIsPathVariables)
             }
-            if (!pathElement.value.inCurlyBrackets() && pathElement != userPatternElement) {
+            if (pathElement != userPatternElement) {
                 return@matches false
+            }
+            if (elementsEqual && elementsAreNotPathVariables) {
+                hasExactMatching = true
             }
         }
         return false

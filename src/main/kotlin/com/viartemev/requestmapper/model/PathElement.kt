@@ -8,20 +8,15 @@ import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 class PathElement(val value: String) {
     val isPathVariable: Boolean = value.inCurlyBrackets()
 
-    fun addPathVariableType(type: String) =
-            if (isPathVariable) PathElement(value.unquoteCurlyBrackets().let { "${if (type.isBlank()) "String" else type}:$it" }.addCurlyBrackets())
-            else this
+    fun addPathVariableType(type: String) = if (isPathVariable) PathElement(value.unquoteCurlyBrackets().let { "${if (type.isBlank()) "String" else type}:$it" }.addCurlyBrackets())
+        else this
 
-    private fun haveSimilarType(value1: PathElement, value2: PathElement): Boolean {
-        if (value1.isPathVariable) {
-            val bothAreNumbers = isDigit(value1.value) && value2.value.isNumeric()
-            val pathVariableIsString = !isDigit(value1.value)
-            return bothAreNumbers || pathVariableIsString
-        } else {
-            val bothAreNumbers = isDigit(value2.value) && value1.value.isNumeric()
-            val pathVariableIsString = !isDigit(value2.value)
-            return bothAreNumbers || pathVariableIsString
-        }
+    private fun compareWithPathVariable(value1: PathElement, value2: PathElement) = if (value1.isPathVariable) comparePathVariableWithPsiElement(value1, value2) else comparePathVariableWithPsiElement(value2, value1)
+
+    private fun comparePathVariableWithPsiElement(pathVariable: PathElement, pathElement: PathElement): Boolean {
+        val bothAreNumbers = isDigit(pathVariable.value) && pathElement.value.isNumeric()
+        val pathVariableIsString = !isDigit(pathVariable.value)
+        return bothAreNumbers || pathVariableIsString
     }
 
     /**
@@ -30,10 +25,22 @@ class PathElement(val value: String) {
      * Int:itemId
      * Long:itemId
      */
-    private fun isDigit(originalElement: String) = originalElement
-            .unquoteCurlyBrackets()
-            .split(":")
-            .first() != "String"
+    private fun isDigit(originalElement: String) = when (originalElement.unquoteCurlyBrackets().split(":").first()) {
+        "int" -> true
+        "long" -> true
+        "float" -> true
+        "double" -> true
+
+        "Integer" -> true
+        "Long" -> true
+        "Float" -> true
+        "Double" -> true
+
+        "BigInteger" -> true
+        "BigDecimal" -> true
+
+        else -> false
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -43,7 +50,7 @@ class PathElement(val value: String) {
 
         if (!this.isPathVariable && !other.isPathVariable) return value == other.value
 
-        return haveSimilarType(this, other)
+        return compareWithPathVariable(this, other)
     }
 
     override fun hashCode(): Int {

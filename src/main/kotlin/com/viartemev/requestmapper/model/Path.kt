@@ -6,33 +6,35 @@ data class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
     fun addPathVariablesTypes(parametersNameWithType: Map<String, String>) =
-            this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
+        this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 
     // @todo #57 rewrite isSimilarTo method
     fun isSimilarTo(anotherPath: Path): Boolean {
+        val allElementsIsPathVariables = this.pathElements.drop(1).all { it.isPathVariable }
         return isSimilarPaths(
-                Path(this.pathElements.drop(1)),
-                Path(anotherPath.pathElements.drop(1)),
-                this.pathElements.drop(1).all { it.isPathVariable }
+            Path(this.pathElements.drop(1)),
+            Path(anotherPath.pathElements.drop(1)),
+            allElementsIsPathVariables
         )
     }
 
     //TODO rewrite it
     private tailrec fun isSimilarPaths(path1: Path,
                                        path2: Path,
-                                       allElementsIsPathVariables: Boolean,
-                                       matches: Boolean = false): Boolean {
-        if (matches) {
-            return true
-        }
+                                       allElementsIsPathVariables: Boolean): Boolean {
         if (path1.pathElements.size < path2.pathElements.size) {
             return false
         }
+
         val listMatches = matches(path1.pathElements, path2.pathElements, allElementsIsPathVariables)
 
-        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, allElementsIsPathVariables, listMatches)
+        if (listMatches) {
+            return true
+        }
+
+        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, allElementsIsPathVariables)
     }
 
     //TODO rewrite it
@@ -46,11 +48,11 @@ data class Path(private val pathElements: List<PathElement>) {
                 return@matches false
             }
             val userPatternElement = userPatternList[index]
+            val elementsEqual = userPatternElement == pathElement
+            val elementsAreNotPathVariables = !userPatternElement.isPathVariable && !pathElement.isPathVariable
             if (index == size - 1) {
-                val elementsEqual = userPatternElement == pathElement
-                val elementsAreNotPathVariables = !userPatternElement.isPathVariable && !pathElement.isPathVariable
                 val elementsPartiallyEqual = pathElement.value.startsWith(userPatternElement.value)
-                if ((elementsEqual && elementsAreNotPathVariables) || (elementsPartiallyEqual && elementsAreNotPathVariables)) {
+                if ((elementsEqual || elementsPartiallyEqual) && elementsAreNotPathVariables) {
                     hasExactMatching = true
                 }
                 return@matches (elementsEqual || elementsPartiallyEqual) && (hasExactMatching || allElementsIsPathVariables)
@@ -58,8 +60,7 @@ data class Path(private val pathElements: List<PathElement>) {
             if (pathElement != userPatternElement) {
                 return@matches false
             }
-            val elementsEqual = userPatternElement == pathElement
-            if (elementsEqual && !userPatternElement.isPathVariable && !pathElement.isPathVariable) {
+            if (elementsEqual && elementsAreNotPathVariables) {
                 hasExactMatching = true
             }
         }

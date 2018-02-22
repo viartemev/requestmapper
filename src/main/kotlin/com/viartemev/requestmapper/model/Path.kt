@@ -14,13 +14,15 @@ data class Path(private val pathElements: List<PathElement>) {
     fun isSimilarTo(anotherPath: Path): Boolean {
         return isSimilarPaths(
                 Path(this.pathElements.drop(1)),
-                Path(anotherPath.pathElements.drop(1))
+                Path(anotherPath.pathElements.drop(1)),
+                this.pathElements.drop(1).all { it.isPathVariable }
         )
     }
 
     //TODO rewrite it
     private tailrec fun isSimilarPaths(path1: Path,
                                        path2: Path,
+                                       allElementsIsPathVariables: Boolean,
                                        matches: Boolean = false): Boolean {
         if (matches) {
             return true
@@ -28,14 +30,15 @@ data class Path(private val pathElements: List<PathElement>) {
         if (path1.pathElements.size < path2.pathElements.size) {
             return false
         }
-        val listMatches = matches(path1.pathElements, path2.pathElements)
+        val listMatches = matches(path1.pathElements, path2.pathElements, allElementsIsPathVariables)
 
-        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, listMatches)
+        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, allElementsIsPathVariables, listMatches)
     }
 
     //TODO rewrite it
     private fun matches(popupItemList: List<PathElement>,
-                        userPatternList: List<PathElement>): Boolean {
+                        userPatternList: List<PathElement>,
+                        allElementsIsPathVariables: Boolean): Boolean {
         val size = userPatternList.size
         var hasExactMatching = false
         popupItemList.forEachIndexed { index, pathElement ->
@@ -50,7 +53,7 @@ data class Path(private val pathElements: List<PathElement>) {
                 if ((elementsEqual && elementsAreNotPathVariables) || (elementsPartiallyEqual && elementsAreNotPathVariables)) {
                     hasExactMatching = true
                 }
-                return@matches (elementsEqual || elementsPartiallyEqual) && hasExactMatching
+                return@matches (elementsEqual || elementsPartiallyEqual) && (hasExactMatching || allElementsIsPathVariables)
             }
             if (pathElement != userPatternElement) {
                 return@matches false

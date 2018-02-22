@@ -197,5 +197,20 @@ object PathSpek : Spek({
                 Path("/api/v1/items/{String:itemId}/{Long:productId}/price").isSimilarTo(Path("/price/")).shouldBeFalse()
             }
         }
+        on("isSimilarTo 29") {
+            it("29") {
+                Path("/api/v1/items/{String:itemId}/{SpecialType:productId}/price").isSimilarTo(Path("/api/v1/items/itemId/special-type")).shouldBeTrue()
+            }
+        }
+        on("isSimilarTo 30") {
+            it("30") {
+                Path("/{String:item}").isSimilarTo(Path("/ap")).shouldBeTrue()
+            }
+        }
+        on("isSimilarTo 31") {
+            it("31") {
+                Path("/{String:item}/{String:product}").isSimilarTo(Path("/item/product")).shouldBeTrue()
+            }
+        }
     }
 })

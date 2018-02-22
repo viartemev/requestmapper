@@ -30,10 +30,22 @@ class PathElement(val value: String) {
      * Int:itemId
      * Long:itemId
      */
-    private fun isDigit(originalElement: String) = originalElement
-            .unquoteCurlyBrackets()
-            .split(":")
-            .first() != "String"
+    private fun isDigit(originalElement: String) = when (originalElement.unquoteCurlyBrackets().split(":").first()) {
+        "int" -> true
+        "long" -> true
+        "float" -> true
+        "double" -> true
+
+        "Integer" -> true
+        "Long" -> true
+        "Float" -> true
+        "Double" -> true
+
+        "BigInteger" -> true
+        "BigDecimal" -> true
+
+        else -> false
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

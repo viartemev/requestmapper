@@ -5,19 +5,14 @@ import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 data class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
-    fun addPathVariablesTypes(parametersNameWithType: Map<String, String>) =
-        this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
+    fun addPathVariablesTypes(parametersNameWithType: Map<String, String>) = this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 
     // @todo #57 rewrite isSimilarTo method
     fun isSimilarTo(anotherPath: Path): Boolean {
         val allElementsIsPathVariables = this.pathElements.drop(1).all { it.isPathVariable }
-        return isSimilarPaths(
-            Path(this.pathElements.drop(1)),
-            Path(anotherPath.pathElements.drop(1)),
-            allElementsIsPathVariables
-        )
+        return isSimilarPaths(Path(this.pathElements.drop(1)), Path(anotherPath.pathElements.drop(1)), allElementsIsPathVariables)
     }
 
     //TODO rewrite it

@@ -8,12 +8,10 @@ import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 class PathElement(val value: String) {
     val isPathVariable: Boolean = value.inCurlyBrackets()
 
-    fun addPathVariableType(type: String) =
-        if (isPathVariable) PathElement(value.unquoteCurlyBrackets().let { "${if (type.isBlank()) "String" else type}:$it" }.addCurlyBrackets())
+    fun addPathVariableType(type: String) = if (isPathVariable) PathElement(value.unquoteCurlyBrackets().let { "${if (type.isBlank()) "String" else type}:$it" }.addCurlyBrackets())
         else this
 
-    private fun compareWithPathVariable(value1: PathElement, value2: PathElement) =
-        if (value1.isPathVariable) comparePathVariableWithPsiElement(value1, value2) else comparePathVariableWithPsiElement(value2, value1)
+    private fun compareWithPathVariable(value1: PathElement, value2: PathElement) = if (value1.isPathVariable) comparePathVariableWithPsiElement(value1, value2) else comparePathVariableWithPsiElement(value2, value1)
 
     private fun comparePathVariableWithPsiElement(pathVariable: PathElement, pathElement: PathElement): Boolean {
         val bothAreNumbers = isDigit(pathVariable.value) && pathElement.value.isNumeric()

@@ -7,8 +7,8 @@ import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.viartemev.requestmapper.model.Path
-import java.net.URL
+import com.viartemev.requestmapper.model.PopupPath
+import com.viartemev.requestmapper.model.RequestedUserPath
 
 class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
 
@@ -40,17 +40,8 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         } else if (!userPattern.contains('/')) {
             userPattern in popupItem
         } else {
-            Path(cleanPopupItems(popupItem)).isSimilarTo(Path(extractPath(userPattern)))
+            PopupPath(popupItem).toPath()
+                .isSimilarTo(RequestedUserPath(userPattern).toPath())
         }
-    }
-
-    private fun cleanPopupItems(popupItem: String): String {
-        return popupItem.split(' ')[1]
-    }
-
-    private fun extractPath(userPattern: String): String {
-        return if (userPattern.startsWith("http") || userPattern.startsWith("https")) {
-            URL(userPattern).path
-        } else userPattern
     }
 }

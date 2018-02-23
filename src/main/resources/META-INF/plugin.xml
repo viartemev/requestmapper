@@ -1,8 +1,8 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.9</version>
-    <vendor email="viartemev@gmail.com" url="http://viartemev.com">Vyacheslav Artemyev</vendor>
+    <version>0.10</version>
+    <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>
@@ -44,8 +44,9 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Improvement: add type for PathVariables</li>
-            <li>Improvement: update documentation</li>
+            <li>Improvement: path search</li>
+            <li>Bug fix: path search with path variables</li>
+            <li>Bug fix: path search with params</li>
         </ul>
     ]]>
     </change-notes>

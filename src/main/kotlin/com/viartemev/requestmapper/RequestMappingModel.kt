@@ -40,8 +40,7 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         } else if (!userPattern.contains('/')) {
             userPattern in popupItem
         } else {
-            PopupPath(popupItem).toPath()
-                .isSimilarTo(RequestedUserPath(userPattern).toPath())
+            PopupPath(popupItem).toPath().isSimilarTo(RequestedUserPath(userPattern).toPath())
         }
     }
 }

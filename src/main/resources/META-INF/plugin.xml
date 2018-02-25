@@ -45,6 +45,7 @@
     <change-notes><![CDATA[
         <ul>
             <li>Improvement: add support for static variables in JAX-RS path</li>
+            <li>Improvement: add support for concatenation of paths in mapping annotations</li>
         </ul>
     ]]>
     </change-notes>

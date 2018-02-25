@@ -7,6 +7,7 @@ import com.intellij.psi.PsiPolyadicExpression
 import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.utils.unquote
 
+// @todo #68 deduplicate PsiBinaryExpressionExtractor (PsiReferenceExpressionExtractor)
 class PsiBinaryExpressionExtractor : PsiAnnotationValueExtractor<PsiBinaryExpression> {
 
     override fun extract(value: PsiBinaryExpression) =

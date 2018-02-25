@@ -4,8 +4,8 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
+import com.viartemev.requestmapper.annotations.PathAnnotation
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
-import com.viartemev.requestmapper.utils.unquote
 
 abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
@@ -22,13 +22,13 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
     }
 
     private fun fetchClassMapping(psiMethod: PsiMethod): String {
-        val modifierList = psiMethod.containingClass?.modifierList ?: return ""
-        return modifierList
-                .annotations
-                .asSequence()
-                .filter { it.qualifiedName == PATH_ANNOTATION }
-                .mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
-                .firstOrNull() ?: ""
+        return psiMethod
+                .containingClass
+                ?.modifierList
+                ?.annotations
+                ?.filter { it.qualifiedName == PATH_ANNOTATION }
+                ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+                ?.first() ?: ""
     }
 
     private fun fetchMethodMapping(psiMethod: PsiMethod): String {
@@ -36,7 +36,7 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
                 .modifierList
                 .annotations
                 .filter { it.qualifiedName == PATH_ANNOTATION }
-                .mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
+                .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
                 .firstOrNull() ?: ""
     }
 

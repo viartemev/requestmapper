@@ -1,18 +1,12 @@
 package com.viartemev.requestmapper.annotations.spring
 
 import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiAnnotationMemberValue
-import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
-import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
-import com.viartemev.requestmapper.annotations.spring.extraction.BasePsiAnnotationValueVisitor
-import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMemberValueExtractor
-import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
-import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
 import com.viartemev.requestmapper.model.Path
+import com.viartemev.requestmapper.annotations.PathAnnotation
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 import com.viartemev.requestmapper.utils.unquote
 
@@ -24,9 +18,9 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     abstract fun extractMethod(): String
 
     private fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, methodName: String): List<RequestMappingItem> {
-        val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod)
-        val methodMappings = fetchMethodMapping(annotation, psiMethod)
-        val paramsMappings = fetchParamMapping(annotation)
+        val classMappings = fetchMappingsFromClass(psiMethod)
+        val methodMappings = fetchMappingsFromMethod(annotation, psiMethod)
+        val paramsMappings = fetchMappingsParams(annotation)
         return classMappings.map { clazz ->
             methodMappings.map {
                 paramsMappings.map { param ->
@@ -37,12 +31,12 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
         }.flatten()
     }
 
-    private fun fetchParamMapping(annotation: PsiAnnotation): List<String> {
-        val fetchMappingsFromAnnotation = fetchMappingsFromAnnotation(annotation, PARAMS)
+    private fun fetchMappingsParams(annotation: PsiAnnotation): List<String> {
+        val fetchMappingsFromAnnotation = PathAnnotation(annotation).fetchMappings(PARAMS)
         return if (fetchMappingsFromAnnotation.isNotEmpty()) fetchMappingsFromAnnotation else listOf("")
     }
 
-    private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): List<String> {
+    private fun fetchMappingsFromClass(psiMethod: PsiMethod): List<String> {
         val classMapping = psiMethod
                 .containingClass
                 ?.modifierList
@@ -54,14 +48,14 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
-        val pathMapping = fetchMappingsFromAnnotation(annotation, PATH)
+        val pathMapping = PathAnnotation(annotation).fetchMappings(PATH)
         return if (!pathMapping.isEmpty()) pathMapping else {
-            val valueMapping = fetchMappingsFromAnnotation(annotation, VALUE)
+            val valueMapping = PathAnnotation(annotation).fetchMappings(VALUE)
             if (valueMapping.isNotEmpty()) valueMapping else listOf("")
         }
     }
 
-    private fun fetchMethodMapping(annotation: PsiAnnotation, method: PsiMethod): List<String> {
+    private fun fetchMappingsFromMethod(annotation: PsiAnnotation, method: PsiMethod): List<String> {
         val parametersNameWithType = method
                 .parameterList
                 .parameters
@@ -74,43 +68,22 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
 
     private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {
         val parameterType = parameter.type.presentableText.unquote()
-        val pathVariableAnnotations = parameter
+        return parameter
                 .modifierList
                 ?.annotations
                 ?.filter { it.qualifiedName == SPRING_PATH_VARIABLE_CLASS }
-                .orEmpty()
-
-        return if (pathVariableAnnotations.isEmpty()) {
-            null
-        } else {
-            pathVariableAnnotations
-                    .map { Pair((extractParameterNameFromAnnotation(it) ?: parameter.name!!), parameterType) }
-                    //only one PathVariable annotation possible
-                    .first()
-        }
+                ?.map { Pair(extractParameterNameFromAnnotation(it, parameter.name!!), parameterType) }
+                ?.first()
     }
 
-    private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation): String? {
+    private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {
         val pathVariableValue = annotation.findAttributeValue(VALUE)
         val pathVariableName = annotation.findAttributeValue(NAME)
         return when {
             pathVariableValue?.text?.unquote()?.isNotBlank() == true -> pathVariableValue.text.unquote()
             pathVariableName?.text?.unquote()?.isNotBlank() == true -> pathVariableName.text.unquote()
-            else -> null
+            else -> defaultValue
         }
-    }
-
-    private fun fetchMappingsFromAnnotation(annotation: PsiAnnotation, parameter: String): List<String> {
-        return object : BasePsiAnnotationValueVisitor() {
-            override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue) =
-                    PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
-
-            override fun visitPsiReferenceExpression(expression: PsiReferenceExpression) =
-                    PsiReferenceExpressionExtractor().extract(expression)
-
-            override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue) =
-                    PsiAnnotationMemberValueExtractor().extract(value)
-        }.visit(annotation, parameter)
     }
 
     companion object {

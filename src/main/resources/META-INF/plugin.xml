@@ -44,9 +44,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Improvement: path search</li>
-            <li>Bug fix: path search with path variables</li>
-            <li>Bug fix: path search with params</li>
+            <li>Improvement: add support for static variables in JAX-RS path</li>
         </ul>
     ]]>
     </change-notes>

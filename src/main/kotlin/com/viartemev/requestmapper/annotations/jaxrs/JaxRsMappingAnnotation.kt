@@ -23,21 +23,21 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
 
     private fun fetchClassMapping(psiMethod: PsiMethod): String {
         return psiMethod
-            .containingClass
-            ?.modifierList
-            ?.annotations
-            ?.filter { it.qualifiedName == PATH_ANNOTATION }
-            ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
-            ?.first() ?: ""
+                .containingClass
+                ?.modifierList
+                ?.annotations
+                ?.filter { it.qualifiedName == PATH_ANNOTATION }
+                ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+                ?.first() ?: ""
     }
 
     private fun fetchMethodMapping(psiMethod: PsiMethod): String {
         return psiMethod
-            .modifierList
-            .annotations
-            .filter { it.qualifiedName == PATH_ANNOTATION }
-            .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
-            .firstOrNull() ?: ""
+                .modifierList
+                .annotations
+                .filter { it.qualifiedName == PATH_ANNOTATION }
+                .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+                .firstOrNull() ?: ""
     }
 
     companion object {

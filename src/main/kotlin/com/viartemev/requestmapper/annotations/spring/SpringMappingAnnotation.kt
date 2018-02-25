@@ -13,7 +13,7 @@ import com.viartemev.requestmapper.utils.unquote
 abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> =
-        fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedMethod(), extractMethod())
+            fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedMethod(), extractMethod())
 
     abstract fun extractMethod(): String
 
@@ -38,12 +38,12 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
 
     private fun fetchMappingsFromClass(psiMethod: PsiMethod): List<String> {
         val classMapping = psiMethod
-            .containingClass
-            ?.modifierList
-            ?.annotations
-            ?.filterNotNull()
-            ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
-            ?.flatMap { fetchMapping(it) } ?: emptyList()
+                .containingClass
+                ?.modifierList
+                ?.annotations
+                ?.filterNotNull()
+                ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
+                ?.flatMap { fetchMapping(it) } ?: emptyList()
         return if (classMapping.isEmpty()) listOf("") else classMapping
     }
 
@@ -57,23 +57,23 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
 
     private fun fetchMappingsFromMethod(annotation: PsiAnnotation, method: PsiMethod): List<String> {
         val parametersNameWithType = method
-            .parameterList
-            .parameters
-            .mapNotNull { extractParameterNameWithType(it) }
-            .toMap()
+                .parameterList
+                .parameters
+                .mapNotNull { extractParameterNameWithType(it) }
+                .toMap()
 
         return fetchMapping(annotation)
-            .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
+                .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
     }
 
     private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {
         val parameterType = parameter.type.presentableText.unquote()
         return parameter
-            .modifierList
-            ?.annotations
-            ?.filter { it.qualifiedName == SPRING_PATH_VARIABLE_CLASS }
-            ?.map { Pair(extractParameterNameFromAnnotation(it, parameter.name!!), parameterType) }
-            ?.first()
+                .modifierList
+                ?.annotations
+                ?.filter { it.qualifiedName == SPRING_PATH_VARIABLE_CLASS }
+                ?.map { Pair(extractParameterNameFromAnnotation(it, parameter.name!!), parameterType) }
+                ?.first()
     }
 
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {

@@ -14,13 +14,13 @@ class PathAnnotation(private val annotation: PsiAnnotation) {
     fun fetchMappings(parameter: String): List<String> {
         return object : BasePsiAnnotationValueVisitor() {
             override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue) =
-                PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
+                    PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
 
             override fun visitPsiReferenceExpression(expression: PsiReferenceExpression) =
-                PsiReferenceExpressionExtractor().extract(expression)
+                    PsiReferenceExpressionExtractor().extract(expression)
 
             override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue) =
-                PsiAnnotationMemberValueExtractor().extract(value)
+                    PsiAnnotationMemberValueExtractor().extract(value)
         }.visit(annotation, parameter)
     }
 }

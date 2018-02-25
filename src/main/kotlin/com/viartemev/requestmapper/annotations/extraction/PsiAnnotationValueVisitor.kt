@@ -2,6 +2,7 @@ package com.viartemev.requestmapper.annotations.extraction
 
 import com.intellij.psi.PsiAnnotationMemberValue
 import com.intellij.psi.PsiArrayInitializerMemberValue
+import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiReferenceExpression
 
 interface PsiAnnotationValueVisitor {
@@ -11,4 +12,6 @@ interface PsiAnnotationValueVisitor {
     fun visitPsiReferenceExpression(expression: PsiReferenceExpression): List<String>
 
     fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue): List<String>
+
+    fun visitPsiBinaryExpression(expression: PsiBinaryExpression): List<String>
 }

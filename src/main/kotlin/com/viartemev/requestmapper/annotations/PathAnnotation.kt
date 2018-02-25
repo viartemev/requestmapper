@@ -25,7 +25,7 @@ class PathAnnotation(private val annotation: PsiAnnotation) {
                     PsiAnnotationMemberValueExtractor().extract(value)
 
             override fun visitPsiBinaryExpression(expression: PsiBinaryExpression) =
-                PsiBinaryExpressionExtractor().extract(expression)
+                    PsiBinaryExpressionExtractor().extract(expression)
         }.visit(annotation, parameter)
     }
 }

@@ -19,14 +19,14 @@ import com.viartemev.requestmapper.utils.unquote
 abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> =
-            fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedMethod(), extractMethod())
+        fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedMethod(), extractMethod())
 
     abstract fun extractMethod(): String
 
     private fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, methodName: String): List<RequestMappingItem> {
-        val classMappings = fetchRequestMappingAnnotationsFromParentClass(psiMethod)
-        val methodMappings = fetchMethodMapping(annotation, psiMethod)
-        val paramsMappings = fetchParamMapping(annotation)
+        val classMappings = fetchMappingsFromClass(psiMethod)
+        val methodMappings = fetchMappingsFromMethod(annotation, psiMethod)
+        val paramsMappings = fetchMappingsParams(annotation)
         return classMappings.map { clazz ->
             methodMappings.map {
                 paramsMappings.map { param ->
@@ -37,19 +37,19 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
         }.flatten()
     }
 
-    private fun fetchParamMapping(annotation: PsiAnnotation): List<String> {
+    private fun fetchMappingsParams(annotation: PsiAnnotation): List<String> {
         val fetchMappingsFromAnnotation = fetchMappingsFromAnnotation(annotation, PARAMS)
         return if (fetchMappingsFromAnnotation.isNotEmpty()) fetchMappingsFromAnnotation else listOf("")
     }
 
-    private fun fetchRequestMappingAnnotationsFromParentClass(psiMethod: PsiMethod): List<String> {
+    private fun fetchMappingsFromClass(psiMethod: PsiMethod): List<String> {
         val classMapping = psiMethod
-                .containingClass
-                ?.modifierList
-                ?.annotations
-                ?.filterNotNull()
-                ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
-                ?.flatMap { fetchMapping(it) } ?: emptyList()
+            .containingClass
+            ?.modifierList
+            ?.annotations
+            ?.filterNotNull()
+            ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
+            ?.flatMap { fetchMapping(it) } ?: emptyList()
         return if (classMapping.isEmpty()) listOf("") else classMapping
     }
 
@@ -61,55 +61,47 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
         }
     }
 
-    private fun fetchMethodMapping(annotation: PsiAnnotation, method: PsiMethod): List<String> {
+    private fun fetchMappingsFromMethod(annotation: PsiAnnotation, method: PsiMethod): List<String> {
         val parametersNameWithType = method
-                .parameterList
-                .parameters
-                .mapNotNull { extractParameterNameWithType(it) }
-                .toMap()
+            .parameterList
+            .parameters
+            .mapNotNull { extractParameterNameWithType(it) }
+            .toMap()
 
         return fetchMapping(annotation)
-                .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
+            .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
     }
 
     private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {
         val parameterType = parameter.type.presentableText.unquote()
-        val pathVariableAnnotations = parameter
-                .modifierList
-                ?.annotations
-                ?.filter { it.qualifiedName == SPRING_PATH_VARIABLE_CLASS }
-                .orEmpty()
-
-        return if (pathVariableAnnotations.isEmpty()) {
-            null
-        } else {
-            pathVariableAnnotations
-                    .map { Pair((extractParameterNameFromAnnotation(it) ?: parameter.name!!), parameterType) }
-                    //only one PathVariable annotation possible
-                    .first()
-        }
+        return parameter
+            .modifierList
+            ?.annotations
+            ?.filter { it.qualifiedName == SPRING_PATH_VARIABLE_CLASS }
+            ?.map { Pair(extractParameterNameFromAnnotation(it, parameter.name!!), parameterType) }
+            ?.first()
     }
 
-    private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation): String? {
+    private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {
         val pathVariableValue = annotation.findAttributeValue(VALUE)
         val pathVariableName = annotation.findAttributeValue(NAME)
         return when {
             pathVariableValue?.text?.unquote()?.isNotBlank() == true -> pathVariableValue.text.unquote()
             pathVariableName?.text?.unquote()?.isNotBlank() == true -> pathVariableName.text.unquote()
-            else -> null
+            else -> defaultValue
         }
     }
 
     private fun fetchMappingsFromAnnotation(annotation: PsiAnnotation, parameter: String): List<String> {
         return object : BasePsiAnnotationValueVisitor() {
             override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue) =
-                    PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
+                PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
 
             override fun visitPsiReferenceExpression(expression: PsiReferenceExpression) =
-                    PsiReferenceExpressionExtractor().extract(expression)
+                PsiReferenceExpressionExtractor().extract(expression)
 
             override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue) =
-                    PsiAnnotationMemberValueExtractor().extract(value)
+                PsiAnnotationMemberValueExtractor().extract(value)
         }.visit(annotation, parameter)
     }
 

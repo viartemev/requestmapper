@@ -22,22 +22,23 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
     }
 
     private fun fetchClassMapping(psiMethod: PsiMethod): String {
-        val modifierList = psiMethod.containingClass?.modifierList ?: return ""
-        return modifierList
-                .annotations
-                .asSequence()
-                .filter { it.qualifiedName == PATH_ANNOTATION }
-                .mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
-                .firstOrNull() ?: ""
+        return psiMethod
+            .containingClass
+            ?.modifierList
+            ?.annotations
+            ?.asSequence()
+            ?.filter { it.qualifiedName == PATH_ANNOTATION }
+            ?.mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
+            ?.first() ?: ""
     }
 
     private fun fetchMethodMapping(psiMethod: PsiMethod): String {
         return psiMethod
-                .modifierList
-                .annotations
-                .filter { it.qualifiedName == PATH_ANNOTATION }
-                .mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
-                .firstOrNull() ?: ""
+            .modifierList
+            .annotations
+            .filter { it.qualifiedName == PATH_ANNOTATION }
+            .mapNotNull { it.findAttributeValue(ATTRIBUTE_NAME)?.text?.unquote() }
+            .firstOrNull() ?: ""
     }
 
     companion object {

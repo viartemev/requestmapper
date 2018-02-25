@@ -1,4 +1,4 @@
-package com.viartemev.requestmapper.annotations.spring.extraction
+package com.viartemev.requestmapper.annotations.extraction
 
 import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.viartemev.requestmapper.utils.unquote

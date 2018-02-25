@@ -1,18 +1,12 @@
 package com.viartemev.requestmapper.annotations.spring
 
 import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiAnnotationMemberValue
-import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
-import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
-import com.viartemev.requestmapper.annotations.spring.extraction.BasePsiAnnotationValueVisitor
-import com.viartemev.requestmapper.annotations.spring.extraction.PsiAnnotationMemberValueExtractor
-import com.viartemev.requestmapper.annotations.spring.extraction.PsiArrayInitializerMemberValueExtractor
-import com.viartemev.requestmapper.annotations.spring.extraction.PsiReferenceExpressionExtractor
 import com.viartemev.requestmapper.model.Path
+import com.viartemev.requestmapper.annotations.PathAnnotation
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 import com.viartemev.requestmapper.utils.unquote
 
@@ -38,7 +32,7 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     private fun fetchMappingsParams(annotation: PsiAnnotation): List<String> {
-        val fetchMappingsFromAnnotation = fetchMappingsFromAnnotation(annotation, PARAMS)
+        val fetchMappingsFromAnnotation = PathAnnotation(annotation).fetchMappings(PARAMS)
         return if (fetchMappingsFromAnnotation.isNotEmpty()) fetchMappingsFromAnnotation else listOf("")
     }
 
@@ -54,9 +48,9 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     }
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
-        val pathMapping = fetchMappingsFromAnnotation(annotation, PATH)
+        val pathMapping = PathAnnotation(annotation).fetchMappings(PATH)
         return if (!pathMapping.isEmpty()) pathMapping else {
-            val valueMapping = fetchMappingsFromAnnotation(annotation, VALUE)
+            val valueMapping = PathAnnotation(annotation).fetchMappings(VALUE)
             if (valueMapping.isNotEmpty()) valueMapping else listOf("")
         }
     }
@@ -90,19 +84,6 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
             pathVariableName?.text?.unquote()?.isNotBlank() == true -> pathVariableName.text.unquote()
             else -> defaultValue
         }
-    }
-
-    private fun fetchMappingsFromAnnotation(annotation: PsiAnnotation, parameter: String): List<String> {
-        return object : BasePsiAnnotationValueVisitor() {
-            override fun visitPsiArrayInitializerMemberValue(arrayAValue: PsiArrayInitializerMemberValue) =
-                PsiArrayInitializerMemberValueExtractor().extract(arrayAValue)
-
-            override fun visitPsiReferenceExpression(expression: PsiReferenceExpression) =
-                PsiReferenceExpressionExtractor().extract(expression)
-
-            override fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue) =
-                PsiAnnotationMemberValueExtractor().extract(value)
-        }.visit(annotation, parameter)
     }
 
     companion object {

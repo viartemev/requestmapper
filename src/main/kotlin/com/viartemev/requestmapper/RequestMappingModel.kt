@@ -38,7 +38,8 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         return if (userPattern == "/") {
             true
         } else if (!userPattern.contains('/')) {
-            userPattern in popupItem
+            val (method, path) = popupItem.split(" ", limit = 2)
+            path.contains(userPattern) || method.contains(userPattern, ignoreCase = true)
         } else {
             PopupPath(popupItem).toPath().isSimilarTo(RequestedUserPath(userPattern).toPath())
         }

@@ -7,6 +7,7 @@ import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PopupPath
 import com.viartemev.requestmapper.model.RequestedUserPath
 
@@ -40,7 +41,10 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
         } else if (!userPattern.contains('/')) {
             userPattern in popupItem
         } else {
-            PopupPath(popupItem).toPath().isSimilarTo(RequestedUserPath(userPattern).toPath())
+            Path.isSubPathOf(
+                    PopupPath(popupItem).toPath(),
+                    RequestedUserPath(userPattern).toPath()
+            )
         }
     }
 }

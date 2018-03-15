@@ -9,31 +9,35 @@ data class Path(private val pathElements: List<PathElement>) {
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 
-    //TODO move to companion object
-    fun isSimilarTo(anotherPath: Path): Boolean {
-        val allElementsArePathVariables = this.pathElements.drop(1).all { it.isPathVariable }
-        return isSimilarPaths(this.pathElements.drop(1), anotherPath.pathElements.drop(1), allElementsArePathVariables)
-    }
+    companion object {
 
-    //TODO rename method
-    private tailrec fun isSimilarPaths(path1: List<PathElement>,
-                                       path2: List<PathElement>,
-                                       allElementsArePathVariables: Boolean): Boolean {
-        if (path1.size < path2.size) {
-            return false
+        fun isSubPathOf(sourcePath: Path, targetPath: Path): Boolean {
+            val sourcePathElements = sourcePath.pathElements.drop(1)
+            val targetPathElements = targetPath.pathElements.drop(1)
+            val allSourceElementsArePathVariables = sourcePathElements.all { it.isPathVariable }
+
+            return containAll(sourcePathElements, targetPathElements, allSourceElementsArePathVariables)
         }
 
-        val hasExactMatching = path1.subList(0, path2.size).any { !it.isPathVariable }
-        val listsAreEquals = path1
-                .zip(path2)
-                .all { (popupElement, userElement) ->
-                    popupElement == userElement || popupElement.value.startsWith(userElement.value)
-                }
+        private tailrec fun containAll(sourcePathElements: List<PathElement>,
+                                       targetPathElements: List<PathElement>,
+                                       allSourceElementsArePathVariables: Boolean): Boolean {
+            if (sourcePathElements.size < targetPathElements.size) {
+                return false
+            }
 
-        if (listsAreEquals && (hasExactMatching || allElementsArePathVariables)) {
-            return true
+            val hasExactMatching = sourcePathElements.subList(0, targetPathElements.size).any { !it.isPathVariable }
+            val pathElementsAreEqual = sourcePathElements
+                    .zip(targetPathElements)
+                    .all { (popupElement, userElement) ->
+                        popupElement == userElement || popupElement.value.startsWith(userElement.value)
+                    }
+
+            if (pathElementsAreEqual && (hasExactMatching || allSourceElementsArePathVariables)) {
+                return true
+            }
+
+            return containAll(sourcePathElements.drop(1), targetPathElements, allSourceElementsArePathVariables)
         }
-
-        return isSimilarPaths(path1.drop(1), path2, allElementsArePathVariables)
     }
 }

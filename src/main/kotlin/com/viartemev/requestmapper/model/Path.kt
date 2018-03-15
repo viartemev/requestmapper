@@ -37,26 +37,19 @@ data class Path(private val pathElements: List<PathElement>) {
                         userPatternList: List<PathElement>,
                         allElementsIsPathVariables: Boolean): Boolean {
         val size = userPatternList.size
-        var hasExactMatching = false
+        val hasExactMatching = popupItemList.subList(0, userPatternList.size).any { !it.isPathVariable }
         popupItemList.forEachIndexed { index, pathElement ->
             if (index == size) {
                 return@matches false
             }
             val userPatternElement = userPatternList[index]
             val elementsEqual = userPatternElement == pathElement
-            val elementsAreNotPathVariables = !userPatternElement.isPathVariable && !pathElement.isPathVariable
             if (index == size - 1) {
                 val elementsPartiallyEqual = pathElement.value.startsWith(userPatternElement.value)
-                if ((elementsEqual || elementsPartiallyEqual) && elementsAreNotPathVariables) {
-                    hasExactMatching = true
-                }
                 return@matches (elementsEqual || elementsPartiallyEqual) && (hasExactMatching || allElementsIsPathVariables)
             }
             if (pathElement != userPatternElement) {
                 return@matches false
-            }
-            if (elementsEqual && elementsAreNotPathVariables) {
-                hasExactMatching = true
             }
         }
         return false

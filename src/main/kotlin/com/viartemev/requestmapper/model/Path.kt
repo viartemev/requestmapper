@@ -33,25 +33,16 @@ data class Path(private val pathElements: List<PathElement>) {
     }
 
     //TODO rewrite it
+    //TODO rename method
     private fun matches(popupItemList: List<PathElement>,
                         userPatternList: List<PathElement>,
-                        allElementsIsPathVariables: Boolean): Boolean {
-        val size = userPatternList.size
+                        allElementsArePathVariables: Boolean): Boolean {
         val hasExactMatching = popupItemList.subList(0, userPatternList.size).any { !it.isPathVariable }
-        popupItemList.forEachIndexed { index, pathElement ->
-            if (index == size) {
-                return@matches false
+        val listsAreEquals = popupItemList
+            .zip(userPatternList)
+            .all { (popupElement, userElement) ->
+                popupElement == userElement || popupElement.value.startsWith(userElement.value)
             }
-            val userPatternElement = userPatternList[index]
-            val elementsEqual = userPatternElement == pathElement
-            if (index == size - 1) {
-                val elementsPartiallyEqual = pathElement.value.startsWith(userPatternElement.value)
-                return@matches (elementsEqual || elementsPartiallyEqual) && (hasExactMatching || allElementsIsPathVariables)
-            }
-            if (pathElement != userPatternElement) {
-                return@matches false
-            }
-        }
-        return false
+        return listsAreEquals && (hasExactMatching || allElementsArePathVariables)
     }
 }

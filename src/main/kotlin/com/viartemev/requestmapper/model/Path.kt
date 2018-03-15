@@ -12,34 +12,28 @@ data class Path(private val pathElements: List<PathElement>) {
     //TODO move to companion object
     fun isSimilarTo(anotherPath: Path): Boolean {
         val allElementsArePathVariables = this.pathElements.drop(1).all { it.isPathVariable }
-        return isSimilarPaths(Path(this.pathElements.drop(1)), Path(anotherPath.pathElements.drop(1)), allElementsArePathVariables)
+        return isSimilarPaths(this.pathElements.drop(1), anotherPath.pathElements.drop(1), allElementsArePathVariables)
     }
 
     //TODO rename method
-    private tailrec fun isSimilarPaths(path1: Path,
-                                       path2: Path,
+    private tailrec fun isSimilarPaths(path1: List<PathElement>,
+                                       path2: List<PathElement>,
                                        allElementsArePathVariables: Boolean): Boolean {
-        if (path1.pathElements.size < path2.pathElements.size) {
+        if (path1.size < path2.size) {
             return false
         }
 
-        if (matches(path1.pathElements, path2.pathElements, allElementsArePathVariables)) {
+        val hasExactMatching = path1.subList(0, path2.size).any { !it.isPathVariable }
+        val listsAreEquals = path1
+                .zip(path2)
+                .all { (popupElement, userElement) ->
+                    popupElement == userElement || popupElement.value.startsWith(userElement.value)
+                }
+
+        if (listsAreEquals && (hasExactMatching || allElementsArePathVariables)) {
             return true
         }
 
-        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, allElementsArePathVariables)
-    }
-
-    //TODO rename method
-    private fun matches(popupItemList: List<PathElement>,
-                        userPatternList: List<PathElement>,
-                        allElementsArePathVariables: Boolean): Boolean {
-        val hasExactMatching = popupItemList.subList(0, userPatternList.size).any { !it.isPathVariable }
-        val listsAreEquals = popupItemList
-            .zip(userPatternList)
-            .all { (popupElement, userElement) ->
-                popupElement == userElement || popupElement.value.startsWith(userElement.value)
-            }
-        return listsAreEquals && (hasExactMatching || allElementsArePathVariables)
+        return isSimilarPaths(path1.drop(1), path2, allElementsArePathVariables)
     }
 }

@@ -9,30 +9,27 @@ data class Path(private val pathElements: List<PathElement>) {
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 
-    // @todo #57 rewrite isSimilarTo method
+    //TODO move to companion object
     fun isSimilarTo(anotherPath: Path): Boolean {
-        val allElementsIsPathVariables = this.pathElements.drop(1).all { it.isPathVariable }
-        return isSimilarPaths(Path(this.pathElements.drop(1)), Path(anotherPath.pathElements.drop(1)), allElementsIsPathVariables)
+        val allElementsArePathVariables = this.pathElements.drop(1).all { it.isPathVariable }
+        return isSimilarPaths(Path(this.pathElements.drop(1)), Path(anotherPath.pathElements.drop(1)), allElementsArePathVariables)
     }
 
-    //TODO rewrite it
+    //TODO rename method
     private tailrec fun isSimilarPaths(path1: Path,
                                        path2: Path,
-                                       allElementsIsPathVariables: Boolean): Boolean {
+                                       allElementsArePathVariables: Boolean): Boolean {
         if (path1.pathElements.size < path2.pathElements.size) {
             return false
         }
 
-        val listMatches = matches(path1.pathElements, path2.pathElements, allElementsIsPathVariables)
-
-        if (listMatches) {
+        if (matches(path1.pathElements, path2.pathElements, allElementsArePathVariables)) {
             return true
         }
 
-        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, allElementsIsPathVariables)
+        return isSimilarPaths(Path(path1.pathElements.drop(1)), path2, allElementsArePathVariables)
     }
 
-    //TODO rewrite it
     //TODO rename method
     private fun matches(popupItemList: List<PathElement>,
                         userPatternList: List<PathElement>,

@@ -26,38 +26,38 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
 
     private fun fetchMappingFromClass(psiMethod: PsiMethod): String {
         return psiMethod
-            .containingClass
-            ?.modifierList
-            ?.annotations
-            ?.filter { it.qualifiedName == PATH_ANNOTATION }
-            ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
-            ?.first() ?: ""
+                .containingClass
+                ?.modifierList
+                ?.annotations
+                ?.filter { it.qualifiedName == PATH_ANNOTATION }
+                ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+                ?.first() ?: ""
     }
 
     private fun fetchMappingFromMethod(method: PsiMethod): String {
         val parametersNameWithType = method
-            .parameterList
-            .parameters
-            .mapNotNull { extractParameterNameWithType(it) }
-            .toMap()
+                .parameterList
+                .parameters
+                .mapNotNull { extractParameterNameWithType(it) }
+                .toMap()
 
         return method
-            .modifierList
-            .annotations
-            .filter { it.qualifiedName == PATH_ANNOTATION }
-            .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
-            .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
-            .firstOrNull() ?: ""
+                .modifierList
+                .annotations
+                .filter { it.qualifiedName == PATH_ANNOTATION }
+                .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+                .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
+                .firstOrNull() ?: ""
     }
 
     private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {
         val parameterType = parameter.type.presentableText.unquote()
         return parameter
-            .modifierList
-            ?.annotations
-            ?.filter { it.qualifiedName == JAX_RS_PATH_PARAM }
-            ?.map { Pair(extractParameterNameFromAnnotation(it, parameter.name!!), parameterType) }
-            ?.first()
+                .modifierList
+                ?.annotations
+                ?.filter { it.qualifiedName == JAX_RS_PATH_PARAM }
+                ?.map { Pair(extractParameterNameFromAnnotation(it, parameter.name!!), parameterType) }
+                ?.first()
     }
 
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {

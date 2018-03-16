@@ -42,7 +42,7 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
             val (method, path) = popupItem.split(" ", limit = 2)
             path.contains(userPattern) || method.contains(userPattern, ignoreCase = true)
         } else {
-            Path.isSubPathOf(
+            Path.isSubpathOf(
                     PopupPath(popupItem).toPath(),
                     RequestedUserPath(userPattern).toPath()
             )

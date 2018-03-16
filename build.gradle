@@ -1,13 +1,12 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.2.21'
+        kotlin_version = '1.2.30'
         junit_jupiter_version = '5.0.1'
         junit_plugin_version = '1.0.1'
         spek_version = '1.1.5'
         assertj_version = '3.8.0'
         gradle_intellij_plugin = '0.2.18'
-        gradle_plugin = '2.5'
         kotlinter_gradle_plugin = '1.7.0'
         kluent_version = '1.34'
         log4j_version = '2.9.0'
@@ -25,7 +24,6 @@ buildscript {
         classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:$coveralls_plugin"
         classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:$kotlinter_gradle_plugin"
         classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:$gradle_intellij_plugin"
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$gradle_plugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.junit.platform:junit-platform-gradle-plugin:$junit_plugin_version"
     }
@@ -41,7 +39,6 @@ apply plugin: "org.jetbrains.intellij"
 apply plugin: "java"
 apply plugin: "kotlin"
 apply plugin: "idea"
-apply plugin: "org.sonarqube"
 apply plugin: "jacoco"
 apply plugin: "org.junit.platform.gradle.plugin"
 apply plugin: "org.jmailen.kotlinter"

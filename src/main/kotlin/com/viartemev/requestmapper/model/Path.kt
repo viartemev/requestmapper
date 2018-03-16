@@ -11,17 +11,17 @@ data class Path(private val pathElements: List<PathElement>) {
 
     companion object {
 
-        fun isSubPathOf(sourcePath: Path, targetPath: Path): Boolean {
+        fun isSubpathOf(sourcePath: Path, targetPath: Path): Boolean {
             val sourcePathElements = sourcePath.pathElements.drop(1)
             val targetPathElements = targetPath.pathElements.drop(1)
             val allSourceElementsArePathVariables = sourcePathElements.all { it.isPathVariable }
 
-            return containAll(sourcePathElements, targetPathElements, allSourceElementsArePathVariables)
+            return containsAll(sourcePathElements, targetPathElements, allSourceElementsArePathVariables)
         }
 
-        private tailrec fun containAll(sourcePathElements: List<PathElement>,
-                                       targetPathElements: List<PathElement>,
-                                       allSourceElementsArePathVariables: Boolean): Boolean {
+        private tailrec fun containsAll(sourcePathElements: List<PathElement>,
+                                        targetPathElements: List<PathElement>,
+                                        allSourceElementsArePathVariables: Boolean): Boolean {
             if (sourcePathElements.size < targetPathElements.size) {
                 return false
             }
@@ -37,7 +37,7 @@ data class Path(private val pathElements: List<PathElement>) {
                 return true
             }
 
-            return containAll(sourcePathElements.drop(1), targetPathElements, allSourceElementsArePathVariables)
+            return containsAll(sourcePathElements.drop(1), targetPathElements, allSourceElementsArePathVariables)
         }
     }
 }

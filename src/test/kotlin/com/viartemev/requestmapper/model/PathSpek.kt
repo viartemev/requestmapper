@@ -1,6 +1,6 @@
 package com.viartemev.requestmapper.model
 
-import com.viartemev.requestmapper.model.Path.Companion.isSubPathOf
+import com.viartemev.requestmapper.model.Path.Companion.isSubpathOf
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeFalse
 import org.amshove.kluent.shouldBeTrue
@@ -58,159 +58,159 @@ object PathSpek : Spek({
             }
         }
 
-        on("isSubPathOf 1") {
+        on("isSubpathOf 1") {
             it("1") {
-                isSubPathOf(Path("/api"), (Path("/api"))).shouldBeTrue()
+                isSubpathOf(Path("/api"), (Path("/api"))).shouldBeTrue()
             }
         }
-        on("isSubPathOf 2") {
+        on("isSubpathOf 2") {
             it("2") {
-                isSubPathOf(Path("/api"), (Path("/api1"))).shouldBeFalse()
+                isSubpathOf(Path("/api"), (Path("/api1"))).shouldBeFalse()
             }
         }
-        on("isSubPathOf 3") {
+        on("isSubpathOf 3") {
             it("3") {
-                isSubPathOf(Path("/api/v1"), Path("/api/v1")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1"), Path("/api/v1")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 4") {
+        on("isSubpathOf 4") {
             it("4") {
-                isSubPathOf(Path("/api/v1"), Path("/api/v2")).shouldBeFalse()
+                isSubpathOf(Path("/api/v1"), Path("/api/v2")).shouldBeFalse()
             }
         }
-        on("isSubPathOf 5") {
+        on("isSubpathOf 5") {
             it("5") {
-                isSubPathOf(Path("/api/v1/items"), Path("/api/v1")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items"), Path("/api/v1")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 6") {
+        on("isSubpathOf 6") {
             it("6") {
-                isSubPathOf(Path("/api/v1/items"), Path("/api/v1/items")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items"), Path("/api/v1/items")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 7") {
+        on("isSubpathOf 7") {
             it("7") {
-                isSubPathOf(Path("/api/v1/items/{Long:itemId}"), Path("/api/v1/items/123")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{Long:itemId}"), Path("/api/v1/items/123")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 8") {
+        on("isSubpathOf 8") {
             it("8") {
-                isSubPathOf(Path("/api/v1/items/{Long:itemId}"), Path("/api/v1/items/asdasd")).shouldBeFalse()
+                isSubpathOf(Path("/api/v1/items/{Long:itemId}"), Path("/api/v1/items/asdasd")).shouldBeFalse()
             }
         }
-        on("isSubPathOf 9") {
+        on("isSubpathOf 9") {
             it("9") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}"), Path("/api/v1/items/asdasd")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}"), Path("/api/v1/items/asdasd")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 10") {
+        on("isSubpathOf 10") {
             it("10") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}"), Path("/api/v1/items/123")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}"), Path("/api/v1/items/123")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 11") {
+        on("isSubpathOf 11") {
             it("11") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/product"), Path("/api/v1/items/123/product")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/product"), Path("/api/v1/items/123/product")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 12") {
+        on("isSubpathOf 12") {
             it("12") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/product/{Long:productId}"), Path("/api/v1/items/123/product/123")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/product/{Long:productId}"), Path("/api/v1/items/123/product/123")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 13") {
+        on("isSubpathOf 13") {
             it("13") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/product/{Long:productId}"), Path("/api/v1/items/123/product/asdasd")).shouldBeFalse()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/product/{Long:productId}"), Path("/api/v1/items/123/product/asdasd")).shouldBeFalse()
             }
         }
-        on("isSubPathOf 14") {
+        on("isSubpathOf 14") {
             it("14") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/api/v1/items/123/123")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/api/v1/items/123/123")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 15") {
+        on("isSubpathOf 15") {
             it("15") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/api/v1/items/123/asdasd")).shouldBeFalse()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/api/v1/items/123/asdasd")).shouldBeFalse()
             }
         }
-        on("isSubPathOf 16") {
+        on("isSubpathOf 16") {
             it("16") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/asdaasd/123")).shouldBeFalse()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/asdaasd/123")).shouldBeFalse()
             }
         }
-        on("isSubPathOf 17") {
+        on("isSubpathOf 17") {
             it("17") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/items/asdaasd/123")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/items/asdaasd/123")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 18") {
+        on("isSubpathOf 18") {
             it("18") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/123")).shouldBeFalse()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/123")).shouldBeFalse()
             }
         }
-        on("isSubPathOf 19") {
+        on("isSubpathOf 19") {
             it("19") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/items/123")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}"), Path("/items/123")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 20") {
+        on("isSubpathOf 20") {
             it("20") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/products/{Long:productId}"), Path("/products/123")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/products/{Long:productId}"), Path("/products/123")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 21") {
+        on("isSubpathOf 21") {
             it("21") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/products/{Long:productId}"), Path("/123/products")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/products/{Long:productId}"), Path("/123/products")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 22") {
+        on("isSubpathOf 22") {
             it("22") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/products/{Long:productId}"), Path("/123/products/1231")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/products/{Long:productId}"), Path("/123/products/1231")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 23") {
+        on("isSubpathOf 23") {
             it("23") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/123/price")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/123/price")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 24") {
+        on("isSubpathOf 24") {
             it("24") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("itemId/123/price")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("itemId/123/price")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 25") {
+        on("isSubpathOf 25") {
             it("25") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("localhost:8080/api/v1")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("localhost:8080/api/v1")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 26") {
+        on("isSubpathOf 26") {
             it("26") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/api/")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/api/")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 27") {
+        on("isSubpathOf 27") {
             it("27") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/ap")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/ap")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 28") {
+        on("isSubpathOf 28") {
             it("28") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/price/")).shouldBeFalse()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{Long:productId}/price"), Path("/price/")).shouldBeFalse()
             }
         }
-        on("isSubPathOf 29") {
+        on("isSubpathOf 29") {
             it("29") {
-                isSubPathOf(Path("/api/v1/items/{String:itemId}/{SpecialType:productId}/price"), Path("/api/v1/items/itemId/special-type")).shouldBeTrue()
+                isSubpathOf(Path("/api/v1/items/{String:itemId}/{SpecialType:productId}/price"), Path("/api/v1/items/itemId/special-type")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 30") {
+        on("isSubpathOf 30") {
             it("30") {
-                isSubPathOf(Path("/{String:item}"), Path("/ap")).shouldBeTrue()
+                isSubpathOf(Path("/{String:item}"), Path("/ap")).shouldBeTrue()
             }
         }
-        on("isSubPathOf 31") {
+        on("isSubpathOf 31") {
             it("31") {
-                isSubPathOf(Path("/{String:item}/{String:product}"), Path("/item/product")).shouldBeTrue()
+                isSubpathOf(Path("/{String:item}/{String:product}"), Path("/item/product")).shouldBeTrue()
             }
         }
     }

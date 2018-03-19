@@ -46,7 +46,7 @@ apply plugin: "com.github.kt3k.coveralls"
 
 
 group "com.viartemev.requestmapper"
-version "0.10"
+version "0.11"
 
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
@@ -88,7 +88,7 @@ intellij {
 }
 
 patchPluginXml {
-    version '0.10'
+    version '0.11'
     sinceBuild '141.0'
     untilBuild ''
 }

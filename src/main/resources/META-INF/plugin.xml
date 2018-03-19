@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.10</version>
+    <version>0.11</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -44,8 +44,8 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Improvement: add support for static variables in JAX-RS path</li>
-            <li>Improvement: add support for concatenation of paths in mapping annotations</li>
+            <li>Feature: add support for JAX-RS path params</li>
+            <li>Bug fix: search pattern should be case insensitive (method name)</li>
         </ul>
     ]]>
     </change-notes>

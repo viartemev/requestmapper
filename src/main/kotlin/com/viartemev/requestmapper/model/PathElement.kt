@@ -4,6 +4,7 @@ import com.viartemev.requestmapper.utils.addCurlyBrackets
 import com.viartemev.requestmapper.utils.inCurlyBrackets
 import com.viartemev.requestmapper.utils.isNumeric
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
+import org.apache.commons.lang.StringEscapeUtils
 
 class PathElement(val value: String) {
     val isPathVariable: Boolean = value.inCurlyBrackets()
@@ -14,6 +15,11 @@ class PathElement(val value: String) {
     private fun compareWithPathVariable(value1: PathElement, value2: PathElement) = if (value1.isPathVariable) comparePathVariableWithPsiElement(value1, value2) else comparePathVariableWithPsiElement(value2, value1)
 
     private fun comparePathVariableWithPsiElement(pathVariable: PathElement, pathElement: PathElement): Boolean {
+        if (pathVariable.value.count { it == ':' } > 1) {
+            val regexString = StringEscapeUtils.unescapeJava(pathVariable.value.unquoteCurlyBrackets().substringAfterLast(':'))
+            return regexString.toRegex().matches(pathElement.value)
+        }
+
         val bothAreNumbers = isDigit(pathVariable.value) && pathElement.value.isNumeric()
         val pathVariableIsString = !isDigit(pathVariable.value)
         return bothAreNumbers || pathVariableIsString

@@ -2,10 +2,15 @@ package com.viartemev.requestmapper.model
 
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
-data class Path(private val pathElements: List<PathElement>) {
+class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
-    fun addPathVariablesTypes(parametersNameWithType: Map<String, String>) = this.copy(pathElements = pathElements.map { it.addPathVariableType(parametersNameWithType.getOrDefault(it.value.unquoteCurlyBrackets(), "String")) })
+    fun addPathVariablesTypes(parametersNameWithType: Map<String, String>): Path {
+        return Path(pathElements.map {
+            val key = it.value.unquoteCurlyBrackets().substringBefore(':')
+            it.addPathVariableType(parametersNameWithType.getOrDefault(key, "String"))
+        })
+    }
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 

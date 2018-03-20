@@ -14,6 +14,21 @@ class Path(private val pathElements: List<PathElement>) {
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Path
+
+        if (pathElements != other.pathElements) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return pathElements.hashCode()
+    }
+
     companion object {
 
         fun isSubpathOf(sourcePath: Path, targetPath: Path): Boolean {

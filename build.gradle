@@ -42,8 +42,6 @@ apply plugin: "idea"
 apply plugin: "jacoco"
 apply plugin: "org.junit.platform.gradle.plugin"
 apply plugin: "org.jmailen.kotlinter"
-apply plugin: "com.github.kt3k.coveralls"
-
 
 group "com.viartemev.requestmapper"
 version "0.11"

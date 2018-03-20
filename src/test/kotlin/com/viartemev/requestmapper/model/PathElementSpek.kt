@@ -55,17 +55,17 @@ object PathElementSpek : Spek({
             }
         }
         on("equals on element with String type path variable and string") {
-            it("equals 1") {
+            it("should return true") {
                 PathElement("{String:id}") shouldEqual PathElement("string")
             }
         }
         on("equals on element with Long type path variable and digital") {
-            it("equals 1") {
+            it("should return true") {
                 PathElement("{Long:id}") shouldEqual PathElement("123")
             }
         }
         on("equals on element with Long type path variable and string") {
-            it("equals 1") {
+            it("should return false") {
                 PathElement("{Long:id}") shouldNotEqual PathElement("string")
             }
         }
@@ -75,18 +75,33 @@ object PathElementSpek : Spek({
             }
         }
         on("equals on element with String type path variable and string with inverted order") {
-            it("equals 1") {
+            it("should return true") {
                 PathElement("string") shouldEqual PathElement("{String:id}")
             }
         }
         on("equals on element with Long type path variable and digital with inverted order") {
-            it("equals 1") {
+            it("should return true") {
                 PathElement("123") shouldEqual PathElement("{Long:id}")
             }
         }
         on("equals on element with Long type path variable and string with inverted order") {
-            it("equals 1") {
+            it("should return false") {
                 PathElement("string") shouldNotEqual PathElement("{Long:id}")
+            }
+        }
+        on("equals on element with regex (more than one any single character) path variable and string") {
+            it("should return true") {
+                PathElement("{String:id:.+}") shouldEqual PathElement("abc")
+            }
+        }
+        on("equals on element with regex (only digits) path variable and string") {
+            it("should return false") {
+                PathElement("{String:id:[\\\\d]+}") shouldNotEqual PathElement("abc")
+            }
+        }
+        on("equals on element with regex (only digits) path variable and digits") {
+            it("should return true") {
+                PathElement("{String:id:[\\\\d]+}") shouldEqual PathElement("123")
             }
         }
     }

@@ -21,8 +21,8 @@ class PathElement(val value: String) {
         }
 
         val bothAreNumbers = isDigit(pathVariable.value) && pathElement.value.isNumeric()
-        val pathVariableIsString = !isDigit(pathVariable.value)
-        return bothAreNumbers || pathVariableIsString
+        val pathVariableIsNotNumber = !isDigit(pathVariable.value)
+        return bothAreNumbers || pathVariableIsNotNumber
     }
 
     /**

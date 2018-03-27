@@ -8,7 +8,7 @@ class Path(private val pathElements: List<PathElement>) {
     fun addPathVariablesTypes(parametersNameWithType: Map<String, String>): Path {
         return Path(pathElements.map {
             val key = it.value.unquoteCurlyBrackets().substringBefore(':')
-            it.addPathVariableType(parametersNameWithType.getOrDefault(key, "String"))
+            it.addPathVariableType(parametersNameWithType.getOrDefault(key, "Object"))
         })
     }
 

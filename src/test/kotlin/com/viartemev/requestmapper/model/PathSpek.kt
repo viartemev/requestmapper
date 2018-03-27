@@ -49,7 +49,7 @@ object PathSpek : Spek({
         }
         on("addPathVariablesTypes on instance which contains string with curly brackets with empty parameters map") {
             it("should return the original string") {
-                Path("/api/{id}").addPathVariablesTypes(mapOf()).toFullPath() shouldBeEqualTo "/api/{String:id}"
+                Path("/api/{id}").addPathVariablesTypes(mapOf()).toFullPath() shouldBeEqualTo "/api/{Object:id}"
             }
         }
         on("addPathVariablesTypes on instance which contains string with curly brackets with not empty parameters map") {

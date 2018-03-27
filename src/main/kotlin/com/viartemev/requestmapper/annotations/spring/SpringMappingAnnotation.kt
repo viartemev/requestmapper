@@ -2,11 +2,11 @@ package com.viartemev.requestmapper.annotations.spring
 
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiParameter
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.annotations.PathAnnotation
+import com.viartemev.requestmapper.model.PathParameter
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 import com.viartemev.requestmapper.utils.unquote
 
@@ -59,21 +59,11 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
         val parametersNameWithType = method
                 .parameterList
                 .parameters
-                .mapNotNull { extractParameterNameWithType(it) }
+                .mapNotNull { PathParameter(it).extractParameterNameWithType(SPRING_PATH_VARIABLE_CLASS, ::extractParameterNameFromAnnotation) }
                 .toMap()
 
         return fetchMapping(annotation)
                 .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
-    }
-
-    private fun extractParameterNameWithType(parameter: PsiParameter): Pair<String, String>? {
-        val parameterType = parameter.type.presentableText.unquote()
-        return parameter
-                .modifierList
-                ?.annotations
-                ?.filter { it.qualifiedName == SPRING_PATH_VARIABLE_CLASS }
-                ?.map { Pair(extractParameterNameFromAnnotation(it, parameter.name!!), parameterType) }
-                ?.first()
     }
 
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {

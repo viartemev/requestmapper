@@ -2,12 +2,6 @@ language: kotlin
 sudo: false
 install: true
 
-addons:
-  sonarcloud:
-    organization: "viartemev-github"
-    token:
-      secure: "055snmlBTic4I2nIvSz8L6YAsqKHIZh1bzegpAczdZPT/fuRJbWZ9VUN+dbPHYBijsrP/6255TV+o+Imy9c+1Oj7fzPYbEYty7Chlv6Fvsli0hgyVytulxcjZ8ZSP5408z510L7Q655skVScYzVJ7wohC3CmsgKkatWiClZL+OtCf6I+YnZ8u1CN1lq9RKwAhnB4QB6lLvM7Sprh5eHN0Y2b2PrOkGLlIBkZQXRBn+fTcTXEClMY2BDGcOOU649UVDjYogPPOfkunF5E4yJwXbLS5+AKHYf+A1Q74xJEQ3jIlhkHmok+L/48XGb9UJ3GPbGk9qLDHYAXaHqGPrCLROk37GcI4qs6aGphHsvZDbl7bAx9gMP3POvySjumiS/2JC1cOkqKOGnzHdercqBPWw9Y2DoYryKtlabi1MhuI7vn7KJoFLmnlU7nj+P3wxYtppFSJ3JZGsH1FKQCmgSxsl+thh7+/fa87oGRiZPqnW4fc3sB6Eoeza/tV4UYAgUZVsqkkiKIRlpQojOuWCtXlBvt/U7UlCV3tge+myKUu0Sf4+y0GhNR4ULR9T3EsX2QTcmg40SN01Hs2OKbhsctdMis2IyCDNsVWDlyLRxN4yGUgvMQgxwAJFqYBP++/zwdXJMPY46q6Pq8Mm4mKNcGQtn+vcwwS3WFxiGcuROg74M="
-
 jdk:
   - oraclejdk8
 
@@ -17,14 +11,15 @@ before_script:
 script:
   - ./gradlew check
   - ./gradlew lintKotlin
+  - ./gradlew jacocoTestReport
 
 after_success:
-  - ./gradlew jacocoTestReport
-  - ./gradlew coveralls
+  - bash <(curl -s https://codecov.io/bash)
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
     - '$HOME/.gradle/caches'

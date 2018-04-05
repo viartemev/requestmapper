@@ -4,9 +4,10 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
-import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.annotations.PathAnnotation
+import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
+import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 import com.viartemev.requestmapper.utils.unquote
 
@@ -22,13 +23,19 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
         val methodMappings = fetchMappingsFromMethod(annotation, psiMethod)
         val paramsMappings = fetchMappingsParams(annotation)
         return classMappings.map { clazz ->
-            methodMappings.map {
+            methodMappings.map { method ->
                 paramsMappings.map { param ->
-                    val urlPath = if (clazz.isBlank() && it.isBlank()) "/" else "$clazz$it${if (param.isNotBlank()) " params=$param" else ""}"
-                    RequestMappingItem(psiMethod, urlPath, methodName)
+                    RequestMappingItem(psiMethod, formatUrlPath(clazz, method, param), methodName)
                 }
             }.flatten()
         }.flatten()
+    }
+
+    private fun formatUrlPath(classMapping: String, methodMapping: String, param: String): String {
+        val classPathSeq = classMapping.splitToSequence('/').filterNot { it.isBlank() }
+        val methodPathList = methodMapping.split('/').dropFirstEmptyStringIfExists()
+        val path = (classPathSeq + methodPathList).joinToString(separator = "/", prefix = "/")
+        return path + if (param.isNotBlank()) " params=$param" else ""
     }
 
     private fun fetchMappingsParams(annotation: PsiAnnotation): List<String> {

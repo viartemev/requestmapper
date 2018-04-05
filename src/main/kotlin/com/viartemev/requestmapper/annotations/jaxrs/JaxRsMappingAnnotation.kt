@@ -7,6 +7,7 @@ import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.PathAnnotation
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
+import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 import com.viartemev.requestmapper.utils.unquote
 
@@ -21,7 +22,13 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
     private fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
         val classMapping = fetchMappingFromClass(psiMethod)
         val methodMapping = fetchMappingFromMethod(psiMethod)
-        return listOf(RequestMappingItem(psiMethod, if (classMapping.isBlank() && methodMapping.isBlank()) "/" else classMapping + methodMapping, method))
+        return listOf(RequestMappingItem(psiMethod, formatUrlPath(classMapping, methodMapping), method))
+    }
+
+    private fun formatUrlPath(classMapping: String, methodMapping: String): String {
+        val classPathSeq = classMapping.splitToSequence('/').filterNot { it.isBlank() }
+        val methodPathList = methodMapping.split('/').dropFirstEmptyStringIfExists()
+        return (classPathSeq + methodPathList).joinToString(separator = "/", prefix = "/")
     }
 
     private fun fetchMappingFromClass(psiMethod: PsiMethod): String {

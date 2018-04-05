@@ -35,8 +35,7 @@ interface MappingAnnotation {
                 DELETE::class.java.simpleName
         )
 
-        fun mappingAnnotation(annotationName: String,
-                              psiAnnotation: PsiAnnotation): MappingAnnotation {
+        fun mappingAnnotation(annotationName: String, psiAnnotation: PsiAnnotation): MappingAnnotation {
             return when (annotationName) {
                 RequestMapping::class.java.simpleName -> RequestMapping(psiAnnotation)
                 GetMapping::class.java.simpleName -> GetMapping(psiAnnotation)

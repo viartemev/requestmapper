@@ -39,9 +39,7 @@ class Path(private val pathElements: List<PathElement>) {
             return containsAll(sourcePathElements, targetPathElements, allSourceElementsArePathVariables)
         }
 
-        private tailrec fun containsAll(sourcePathElements: List<PathElement>,
-                                        targetPathElements: List<PathElement>,
-                                        allSourceElementsArePathVariables: Boolean): Boolean {
+        private tailrec fun containsAll(sourcePathElements: List<PathElement>, targetPathElements: List<PathElement>, allSourceElementsArePathVariables: Boolean): Boolean {
             if (sourcePathElements.size < targetPathElements.size) {
                 return false
             }

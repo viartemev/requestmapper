@@ -3,7 +3,7 @@ Request mapper is plugin for Intellij IDEA for quick navigation to url mapping d
 
 ### Status
 ![](https://travis-ci.org/viartemev/requestmapper.svg?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/viartemev/requestmapper/badge.svg?branch=master)](https://coveralls.io/github/viartemev/requestmapper?branch=master)
+[![codecov](https://codecov.io/gh/viartemev/requestmapper/branch/master/graph/badge.svg)](https://codecov.io/gh/viartemev/requestmapper)
 [![Open Source Helpers](https://www.codetriage.com/viartemev/requestmapper/badges/users.svg)](https://www.codetriage.com/viartemev/requestmapper)
 ### Plugin info
 The plugin can be found in [JetBrains repository](https://plugins.jetbrains.com/plugin/9567-request-mapper) <br/>

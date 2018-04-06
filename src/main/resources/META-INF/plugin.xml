@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.12</version>
+    <version>0.13</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -44,10 +44,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Feature: Add regex handling for path variables in Spring</li>
-            <li>Feature: Add regex handling for path variables in JAX-RS</li>
-            <li>Improvement: the Object type is used for unknown path variables (instead of String)</li>
-            <li>Bug fix: fix the issue with handling path variables without @PathVariables annotation</li>
+            <li>Bug fix: No match path without slash at the begin</li>
         </ul>
     ]]>
     </change-notes>

@@ -7,9 +7,6 @@ out/
 .gradle/
 build/
 
-### Custom ###
-demo/
-
 ### Danger ###
 node_modules/
 yarn-error.log

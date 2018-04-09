@@ -12,7 +12,6 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 
-
 object AnnotationUtilsSpek : Spek({
     describe("AnnotationUtils") {
         on("isMethodAnnotation on annotation without class and method") {
@@ -39,6 +38,5 @@ object AnnotationUtilsSpek : Spek({
                 annotation.isMethodAnnotation().shouldBeTrue()
             }
         }
-
     }
 })

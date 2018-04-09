@@ -2,7 +2,7 @@ package com.viartemev.requestmapper.model
 
 import com.viartemev.requestmapper.utils.unquoteCurlyBrackets
 
-class Path(private val pathElements: List<PathElement>) {
+data class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
     fun addPathVariablesTypes(parametersNameWithType: Map<String, String>): Path {
@@ -13,21 +13,6 @@ class Path(private val pathElements: List<PathElement>) {
     }
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Path
-
-        if (pathElements != other.pathElements) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return pathElements.hashCode()
-    }
 
     companion object {
 

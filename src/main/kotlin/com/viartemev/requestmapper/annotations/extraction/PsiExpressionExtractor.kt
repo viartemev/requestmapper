@@ -39,14 +39,5 @@ object PsiExpressionExtractor {
     private fun extractPsiPolyadicExpression(psiElement: PsiPolyadicExpression) =
             psiElement
                     .operands
-                    .joinToString(
-                            separator = "",
-                            transform = {
-                                when (it) {
-                                    is PsiLiteralExpression -> extractLiteralExpression(it)
-                                    is PsiReferenceExpression -> extractPath(it)
-                                    else -> ""
-                                }
-                            }
-                    )
+                    .joinToString(separator = "", transform = { extractExpression(it) })
 }

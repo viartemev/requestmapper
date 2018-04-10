@@ -33,5 +33,10 @@ object RequestMappingModelSpek : Spek({
                 assertFalse(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "ITEMS"))
             }
         }
+        on("matches delegates by Path.isSubpathOf") {
+            it("should return true") {
+                assertTrue(requestMappingModel.matches("POST /api/v1/product/{product-id}/items/{item-id}", "/items"))
+            }
+        }
     }
 })

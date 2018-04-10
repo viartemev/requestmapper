@@ -104,5 +104,25 @@ object PathElementSpek : Spek({
                 PathElement("{String:id:[\\\\d]+}") shouldEqual PathElement("123")
             }
         }
+        on("equals on element with Integer type path variable and digital") {
+            it("should return true") {
+                PathElement("{Integer:id}") shouldEqual PathElement("123")
+            }
+        }
+        on("equals on element with int type path variable and digital") {
+            it("should return true") {
+                PathElement("{int:id}") shouldEqual PathElement("123")
+            }
+        }
+        on("equals on element with long type path variable and digital") {
+            it("should return true") {
+                PathElement("{long:id}") shouldEqual PathElement("123")
+            }
+        }
+        on("equals on element with BigInteger type path variable and digital") {
+            it("should return true") {
+                PathElement("{BigInteger:id}") shouldEqual PathElement("123")
+            }
+        }
     }
 })

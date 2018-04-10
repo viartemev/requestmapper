@@ -6,6 +6,7 @@ import com.viartemev.requestmapper.annotations.jaxrs.DELETE
 import com.viartemev.requestmapper.annotations.jaxrs.GET
 import com.viartemev.requestmapper.annotations.jaxrs.HEAD
 import com.viartemev.requestmapper.annotations.jaxrs.OPTIONS
+import com.viartemev.requestmapper.annotations.jaxrs.PATCH
 import com.viartemev.requestmapper.annotations.jaxrs.POST
 import com.viartemev.requestmapper.annotations.jaxrs.PUT
 import com.viartemev.requestmapper.annotations.spring.DeleteMapping
@@ -32,7 +33,8 @@ interface MappingAnnotation {
                 POST::class.java.simpleName,
                 OPTIONS::class.java.simpleName,
                 HEAD::class.java.simpleName,
-                DELETE::class.java.simpleName
+                DELETE::class.java.simpleName,
+                PATCH::class.java.simpleName
         )
 
         fun mappingAnnotation(annotationName: String, psiAnnotation: PsiAnnotation): MappingAnnotation {
@@ -49,6 +51,7 @@ interface MappingAnnotation {
                 OPTIONS::class.java.simpleName -> OPTIONS(psiAnnotation)
                 HEAD::class.java.simpleName -> HEAD(psiAnnotation)
                 DELETE::class.java.simpleName -> DELETE(psiAnnotation)
+                PATCH::class.java.simpleName -> PATCH(psiAnnotation)
                 else -> UnknownAnnotation
             }
         }

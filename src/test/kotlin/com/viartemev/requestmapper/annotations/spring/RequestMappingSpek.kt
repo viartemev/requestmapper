@@ -18,7 +18,7 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 
-object SpringMappingAnnotationSpek : Spek({
+object RequestMappingSpek : Spek({
 
     describe("RequestMapping") {
         on("values on annotation without anything") {

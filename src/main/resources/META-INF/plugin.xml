@@ -38,13 +38,14 @@
                 <li>@DELETE</li>
                 <li>@HEAD</li>
                 <li>@OPTIONS</li>
+                <li>@PATCH</li>
             </ul>
       </ul>
     ]]></description>
 
     <change-notes><![CDATA[
         <ul>
-            <li>Bug fix: No match path without slash at the begin</li>
+            <li>Feature: add PATCH mapping for JAX-RS</li>
         </ul>
     ]]>
     </change-notes>

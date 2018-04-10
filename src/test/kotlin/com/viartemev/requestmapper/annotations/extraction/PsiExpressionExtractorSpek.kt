@@ -4,6 +4,7 @@ import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiLiteralExpression
+import com.intellij.psi.PsiPolyadicExpression
 import com.intellij.psi.PsiReferenceExpression
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
@@ -23,7 +24,7 @@ object PsiExpressionExtractorSpek : Spek({
                 PsiExpressionExtractor.extractExpression(psiLiteralExpression) shouldBeEqualTo "api"
             }
         }
-        on("extractExpression on PsiPolyadicExpression") {
+        on("extractExpression on PsiReferenceExpression") {
             it("should return unquoted text") {
                 val psiElement = mock<PsiLiteralExpression> {
                     on { text } doReturn "\"api\""
@@ -35,8 +36,8 @@ object PsiExpressionExtractorSpek : Spek({
                 PsiExpressionExtractor.extractExpression(psiReferenceExpression) shouldBeEqualTo "api"
             }
         }
-        on("extractExpression on PsiPolyadicExpression on not resolved value") {
-            it("should return unquoted text") {
+        on("extractExpression on PsiReferenceExpression on not resolved value") {
+            it("should return empty list") {
                 val psiReferenceExpression = mock<PsiReferenceExpression> {
                     on { children } doReturn emptyArray<PsiExpression>()
                 }
@@ -60,10 +61,10 @@ object PsiExpressionExtractorSpek : Spek({
                 val psiElement = mock<PsiLiteralExpression> {
                     on { text } doReturn "\"api\""
                 }
-                val psiBinaryExpression = mock<PsiBinaryExpression> {
+                val psiPolyadicExpression = mock<PsiPolyadicExpression> {
                     on { operands } doReturn arrayOf<PsiExpression>(psiElement, psiElement)
                 }
-                PsiExpressionExtractor.extractExpression(psiBinaryExpression) shouldBeEqualTo "apiapi"
+                PsiExpressionExtractor.extractExpression(psiPolyadicExpression) shouldBeEqualTo "apiapi"
             }
         }
         on("extractExpression on others expressions") {

@@ -17,7 +17,7 @@ object PsiExpressionExtractor {
         else -> ""
     }
 
-    fun extractPath(value: PsiReferenceExpression): String {
+    private fun extractPath(value: PsiReferenceExpression): String {
         return value.resolve()?.let {
             it
                     .children

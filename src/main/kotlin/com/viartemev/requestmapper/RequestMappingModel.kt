@@ -2,7 +2,6 @@ package com.viartemev.requestmapper
 
 import com.intellij.ide.util.gotoByName.CustomMatcherModel
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel
-import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
@@ -11,7 +10,7 @@ import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PopupPath
 import com.viartemev.requestmapper.model.RequestedUserPath
 
-class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf<ChooseByNameContributor>(RequestMappingContributor())), DumbAware, CustomMatcherModel {
+class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf(RequestMappingContributor(JavaAnnotationSearcher::search))), DumbAware, CustomMatcherModel {
 
     override fun filterValueFor(item: NavigationItem): FileType? = null
 

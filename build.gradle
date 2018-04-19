@@ -6,7 +6,7 @@ buildscript {
         junit_plugin_version = '1.0.1'
         spek_version = '1.1.5'
         assertj_version = '3.9.1'
-        kluent_version = '1.35'
+        kluent_version = '1.36'
         log4j_version = '2.9.0'
         commons_lang3_version = '3.7'
 
@@ -104,5 +104,5 @@ patchPluginXml {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.6'
+    gradleVersion = '4.7'
 }

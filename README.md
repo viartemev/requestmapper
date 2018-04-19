@@ -6,9 +6,9 @@ Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping
 [![codecov](https://codecov.io/gh/viartemev/requestmapper/branch/master/graph/badge.svg)](https://codecov.io/gh/viartemev/requestmapper)
 [![Open Source Helpers](https://www.codetriage.com/viartemev/requestmapper/badges/users.svg)](https://www.codetriage.com/viartemev/requestmapper)
 ### Plugin info
-![](https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg)
-![](https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000)  
-The plugin can be found in [JetBrains repository](https://plugins.jetbrains.com/plugin/9567-request-mapper) <br/>
+[![JetBrains plugin](https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
+[![JetBrains plugin](https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
+[![JetBrains IntelliJ](https://img.shields.io/badge/IntelliJ-14.0%20and%20up-blue.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper)  
 
 ##### Supported annotations:
 + Spring

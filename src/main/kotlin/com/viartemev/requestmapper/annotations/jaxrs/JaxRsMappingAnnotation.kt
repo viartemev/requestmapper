@@ -1,15 +1,17 @@
 package com.viartemev.requestmapper.annotations.jaxrs
 
 import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.PathAnnotation
+import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor.extractExpression
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
 import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
-import com.viartemev.requestmapper.utils.unquote
 
 abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
@@ -59,8 +61,15 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
 
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {
         val pathVariableValue = annotation.findAttributeValue(ATTRIBUTE_NAME)
-        return when {
-            pathVariableValue?.text?.unquote()?.isNotBlank() == true -> pathVariableValue.text.unquote()
+        return when (pathVariableValue) {
+            is PsiLiteralExpression -> {
+                val expression = extractExpression(pathVariableValue)
+                if (expression.isNotBlank()) expression else defaultValue
+            }
+            is PsiReferenceExpression -> {
+                val expression = extractExpression(pathVariableValue)
+                if (expression.isNotBlank()) expression else defaultValue
+            }
             else -> defaultValue
         }
     }

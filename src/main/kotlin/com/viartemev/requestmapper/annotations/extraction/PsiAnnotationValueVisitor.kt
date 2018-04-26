@@ -4,6 +4,7 @@ import com.intellij.psi.PsiAnnotationMemberValue
 import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiReferenceExpression
+import com.intellij.psi.PsiPolyadicExpression
 
 interface PsiAnnotationValueVisitor {
 
@@ -14,4 +15,6 @@ interface PsiAnnotationValueVisitor {
     fun visitPsiAnnotationMemberValue(value: PsiAnnotationMemberValue): List<String>
 
     fun visitPsiBinaryExpression(expression: PsiBinaryExpression): List<String>
+
+    fun visitPsiPolyadicExpression(expression: PsiPolyadicExpression): List<String>
 }

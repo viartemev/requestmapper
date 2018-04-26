@@ -3,6 +3,7 @@ package com.viartemev.requestmapper.annotations.extraction
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.intellij.psi.PsiBinaryExpression
+import com.intellij.psi.PsiPolyadicExpression
 import com.intellij.psi.PsiReferenceExpression
 
 abstract class BasePsiAnnotationValueVisitor : PsiAnnotationValueVisitor {
@@ -13,6 +14,7 @@ abstract class BasePsiAnnotationValueVisitor : PsiAnnotationValueVisitor {
             is PsiArrayInitializerMemberValue -> visitPsiArrayInitializerMemberValue(attributeValue)
             is PsiReferenceExpression -> visitPsiReferenceExpression(attributeValue)
             is PsiBinaryExpression -> visitPsiBinaryExpression(attributeValue)
+            is PsiPolyadicExpression -> visitPsiPolyadicExpression(attributeValue)
             else -> if (attributeValue != null && attributeValue.text.isNotBlank()) visitPsiAnnotationMemberValue(attributeValue) else emptyList()
         }
     }

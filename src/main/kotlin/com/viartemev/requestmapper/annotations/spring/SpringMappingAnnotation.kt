@@ -1,15 +1,18 @@
 package com.viartemev.requestmapper.annotations.spring
 
 import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiAnnotationMemberValue
+import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.PathAnnotation
+import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
 import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
-import com.viartemev.requestmapper.utils.unquote
 
 abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
 
@@ -76,9 +79,21 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {
         val pathVariableValue = annotation.findAttributeValue(VALUE)
         val pathVariableName = annotation.findAttributeValue(NAME)
-        return when {
-            pathVariableValue?.text?.unquote()?.isNotBlank() == true -> pathVariableValue.text.unquote()
-            pathVariableName?.text?.unquote()?.isNotBlank() == true -> pathVariableName.text.unquote()
+
+        val valueAttribute = extractPsiAnnotation(pathVariableValue, defaultValue)
+        return if (valueAttribute != defaultValue) valueAttribute else extractPsiAnnotation(pathVariableName, defaultValue)
+    }
+
+    private fun extractPsiAnnotation(psiAnnotationMemberValue: PsiAnnotationMemberValue?, defaultValue: String): String {
+        return when (psiAnnotationMemberValue) {
+            is PsiLiteralExpression -> {
+                val expression = PsiExpressionExtractor.extractExpression(psiAnnotationMemberValue)
+                if (expression.isNotBlank()) expression else defaultValue
+            }
+            is PsiReferenceExpression -> {
+                val expression = PsiExpressionExtractor.extractExpression(psiAnnotationMemberValue)
+                if (expression.isNotBlank()) expression else defaultValue
+            }
             else -> defaultValue
         }
     }

@@ -1,9 +1,9 @@
 package com.viartemev.requestmapper.annotations.spring
 
 import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiAnnotationMemberValue
 import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiModifierList
 import com.intellij.psi.PsiParameter
@@ -43,7 +43,7 @@ object RequestMappingSpek : Spek({
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
-            val memberValue = mock<PsiAnnotationMemberValue> {
+            val memberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "api"
             }
             val mappingAnnotation = mock<PsiAnnotation> {
@@ -75,7 +75,7 @@ object RequestMappingSpek : Spek({
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
-            val classMappingMemberValue = mock<PsiAnnotationMemberValue> {
+            val classMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "api"
             }
             val classMappingAnnotation = mock<PsiAnnotation> {
@@ -92,7 +92,7 @@ object RequestMappingSpek : Spek({
                 on { parameterList } doReturn psiParameterList
                 on { containingClass } doReturn clazz
             }
-            val methodMappingMemberValue = mock<PsiAnnotationMemberValue> {
+            val methodMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "method"
             }
             val methodMappingAnnotation = mock<PsiAnnotation> {
@@ -111,7 +111,7 @@ object RequestMappingSpek : Spek({
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
-            val classMappingMemberValue = mock<PsiAnnotationMemberValue> {
+            val classMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "api"
             }
             val classMappingAnnotation = mock<PsiAnnotation> {
@@ -128,7 +128,7 @@ object RequestMappingSpek : Spek({
                 on { parameterList } doReturn psiParameterList
                 on { containingClass } doReturn clazz
             }
-            val methodMappingMemberValue = mock<PsiAnnotationMemberValue> {
+            val methodMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "{id}"
             }
             val methodMappingAnnotation = mock<PsiAnnotation> {
@@ -143,7 +143,7 @@ object RequestMappingSpek : Spek({
             }
         }
         on("values on annotation with annotated class and method with path variable with Long type") {
-            val methodModifierMappingMemberValue = mock<PsiAnnotationMemberValue> {
+            val methodModifierMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "id"
             }
             val methodModifierAnnotation = mock<PsiAnnotation> {
@@ -164,7 +164,7 @@ object RequestMappingSpek : Spek({
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn arrayOf(psiParameter)
             }
-            val classMappingMemberValue = mock<PsiAnnotationMemberValue> {
+            val classMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "api"
             }
             val classMappingAnnotation = mock<PsiAnnotation> {
@@ -181,7 +181,7 @@ object RequestMappingSpek : Spek({
                 on { parameterList } doReturn psiParameterList
                 on { containingClass } doReturn clazz
             }
-            val methodMappingMemberValue = mock<PsiAnnotationMemberValue> {
+            val methodMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "{id}"
             }
             val methodPsiAnnotation = mock<PsiAnnotation> {
@@ -200,10 +200,10 @@ object RequestMappingSpek : Spek({
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
-            val annotatedMemberValue1 = mock<PsiAnnotationMemberValue> {
+            val annotatedMemberValue1 = mock<PsiLiteralExpression> {
                 on { text } doReturn "api/v2"
             }
-            val annotatedMemberValue2 = mock<PsiAnnotationMemberValue> {
+            val annotatedMemberValue2 = mock<PsiLiteralExpression> {
                 on { text } doReturn "api"
             }
             val memberValue = mock<PsiArrayInitializerMemberValue> {

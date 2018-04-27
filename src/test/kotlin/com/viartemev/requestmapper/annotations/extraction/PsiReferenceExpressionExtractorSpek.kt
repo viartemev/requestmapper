@@ -13,7 +13,7 @@ import org.jetbrains.spek.api.dsl.on
 
 object PsiReferenceExpressionExtractorSpek : Spek({
     describe("PsiReferenceExpressionExtractor") {
-        on("extract with 2 PsiLiteralExpressions") {
+        on("extract with PsiLiteralExpression") {
             it("should return list with sum of literal expressions texts") {
                 val psiElement = mock<PsiLiteralExpression> {
                     on { text } doReturn "\"api\""

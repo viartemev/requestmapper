@@ -11,6 +11,5 @@ build/
 node_modules/
 yarn-error.log
 
-
-### Others ###
+### Custom ###
 samples/

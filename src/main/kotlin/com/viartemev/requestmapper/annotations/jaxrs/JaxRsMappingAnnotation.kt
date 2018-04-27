@@ -38,7 +38,7 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
                 ?.annotations
                 ?.filter { it.qualifiedName == PATH_ANNOTATION }
                 ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
-                ?.first() ?: ""
+                ?.firstOrNull() ?: ""
     }
 
     private fun fetchMappingFromMethod(method: PsiMethod): String {

@@ -10,3 +10,7 @@ build/
 ### Danger ###
 node_modules/
 yarn-error.log
+
+
+### Others ###
+samples/

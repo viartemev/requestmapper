@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.13</version>
+    <version>0.14</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -46,6 +46,10 @@
     <change-notes><![CDATA[
         <ul>
             <li>Feature: add PATCH mapping for JAX-RS</li>
+            <li>Feature: add support for variables in @PathParam annotation (JAX-RS)</li>
+            <li>Feature: add support for variables in @PathVariable annotation (Spring)</li>
+            <li>Feature: add support for PsiPolyadicExpression mapping annotation (Spring, JAX-RS)</li>
+            <li>Bug fix: JAX-RS annotations issue</li>
         </ul>
     ]]>
     </change-notes>

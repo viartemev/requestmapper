@@ -8,6 +8,6 @@ fun String.unquoteCurlyBrackets(): String = if (this.inCurlyBrackets()) this.dro
 
 fun String.addCurlyBrackets(): String = '{' + this + '}'
 
-fun List<String>.dropFirstEmptyStringIfExists(): List<String> = if (this.isNotEmpty() && this.first().isEmpty()) this.drop(1) else this
-
 fun String.isNumeric(): Boolean = this.toBigDecimalOrNull() != null
+
+fun List<String>.dropFirstEmptyStringIfExists(): List<String> = if (this.isNotEmpty() && this.first().isEmpty()) this.drop(1) else this

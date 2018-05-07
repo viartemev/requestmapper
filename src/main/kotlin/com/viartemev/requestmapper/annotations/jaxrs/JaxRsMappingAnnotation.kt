@@ -13,35 +13,27 @@ import com.viartemev.requestmapper.model.PathParameter
 import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 
-abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
+abstract class JaxRsMappingAnnotation(
+    private val psiAnnotation: PsiAnnotation,
+    private val urlFormatter: JaxRsUrlFormatter
+) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
-        return fetchRequestMappingItem(psiAnnotation.fetchAnnotatedMethod(), extractMethod())
+        val psiMethod = psiAnnotation.fetchAnnotatedMethod()
+        val classMapping = fetchMappingFromClass(psiMethod)
+        val methodMapping = fetchMappingFromMethod(psiMethod)
+        return listOf(RequestMappingItem(psiMethod, urlFormatter.format(classMapping, methodMapping), extractMethod()))
     }
 
     abstract fun extractMethod(): String
 
-    private fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
-        val classMapping = fetchMappingFromClass(psiMethod)
-        val methodMapping = fetchMappingFromMethod(psiMethod)
-        return listOf(RequestMappingItem(psiMethod, formatUrlPath(classMapping, methodMapping), method))
-    }
-
-    private fun formatUrlPath(classMapping: String, methodMapping: String): String {
-        val classPathSeq = classMapping.splitToSequence('/').filterNot { it.isBlank() }
-        val methodPathList = methodMapping.split('/').dropFirstEmptyStringIfExists()
-        return (classPathSeq + methodPathList).joinToString(separator = "/", prefix = "/")
-    }
-
-    private fun fetchMappingFromClass(psiMethod: PsiMethod): String {
-        return psiMethod
+    private fun fetchMappingFromClass(psiMethod: PsiMethod) = psiMethod
                 .containingClass
                 ?.modifierList
                 ?.annotations
                 ?.filter { it.qualifiedName == PATH_ANNOTATION }
                 ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
                 ?.firstOrNull() ?: ""
-    }
 
     private fun fetchMappingFromMethod(method: PsiMethod): String {
         val parametersNameWithType = method

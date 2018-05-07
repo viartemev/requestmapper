@@ -6,7 +6,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
-import com.viartemev.requestmapper.annotations.PathAnnotation
+import com.viartemev.requestmapper.annotations.extraction.PathAnnotation
 import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor.extractExpression
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter

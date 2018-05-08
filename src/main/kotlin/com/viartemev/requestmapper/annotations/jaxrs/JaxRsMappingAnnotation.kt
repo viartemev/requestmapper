@@ -7,13 +7,16 @@ import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.PathAnnotation
+import com.viartemev.requestmapper.annotations.UrlFormatter
 import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor.extractExpression
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
-import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 
-abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
+abstract class JaxRsMappingAnnotation(
+    val psiAnnotation: PsiAnnotation,
+    private val urlFormatter: UrlFormatter = JaxRsUrlFormatter
+) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
         return fetchRequestMappingItem(psiAnnotation.fetchAnnotatedMethod(), extractMethod())
@@ -24,13 +27,7 @@ abstract class JaxRsMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappin
     private fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
         val classMapping = fetchMappingFromClass(psiMethod)
         val methodMapping = fetchMappingFromMethod(psiMethod)
-        return listOf(RequestMappingItem(psiMethod, formatUrlPath(classMapping, methodMapping), method))
-    }
-
-    private fun formatUrlPath(classMapping: String, methodMapping: String): String {
-        val classPathSeq = classMapping.splitToSequence('/').filterNot { it.isBlank() }
-        val methodPathList = methodMapping.split('/').dropFirstEmptyStringIfExists()
-        return (classPathSeq + methodPathList).joinToString(separator = "/", prefix = "/")
+        return listOf(RequestMappingItem(psiMethod, urlFormatter.format(classMapping, methodMapping), method))
     }
 
     private fun fetchMappingFromClass(psiMethod: PsiMethod): String {

@@ -1,6 +1,8 @@
 package com.viartemev.requestmapper.annotations.jaxrs
 
 import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiMethod
+import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldBeEqualTo
 import org.jetbrains.spek.api.Spek
@@ -12,7 +14,7 @@ object HEADSpek : Spek({
     describe("HEAD") {
         on("extractMethod") {
             it("should return HEAD") {
-                val annotation = mock<PsiAnnotation> {}
+                val annotation = mock<PsiAnnotation> { on { parent } doReturn mock<PsiMethod> {} }
                 HEAD(annotation).extractMethod() shouldBeEqualTo "HEAD"
             }
         }

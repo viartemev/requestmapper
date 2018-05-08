@@ -7,14 +7,18 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReferenceExpression
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
-import com.viartemev.requestmapper.annotations.PathAnnotation
+import com.viartemev.requestmapper.annotations.UrlFormatter
+import com.viartemev.requestmapper.annotations.extraction.PathAnnotation
 import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
 import com.viartemev.requestmapper.utils.dropFirstEmptyStringIfExists
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
 
-abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : MappingAnnotation {
+abstract class SpringMappingAnnotation(
+    private val psiAnnotation: PsiAnnotation,
+    private val urlFormatter: UrlFormatter = SpringUrlFormatter
+) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> =
             fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedMethod(), extractMethod())
@@ -28,19 +32,12 @@ abstract class SpringMappingAnnotation(val psiAnnotation: PsiAnnotation) : Mappi
         return classMappings.map { clazz ->
             methodMappings.map { method ->
                 paramsMappings.map { param ->
-                    RequestMappingItem(psiMethod, formatUrlPath(clazz, method, param), methodName)
+                    RequestMappingItem(psiMethod, urlFormatter.format(clazz, method, param), methodName)
                 }
             }.flatten()
         }.flatten()
     }
-
-    private fun formatUrlPath(classMapping: String, methodMapping: String, param: String): String {
-        val classPathSeq = classMapping.splitToSequence('/').filterNot { it.isBlank() }
-        val methodPathList = methodMapping.split('/').dropFirstEmptyStringIfExists()
-        val path = (classPathSeq + methodPathList).joinToString(separator = "/", prefix = "/")
-        return path + if (param.isNotBlank()) " params=$param" else ""
-    }
-
+    
     private fun fetchMappingsParams(annotation: PsiAnnotation): List<String> {
         val fetchMappingsFromAnnotation = PathAnnotation(annotation).fetchMappings(PARAMS)
         return if (fetchMappingsFromAnnotation.isNotEmpty()) fetchMappingsFromAnnotation else listOf("")

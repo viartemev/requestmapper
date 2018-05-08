@@ -7,7 +7,11 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 
-class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String, private val requestMethod: String) : NavigationItem {
+class RequestMappingItem(
+    private val psiElement: PsiElement,
+    private val urlPath: String,
+    private val requestMethod: String
+) : NavigationItem {
 
     private val navigationElement = psiElement.navigationElement as? Navigatable
 
@@ -20,10 +24,6 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
     override fun canNavigate(): Boolean = navigationElement?.canNavigate() ?: false
 
     override fun canNavigateToSource(): Boolean = true
-
-    override fun toString(): String {
-        return "RequestMappingItem(psiElement=$psiElement, urlPath='$urlPath', requestMethod='$requestMethod', navigationElement=$navigationElement)"
-    }
 
     private inner class RequestMappingItemPresentation : ItemPresentation {
 
@@ -40,5 +40,9 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
         }
 
         override fun getIcon(b: Boolean) = RequestMapperIcons.SEARCH
+    }
+
+    override fun toString(): String {
+        return "RequestMappingItem(psiElement=$psiElement, urlPath='$urlPath', requestMethod='$requestMethod', navigationElement=$navigationElement)"
     }
 }

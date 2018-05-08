@@ -12,5 +12,5 @@ import java.net.URL
 class RequestedUserPath(userPattern: String) {
     private val path: String = if (userPattern.startsWith("http") || userPattern.startsWith("https")) URL(userPattern).path else userPattern
 
-    fun toPath(): Path = Path(path)
+    fun toPath() = Path(path)
 }

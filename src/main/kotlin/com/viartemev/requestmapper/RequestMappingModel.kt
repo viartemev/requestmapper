@@ -6,6 +6,7 @@ import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.viartemev.requestmapper.annotations.JavaAnnotationSearcher
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PopupPath
 import com.viartemev.requestmapper.model.RequestedUserPath

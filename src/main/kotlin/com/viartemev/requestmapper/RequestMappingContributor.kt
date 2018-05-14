@@ -28,6 +28,7 @@ class RequestMappingContributor(private val annotationSearcher: (string: String,
 
     private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> {
         return annotationSearcher(annotationName, project)
+                .asSequence()
                 .filterNotNull()
                 .filter { it.isMethodAnnotation() }
                 .map { annotation -> mappingAnnotation(annotationName, annotation) }

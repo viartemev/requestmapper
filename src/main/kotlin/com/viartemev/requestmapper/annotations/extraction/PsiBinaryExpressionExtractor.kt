@@ -6,5 +6,5 @@ import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor
 class PsiBinaryExpressionExtractor : PsiAnnotationValueExtractor<PsiBinaryExpression> {
 
     override fun extract(value: PsiBinaryExpression) =
-            listOf(extractExpression(value.lOperand) + extractExpression(value.rOperand!!))
+        listOf(extractExpression(value.lOperand) + extractExpression(value.rOperand!!))
 }

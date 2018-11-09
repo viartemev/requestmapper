@@ -32,28 +32,28 @@ abstract class JaxRsMappingAnnotation(
 
     private fun fetchMappingFromClass(psiMethod: PsiMethod): String {
         return psiMethod
-                .containingClass
-                ?.modifierList
-                ?.annotations
-                ?.filter { it.qualifiedName == PATH_ANNOTATION }
-                ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
-                ?.firstOrNull() ?: ""
+            .containingClass
+            ?.modifierList
+            ?.annotations
+            ?.filter { it.qualifiedName == PATH_ANNOTATION }
+            ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+            ?.firstOrNull() ?: ""
     }
 
     private fun fetchMappingFromMethod(method: PsiMethod): String {
         val parametersNameWithType = method
-                .parameterList
-                .parameters
-                .mapNotNull { PathParameter(it).extractParameterNameWithType(PATH_PARAM_ANNOTATION, ::extractParameterNameFromAnnotation) }
-                .toMap()
+            .parameterList
+            .parameters
+            .mapNotNull { PathParameter(it).extractParameterNameWithType(PATH_PARAM_ANNOTATION, ::extractParameterNameFromAnnotation) }
+            .toMap()
 
         return method
-                .modifierList
-                .annotations
-                .filter { it.qualifiedName == PATH_ANNOTATION }
-                .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
-                .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
-                .firstOrNull() ?: ""
+            .modifierList
+            .annotations
+            .filter { it.qualifiedName == PATH_ANNOTATION }
+            .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+            .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
+            .firstOrNull() ?: ""
     }
 
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {

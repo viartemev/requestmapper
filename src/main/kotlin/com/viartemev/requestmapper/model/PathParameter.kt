@@ -10,10 +10,10 @@ class PathParameter(private val parameter: PsiParameter) {
         val parameterType = parameter.type.presentableText.unquote()
 
         return parameter
-                .modifierList
-                ?.annotations
-                ?.filter { it.qualifiedName == annotationName }
-                ?.map { Pair(extractParameterNameFunction(it, parameter.name!!), parameterType) }
-                ?.firstOrNull()
+            .modifierList
+            ?.annotations
+            ?.filter { it.qualifiedName == annotationName }
+            ?.map { Pair(extractParameterNameFunction(it, parameter.name!!), parameterType) }
+            ?.firstOrNull()
     }
 }

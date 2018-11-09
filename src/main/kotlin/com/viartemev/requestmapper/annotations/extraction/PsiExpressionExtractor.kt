@@ -20,13 +20,13 @@ object PsiExpressionExtractor {
     private fun extractPath(value: PsiReferenceExpression): String {
         return value.resolve()?.let {
             it
-                    .children
-                    .asSequence()
-                    .filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }
-                    .map { extractExpression(it) }
-                    .toList()
-                    //only one exists
-                    .first()
+                .children
+                .asSequence()
+                .filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }
+                .map { extractExpression(it) }
+                .toList()
+                //only one exists
+                .first()
         } ?: ""
     }
 
@@ -34,10 +34,10 @@ object PsiExpressionExtractor {
 
     /** rOperand always presents in static final variables */
     private fun extractBinaryExpression(psiElement: PsiBinaryExpression) =
-            extractExpression(psiElement.lOperand) + extractExpression(psiElement.rOperand!!)
+        extractExpression(psiElement.lOperand) + extractExpression(psiElement.rOperand!!)
 
     private fun extractPsiPolyadicExpression(psiElement: PsiPolyadicExpression) =
-            psiElement
-                    .operands
-                    .joinToString(separator = "", transform = { extractExpression(it) })
+        psiElement
+            .operands
+            .joinToString(separator = "", transform = { extractExpression(it) })
 }

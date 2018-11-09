@@ -31,10 +31,10 @@ data class Path(private val pathElements: List<PathElement>) {
 
             val hasExactMatching = sourcePathElements.subList(0, targetPathElements.size).any { !it.isPathVariable }
             val pathElementsAreEqual = sourcePathElements
-                    .zip(targetPathElements)
-                    .all { (popupElement, userElement) ->
-                        popupElement == userElement || popupElement.value.startsWith(userElement.value)
-                    }
+                .zip(targetPathElements)
+                .all { (popupElement, userElement) ->
+                    popupElement == userElement || popupElement.value.startsWith(userElement.value)
+                }
 
             if (pathElementsAreEqual && (hasExactMatching || allSourceElementsArePathVariables)) {
                 return true

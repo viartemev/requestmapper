@@ -1,7 +1,7 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.2.40'
+        kotlin_version = '1.3.0'
         junit_jupiter_version = '5.0.1'
         junit_plugin_version = '1.0.1'
         spek_version = '1.1.5'
@@ -11,7 +11,7 @@ buildscript {
         commons_lang3_version = '3.7'
 
         kotlinter_gradle_plugin = '1.11.1'
-        gradle_intellij_plugin = '0.3.1'
+        gradle_intellij_plugin = '0.3.12'
     }
 
     repositories {

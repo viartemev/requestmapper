@@ -22,19 +22,19 @@ interface MappingAnnotation {
 
     companion object {
         val supportedAnnotations = listOf(
-                RequestMapping::class.java.simpleName,
-                GetMapping::class.java.simpleName,
-                PostMapping::class.java.simpleName,
-                PutMapping::class.java.simpleName,
-                PatchMapping::class.java.simpleName,
-                DeleteMapping::class.java.simpleName,
-                GET::class.java.simpleName,
-                PUT::class.java.simpleName,
-                POST::class.java.simpleName,
-                OPTIONS::class.java.simpleName,
-                HEAD::class.java.simpleName,
-                DELETE::class.java.simpleName,
-                PATCH::class.java.simpleName
+            RequestMapping::class.java.simpleName,
+            GetMapping::class.java.simpleName,
+            PostMapping::class.java.simpleName,
+            PutMapping::class.java.simpleName,
+            PatchMapping::class.java.simpleName,
+            DeleteMapping::class.java.simpleName,
+            GET::class.java.simpleName,
+            PUT::class.java.simpleName,
+            POST::class.java.simpleName,
+            OPTIONS::class.java.simpleName,
+            HEAD::class.java.simpleName,
+            DELETE::class.java.simpleName,
+            PATCH::class.java.simpleName
         )
 
         fun mappingAnnotation(annotationName: String, psiAnnotation: PsiAnnotation): MappingAnnotation {

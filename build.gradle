@@ -7,7 +7,7 @@ buildscript {
         spek_version = '1.1.5'
         assertj_version = '3.9.1'
         kluent_version = '1.36'
-        log4j_version = '2.9.0'
+        log4j_version = '2.11.1'
         commons_lang3_version = '3.7'
 
         kotlinter_gradle_plugin = '1.11.1'

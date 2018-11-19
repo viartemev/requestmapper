@@ -7,6 +7,7 @@ Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping
 ![](https://travis-ci.org/viartemev/requestmapper.svg?branch=master)
 [![codecov](https://codecov.io/gh/viartemev/requestmapper/branch/master/graph/badge.svg)](https://codecov.io/gh/viartemev/requestmapper)
 [![Open Source Helpers](https://www.codetriage.com/viartemev/requestmapper/badges/users.svg)](https://www.codetriage.com/viartemev/requestmapper)
+[![Known Vulnerabilities](https://snyk.io/test/github/viartemev/requestmapper/badge.svg?targetFile=build.gradle)](https://snyk.io/test/github/viartemev/requestmapper?targetFile=build.gradle)
 ### Plugin info
 ##### Supported annotations:
 + Spring
@@ -33,8 +34,8 @@ Thanks to all people who have contributed to this plugin:
 ### Usage
 - Keyboard shortcuts: 
     - MacOS: ```Cmd + Shift + Back slash```
-    - Linux: ```Win + Shift + Back slash```
-    - Windows: ```Win + Shift + Back slash```
+    - Linux: ```Ctrl + Shift + Back slash```
+    - Windows: ```Ctrl + Shift + Back slash```
 - Navigate (menu bar) -> Request Mapping
 - Click ```Shift``` twice -> request mapping
 

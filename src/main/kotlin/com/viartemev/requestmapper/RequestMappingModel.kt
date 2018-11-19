@@ -42,8 +42,8 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
             path.contains(userPattern) || method.contains(userPattern, ignoreCase = true)
         } else {
             Path.isSubpathOf(
-                    PopupPath(popupItem).toPath(),
-                    RequestedUserPath(userPattern).toPath()
+                PopupPath(popupItem).toPath(),
+                RequestedUserPath(userPattern).toPath()
             )
         }
     }

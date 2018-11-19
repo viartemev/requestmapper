@@ -12,27 +12,27 @@ class RequestMappingContributor(private val annotationSearcher: (string: String,
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         navigationItems = supportedAnnotations
-                .flatMap { annotation -> findRequestMappingItems(project, annotation) }
+            .flatMap { annotation -> findRequestMappingItems(project, annotation) }
 
         return navigationItems
-                .map { it.name }
-                .distinct()
-                .toTypedArray()
+            .map { it.name }
+            .distinct()
+            .toTypedArray()
     }
 
     override fun getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean): Array<NavigationItem> {
         return navigationItems
-                .filter { it.name == name }
-                .toTypedArray()
+            .filter { it.name == name }
+            .toTypedArray()
     }
 
     private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> {
         return annotationSearcher(annotationName, project)
-                .asSequence()
-                .filterNotNull()
-                .filter { it.isMethodAnnotation() }
-                .map { annotation -> mappingAnnotation(annotationName, annotation) }
-                .flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }
-                .toList()
+            .asSequence()
+            .filterNotNull()
+            .filter { it.isMethodAnnotation() }
+            .map { annotation -> mappingAnnotation(annotationName, annotation) }
+            .flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }
+            .toList()
     }
 }

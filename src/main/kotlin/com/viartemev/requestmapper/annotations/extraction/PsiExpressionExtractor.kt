@@ -25,7 +25,7 @@ object PsiExpressionExtractor {
                 .filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }
                 .map { extractExpression(it) }
                 .toList()
-                //only one exists
+                // only one exists
                 .first()
         } ?: ""
     }

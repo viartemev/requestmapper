@@ -8,7 +8,7 @@ buildscript {
         assertj_version = '3.9.1'
         kluent_version = '1.42'
         log4j_version = '2.11.1'
-        commons_lang3_version = '3.7'
+        commons_lang3_version = '3.8.1'
 
         kotlinter_gradle_plugin = '1.11.1'
         gradle_intellij_plugin = '0.3.12'

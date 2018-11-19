@@ -56,7 +56,7 @@ dependencies {
 
     testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
-    testCompile("com.nhaarman:mockito-kotlin:1.5.0")
+    testCompile("com.nhaarman:mockito-kotlin:1.6.0")
 
     // To use Log4J's LogManager
     testRuntime("org.apache.logging.log4j:log4j-core:$log4j_version")

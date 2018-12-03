@@ -12,16 +12,26 @@ class PathElement(val value: String) {
     fun addPathVariableType(type: String) = if (isPathVariable) PathElement(value.unquoteCurlyBrackets().let { "${if (type.isBlank()) "String" else type}:$it" }.addCurlyBrackets())
     else this
 
-    private fun compareWithPathVariable(value1: PathElement, value2: PathElement) = if (value1.isPathVariable) comparePathVariableWithPsiElement(value1, value2) else comparePathVariableWithPsiElement(value2, value1)
-
-    private fun comparePathVariableWithPsiElement(pathVariable: PathElement, pathElement: PathElement): Boolean {
-        if (pathVariable.value.count { it == ':' } > 1) {
-            val regexString = StringEscapeUtils.unescapeJava(pathVariable.value.unquoteCurlyBrackets().substringAfterLast(':'))
-            return regexString.toRegex().matches(pathElement.value)
+    private fun compareWithPathVariable(pathElement: PathElement, searchPattern: PathElement): Boolean =
+        if ((pathElement.isPathVariable && searchPattern.isPathVariable) || searchPattern.isPathVariable) {
+            comparePathVariables(searchPattern, pathElement)
+        } else {
+            compareSearchElementWithPathElement(searchPattern, pathElement)
         }
 
-        val bothAreNumbers = isDigit(pathVariable.value) && pathElement.value.isNumeric()
-        val pathVariableIsNotNumber = !isDigit(pathVariable.value)
+    private fun comparePathVariables(searchPattern: PathElement, pathElement: PathElement): Boolean {
+        val searchPatternValue = StringEscapeUtils.unescapeJava(searchPattern.value.unquoteCurlyBrackets().substringAfterLast(':'))
+        val pathElementValue = StringEscapeUtils.unescapeJava(pathElement.value.unquoteCurlyBrackets().substringAfterLast(':'))
+        return pathElementValue.contains(searchPatternValue)
+    }
+
+    private fun compareSearchElementWithPathElement(searchPattern: PathElement, pathElement: PathElement): Boolean {
+        if (searchPattern.value.count { it == ':' } > 1) {
+            val regexString = StringEscapeUtils.unescapeJava(searchPattern.value.unquoteCurlyBrackets().substringAfterLast(':'))
+            return regexString.toRegex().matches(pathElement.value)
+        }
+        val bothAreNumbers = isDigit(pathElement.value) && searchPattern.value.isNumeric()
+        val pathVariableIsNotNumber = !isDigit(pathElement.value)
         return bothAreNumbers || pathVariableIsNotNumber
     }
 

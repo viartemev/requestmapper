@@ -8,15 +8,13 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldEqual
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 object PathParameterSpek : Spek({
 
     describe("PathParameter") {
-        on("extractParameterNameWithType on PsiParameter without annotations") {
+        context("extractParameterNameWithType on PsiParameter without annotations") {
             it("should return null") {
                 val annotationsList = mock<PsiModifierList> {
                     on { annotations } doReturn emptyArray<PsiAnnotation>()
@@ -31,7 +29,7 @@ object PathParameterSpek : Spek({
                 PathParameter(mock).extractParameterNameWithType("PathVariable", { _: PsiAnnotation, _: String -> "42" }).shouldBeNull()
             }
         }
-        on("extractParameterNameWithType on PsiParameter with PathParam annotation") {
+        context("extractParameterNameWithType on PsiParameter with PathParam annotation") {
             it("should return pair annotation name-type") {
                 val annotationName = "PathVariable"
                 val pathAnnotation = mock<PsiAnnotation> {

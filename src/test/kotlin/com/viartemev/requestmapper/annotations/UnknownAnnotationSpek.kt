@@ -1,15 +1,13 @@
 package com.viartemev.requestmapper.annotations
 
 import org.amshove.kluent.shouldBeEmpty
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 object UnknownAnnotationSpek : Spek({
     describe("UnknownAnnotation") {
-        on("values") {
+        context("values") {
             it("should return an empty list") {
                 UnknownAnnotation.values().shouldBeEmpty()
             }

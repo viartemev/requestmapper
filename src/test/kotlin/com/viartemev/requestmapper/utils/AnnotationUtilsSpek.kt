@@ -10,20 +10,18 @@ import org.amshove.kluent.shouldBeFalse
 import org.amshove.kluent.shouldBeTrue
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldThrow
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 object AnnotationUtilsSpek : Spek({
     describe("AnnotationUtils") {
-        on("isMethodAnnotation on an annotation without a class and a method") {
+        context("isMethodAnnotation on an annotation without a class and a method") {
             it("should return false") {
                 val annotation = mock<PsiAnnotation> {}
                 annotation.isMethodAnnotation().shouldBeFalse()
             }
         }
-        on("isMethodAnnotation on a class annotation") {
+        context("isMethodAnnotation on a class annotation") {
             it("should return false") {
                 val clazz = mock<PsiClass> {}
                 val annotation = mock<PsiAnnotation> {
@@ -32,7 +30,7 @@ object AnnotationUtilsSpek : Spek({
                 annotation.isMethodAnnotation().shouldBeFalse()
             }
         }
-        on("isMethodAnnotation on a method annotation") {
+        context("isMethodAnnotation on a method annotation") {
             it("should return true") {
                 val method = mock<PsiMethod> {}
                 val annotation = mock<PsiAnnotation> {
@@ -41,7 +39,7 @@ object AnnotationUtilsSpek : Spek({
                 annotation.isMethodAnnotation().shouldBeTrue()
             }
         }
-        on("isMethodAnnotation on an unknown parent") {
+        context("isMethodAnnotation on an unknown parent") {
             it("should return false") {
                 val method = mock<PsiElement> {}
                 val annotation = mock<PsiAnnotation> {
@@ -50,7 +48,7 @@ object AnnotationUtilsSpek : Spek({
                 annotation.isMethodAnnotation().shouldBeFalse()
             }
         }
-        on("fetchAnnotatedMethod on an unknown parent") {
+        context("fetchAnnotatedMethod on an unknown parent") {
             it("should throw ClassCastException") {
                 val method = mock<PsiElement> {}
                 val annotation = mock<PsiAnnotation> {
@@ -60,7 +58,7 @@ object AnnotationUtilsSpek : Spek({
                 fetchAnnotatedMethod shouldThrow ClassCastException::class
             }
         }
-        on("fetchAnnotatedMethod on a method annotation") {
+        context("fetchAnnotatedMethod on a method annotation") {
             it("should return the method") {
                 val method = mock<PsiMethod> {}
                 val annotation = mock<PsiAnnotation> {

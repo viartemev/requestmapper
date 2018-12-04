@@ -32,7 +32,7 @@ buildscript {
 repositories {
     mavenCentral()
     jcenter()
-    maven { url "http://dl.bintray.com/jetbrains/spek" }
+    maven { url "https://dl.bintray.com/spekframework/spek-dev" }
 }
 
 apply plugin: "org.jetbrains.intellij"
@@ -51,17 +51,16 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
     compile("org.apache.commons:commons-lang3:$commons_lang3_version")
 
-    testCompile("org.jetbrains.spek:spek-api:$spek_version")
-    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:$spek_version")
-
+    testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.0-alpha.1') {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+    testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.0-alpha.1') {
+        exclude group: 'org.junit.platform'
+        exclude group: 'org.jetbrains.kotlin'
+    }
     testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
     testCompile("com.nhaarman:mockito-kotlin:1.6.0")
-
-    // To use Log4J's LogManager
-    testRuntime("org.apache.logging.log4j:log4j-core:$log4j_version")
-    testRuntime("org.apache.logging.log4j:log4j-jul:$log4j_version")
-
     testImplementation "org.amshove.kluent:kluent:$kluent_version"
 }
 
@@ -71,13 +70,10 @@ jacocoTestReport {
     }
 }
 
-junitPlatform {
-    filters {
-        engines {
-            include 'spek'
-        }
+test {
+    useJUnitPlatform {
+        includeEngines 'spek2'
     }
-    logManager 'org.apache.logging.log4j.jul.LogManager'
 }
 
 intellij {

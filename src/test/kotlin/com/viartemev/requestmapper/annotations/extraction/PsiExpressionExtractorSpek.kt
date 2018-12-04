@@ -9,14 +9,12 @@ import com.intellij.psi.PsiReferenceExpression
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldBeEqualTo
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 object PsiExpressionExtractorSpek : Spek({
     describe("PsiExpressionExtractor") {
-        on("extractExpression on PsiLiteralExpression") {
+        context("extractExpression on PsiLiteralExpression") {
             it("should return unquoted text") {
                 val psiLiteralExpression = mock<PsiLiteralExpression> {
                     on { text } doReturn "\"api\""
@@ -24,7 +22,7 @@ object PsiExpressionExtractorSpek : Spek({
                 PsiExpressionExtractor.extractExpression(psiLiteralExpression) shouldBeEqualTo "api"
             }
         }
-        on("extractExpression on PsiReferenceExpression") {
+        context("extractExpression on PsiReferenceExpression") {
             it("should return unquoted text") {
                 val psiElement = mock<PsiLiteralExpression> {
                     on { text } doReturn "\"api\""
@@ -36,7 +34,7 @@ object PsiExpressionExtractorSpek : Spek({
                 PsiExpressionExtractor.extractExpression(psiReferenceExpression) shouldBeEqualTo "api"
             }
         }
-        on("extractExpression on PsiReferenceExpression on not resolved value") {
+        context("extractExpression on PsiReferenceExpression on not resolved value") {
             it("should return empty list") {
                 val psiReferenceExpression = mock<PsiReferenceExpression> {
                     on { children } doReturn emptyArray<PsiExpression>()
@@ -44,7 +42,7 @@ object PsiExpressionExtractorSpek : Spek({
                 PsiExpressionExtractor.extractExpression(psiReferenceExpression) shouldBeEqualTo ""
             }
         }
-        on("extractExpression on PsiBinaryExpression") {
+        context("extractExpression on PsiBinaryExpression") {
             it("should return sum of the left operator and the right operator") {
                 val psiElement = mock<PsiLiteralExpression> {
                     on { text } doReturn "\"api\""
@@ -56,7 +54,7 @@ object PsiExpressionExtractorSpek : Spek({
                 PsiExpressionExtractor.extractExpression(psiBinaryExpression) shouldBeEqualTo "apiapi"
             }
         }
-        on("extractExpression on PsiPolyadicExpression") {
+        context("extractExpression on PsiPolyadicExpression") {
             it("should return joined string of an each expression") {
                 val psiElement = mock<PsiLiteralExpression> {
                     on { text } doReturn "\"api\""
@@ -67,7 +65,7 @@ object PsiExpressionExtractorSpek : Spek({
                 PsiExpressionExtractor.extractExpression(psiPolyadicExpression) shouldBeEqualTo "apiapi"
             }
         }
-        on("extractExpression on others expressions") {
+        context("extractExpression on others expressions") {
             it("should return empty string") {
                 val psiAssignmentExpression = mock<PsiAssignmentExpression> {}
                 PsiExpressionExtractor.extractExpression(psiAssignmentExpression) shouldBeEqualTo ""

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.14</version>
+    <version>0.15</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -45,11 +45,8 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Feature: add PATCH mapping for JAX-RS</li>
-            <li>Feature: add support for variables in @PathParam annotation (JAX-RS)</li>
-            <li>Feature: add support for variables in @PathVariable annotation (Spring)</li>
-            <li>Feature: add support for PsiPolyadicExpression mapping annotation (Spring, JAX-RS)</li>
-            <li>Bug fix: JAX-RS annotations issue</li>
+            <li>Bug fix (#127): No match root GET url if exist least one method with same PathVariable</li>
+            <li>Improvements: Move to Kotlin 1.3</li>
         </ul>
     ]]>
     </change-notes>

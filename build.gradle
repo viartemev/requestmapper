@@ -102,7 +102,3 @@ patchPluginXml {
     sinceBuild '141.0'
     untilBuild ''
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.7'
-}

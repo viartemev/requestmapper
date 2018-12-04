@@ -40,89 +40,129 @@ object PathElementSpek : Spek({
             }
         }
 
-        on("equals with an empty element") {
+        on("compareToSearchPattern with an empty element") {
             it("should return false") {
-                PathElement("api") shouldNotEqual PathElement("")
+                PathElement("api").compareToSearchPattern(PathElement("")).shouldBeFalse()
             }
         }
-        on("equals with the same string") {
+        on("compareToSearchPattern with the same string") {
             it("should return true") {
-                PathElement("api") shouldEqual PathElement("api")
+                PathElement("api").compareToSearchPattern(PathElement("api")).shouldBeTrue()
             }
         }
-        on("equals on an element with a String type path variable and digits") {
+        on("compareToSearchPattern on an element with a String type path variable and digits") {
             it("should return true") {
-                PathElement("{String:id}") shouldEqual PathElement("123")
+                PathElement("{String:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with a String type path variable and a string") {
+        on("compareToSearchPattern on an element with a String type path variable and a string") {
             it("should return true") {
-                PathElement("{String:id}") shouldEqual PathElement("string")
+                PathElement("{String:id}").compareToSearchPattern(PathElement("string")).shouldBeTrue()
             }
         }
-        on("equals on an element with Long type path variable and digits") {
+        on("compareToSearchPattern on an element with Long type path variable and digits") {
             it("should return true") {
-                PathElement("{Long:id}") shouldEqual PathElement("123")
+                PathElement("{Long:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with Long type path variable and a string") {
+        on("compareToSearchPattern on an element with Long type path variable and a string") {
             it("should return false") {
-                PathElement("{Long:id}") shouldNotEqual PathElement("string")
+                PathElement("{Long:id}").compareToSearchPattern(PathElement("string")).shouldBeFalse()
             }
         }
-        on("equals on an element with a String type path variable and digits (inverted order)") {
+        on("compareToSearchPattern on an element with a String type path variable and digits (inverted order)") {
             it("should return true") {
-                PathElement("123") shouldEqual PathElement("{String:id}")
+                PathElement("{String:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with a String type path variable and a string (inverted order)") {
+        on("compareToSearchPattern on an element with a String type path variable and a string (inverted order)") {
             it("should return true") {
-                PathElement("string") shouldEqual PathElement("{String:id}")
+                PathElement("{String:id}").compareToSearchPattern(PathElement("string")).shouldBeTrue()
             }
         }
-        on("equals on an element with a Long type path variable and digits (inverted order)") {
+        on("compareToSearchPattern on an element with a Long type path variable and digits (inverted order)") {
             it("should return true") {
-                PathElement("123") shouldEqual PathElement("{Long:id}")
+                PathElement("{Long:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with a Long type path variable and a string (inverted order)") {
+        on("compareToSearchPattern on an element with a Long type path variable and a string (inverted order)") {
             it("should return false") {
-                PathElement("string") shouldNotEqual PathElement("{Long:id}")
+                PathElement("{Long:id}").compareToSearchPattern(PathElement("string")).shouldBeFalse()
             }
         }
-        on("equals on an element with a regex (more than one any single character) path variable and a string") {
+        on("compareToSearchPattern on an element with a regex (more than one any single character) path variable and a string") {
             it("should return true") {
-                PathElement("{String:id:.+}") shouldEqual PathElement("abc")
+                PathElement("{String:id:.+}").compareToSearchPattern(PathElement("abc")).shouldBeTrue()
             }
         }
-        on("equals on an element with a regex (only digits) path variable and a string") {
+        on("compareToSearchPattern on an element with a regex (only digits) path variable and a string") {
             it("should return false") {
-                PathElement("{String:id:[\\\\d]+}") shouldNotEqual PathElement("abc")
+                PathElement("{String:id:[\\\\d]+}").compareToSearchPattern(PathElement("abc")).shouldBeFalse()
             }
         }
-        on("equals on an element with a regex (only digits) path variable and digits") {
+        on("compareToSearchPattern on an element with a regex (only digits) path variable and digits") {
             it("should return true") {
-                PathElement("{String:id:[\\\\d]+}") shouldEqual PathElement("123")
+                PathElement("{String:id:[\\\\d]+}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with a Integer type path variable and digits") {
+        on("compareToSearchPattern on an element with a Integer type path variable and digits") {
             it("should return true") {
-                PathElement("{Integer:id}") shouldEqual PathElement("123")
+                PathElement("{Integer:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with int type path variable and digits") {
+        on("compareToSearchPattern on an element with int type path variable and digits") {
             it("should return true") {
-                PathElement("{int:id}") shouldEqual PathElement("123")
+                PathElement("{int:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with a long type path variable and digits") {
+        on("compareToSearchPattern on an element with a long type path variable and digits") {
             it("should return true") {
-                PathElement("{long:id}") shouldEqual PathElement("123")
+                PathElement("{long:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
             }
         }
-        on("equals on an element with a BigInteger type path variable and digits") {
+        on("compareToSearchPattern on an element with a double type path variable and digits") {
             it("should return true") {
-                PathElement("{BigInteger:id}") shouldEqual PathElement("123")
+                PathElement("{double:id}").compareToSearchPattern(PathElement("123.12")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a float type path variable and digits") {
+            it("should return true") {
+                PathElement("{float:id}").compareToSearchPattern(PathElement("123.1")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a Double type path variable and digits") {
+            it("should return true") {
+                PathElement("{Double:id}").compareToSearchPattern(PathElement("123.12")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a Float type path variable and digits") {
+            it("should return true") {
+                PathElement("{Float:id}").compareToSearchPattern(PathElement("123.1")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a BigInteger type path variable and digits") {
+            it("should return true") {
+                PathElement("{BigInteger:id}").compareToSearchPattern(PathElement("123")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a BigInteger type path variable and digits") {
+            it("should return true") {
+                PathElement("{BigDecimal:id}").compareToSearchPattern(PathElement("123.1")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a String type path variable and search path variable") {
+            it("should return true") {
+                PathElement("{String:sessionId}").compareToSearchPattern(PathElement("{sess}")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a String type path variable and search path variable with type") {
+            it("should return true") {
+                PathElement("{String:sessionId}").compareToSearchPattern(PathElement("{String:sess}")).shouldBeTrue()
+            }
+        }
+        on("compareToSearchPattern on an element with a path and search path variable") {
+            it("should return true") {
+                PathElement("getsession").compareToSearchPattern(PathElement("{sess}")).shouldBeFalse()
             }
         }
         on("equals on an element with null") {

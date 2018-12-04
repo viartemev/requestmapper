@@ -6,15 +6,13 @@ import com.intellij.psi.PsiMethod
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldEqual
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 object RequestMappingItemSpek : Spek({
 
     describe("RequestMappingItem") {
-        on("getPresentation on class PsiElement") {
+        context("getPresentation on class PsiElement") {
             val psiFile = mock<PsiFile> {
                 on { name } doReturn "Controller"
             }
@@ -34,7 +32,7 @@ object RequestMappingItemSpek : Spek({
                 presentation.getIcon(false) shouldEqual RequestMapperIcons.SEARCH
             }
         }
-        on("getPresentation on method PsiElement") {
+        context("getPresentation on method PsiElement") {
             val psiFile = mock<PsiFile> {
                 on { name } doReturn "Controller"
             }
@@ -54,7 +52,7 @@ object RequestMappingItemSpek : Spek({
                 presentation.getIcon(false) shouldEqual RequestMapperIcons.SEARCH
             }
         }
-        on("getPresentation on file PsiElement") {
+        context("getPresentation on file PsiElement") {
             val psiElement = mock<PsiFile> {
                 on { name } doReturn "Controller"
             }

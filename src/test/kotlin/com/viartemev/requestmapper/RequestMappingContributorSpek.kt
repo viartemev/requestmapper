@@ -14,21 +14,19 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldEqualTo
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 object RequestMappingContributorSpek : Spek({
     val testAnnotationSearcher: (String, Project) -> Sequence<PsiAnnotation> = { _, _ -> emptySequence() }
 
     describe("RequestMappingContributor") {
-        on("getItemsByName on empty navigationItems list") {
+        context("getItemsByName on empty navigationItems list") {
             it("should return empty list") {
                 RequestMappingContributor(testAnnotationSearcher).getItemsByName("name", "pattern", DummyProject.getInstance(), false).size shouldEqualTo 0
             }
         }
-        on("getItemsByName with 2 mapping items") {
+        context("getItemsByName with 2 mapping items") {
             it("should return item a particular name") {
                 val psiElement = mock<PsiElement> {}
                 val navigationItems = listOf(
@@ -40,12 +38,12 @@ object RequestMappingContributorSpek : Spek({
                 itemsByName[0].name shouldEqual "GET /api/v1/users"
             }
         }
-        on("getNames on empty navigationItems list") {
+        context("getNames on empty navigationItems list") {
             it("should return empty list") {
                 RequestMappingContributor(testAnnotationSearcher).getNames(DummyProject.getInstance(), false).size shouldEqualTo 0
             }
         }
-        on("getNames on not method annotations") {
+        context("getNames on not method annotations") {
             it("should return empty list") {
                 val annotationParent = mock<PsiElement> {}
                 val psiAnnotation = mock<PsiAnnotation> {
@@ -54,7 +52,7 @@ object RequestMappingContributorSpek : Spek({
                 RequestMappingContributor({ _, _ -> sequenceOf(psiAnnotation) }).getNames(DummyProject.getInstance(), false).size shouldEqualTo 0
             }
         }
-        on("getNames with one RequestMapping annotation") {
+        context("getNames with one RequestMapping annotation") {
             it("should return one name of mapping") {
                 val psiParameterList = mock<PsiParameterList> {
                     on { parameters } doReturn emptyArray<PsiParameter>()

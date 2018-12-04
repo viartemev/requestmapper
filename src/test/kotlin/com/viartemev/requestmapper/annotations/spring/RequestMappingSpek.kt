@@ -13,15 +13,13 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldContainAll
 import org.amshove.kluent.shouldEqual
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 object RequestMappingSpek : Spek({
 
     describe("RequestMapping") {
-        on("values on annotation without anything") {
+        context("values on annotation without anything") {
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
@@ -39,7 +37,7 @@ object RequestMappingSpek : Spek({
             }
         }
 
-        on("values on annotation with annotated class") {
+        context("values on annotation with annotated class") {
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
@@ -71,7 +69,7 @@ object RequestMappingSpek : Spek({
             }
         }
 
-        on("values on annotation with annotated class and method") {
+        context("values on annotation with annotated class and method") {
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
@@ -107,7 +105,7 @@ object RequestMappingSpek : Spek({
             }
         }
 
-        on("values on annotation with annotated class and method with path variable without type") {
+        context("values on annotation with annotated class and method with path variable without type") {
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }
@@ -142,7 +140,7 @@ object RequestMappingSpek : Spek({
                 values[0].name shouldEqual "GET /api/{Object:id}"
             }
         }
-        on("values on annotation with annotated class and method with path variable with Long type") {
+        context("values on annotation with annotated class and method with path variable with Long type") {
             val methodModifierMappingMemberValue = mock<PsiLiteralExpression> {
                 on { text } doReturn "id"
             }
@@ -196,7 +194,7 @@ object RequestMappingSpek : Spek({
             }
         }
 
-        on("values on an annotation with annotated class with an array of paths") {
+        context("values on an annotation with annotated class with an array of paths") {
             val psiParameterList = mock<PsiParameterList> {
                 on { parameters } doReturn emptyArray<PsiParameter>()
             }

@@ -8,7 +8,10 @@ import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.mappi
 import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.supportedAnnotations
 import com.viartemev.requestmapper.utils.isMethodAnnotation
 
-class RequestMappingContributor(private val annotationSearcher: (string: String, project: Project) -> Sequence<PsiAnnotation>, private var navigationItems: List<RequestMappingItem> = emptyList()) : ChooseByNameContributor {
+class RequestMappingContributor(
+    private val annotationSearcher: (string: String, project: Project) -> Sequence<PsiAnnotation>,
+    private var navigationItems: List<RequestMappingItem> = emptyList()
+) : ChooseByNameContributor {
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         navigationItems = supportedAnnotations
@@ -20,19 +23,17 @@ class RequestMappingContributor(private val annotationSearcher: (string: String,
             .toTypedArray()
     }
 
-    override fun getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean): Array<NavigationItem> {
-        return navigationItems
+    override fun getItemsByName(name: String, pattern: String, project: Project, includeNonProjectItems: Boolean): Array<NavigationItem> =
+        navigationItems
             .filter { it.name == name }
             .toTypedArray()
-    }
 
-    private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> {
-        return annotationSearcher(annotationName, project)
+    private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> =
+        annotationSearcher(annotationName, project)
             .asSequence()
             .filterNotNull()
             .filter { it.isMethodAnnotation() }
             .map { annotation -> mappingAnnotation(annotationName, annotation) }
             .flatMap { mappingAnnotation -> mappingAnnotation.values().asSequence() }
             .toList()
-    }
 }

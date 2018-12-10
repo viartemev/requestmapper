@@ -35,13 +35,13 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
     override fun willOpenEditor(): Boolean = false
 
     override fun matches(popupItem: String, userPattern: String): Boolean {
-        return if (userPattern == "/") {
-            true
-        } else if (!userPattern.contains('/')) {
-            val (method, path) = popupItem.split(" ", limit = 2)
-            path.contains(userPattern) || method.contains(userPattern, ignoreCase = true)
-        } else {
-            Path.isSubpathOf(
+        return when {
+            userPattern == "/" -> true
+            !userPattern.contains('/') -> {
+                val (method, path) = popupItem.split(" ", limit = 2)
+                path.contains(userPattern) || method.contains(userPattern, ignoreCase = true)
+            }
+            else -> Path.isSubpathOf(
                 PopupPath(popupItem).toPath(),
                 RequestedUserPath(userPattern).toPath()
             )

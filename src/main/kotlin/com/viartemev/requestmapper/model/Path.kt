@@ -6,10 +6,11 @@ data class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
     fun addPathVariablesTypes(parametersNameWithType: Map<String, String>): Path {
-        return Path(pathElements.map {
+        val elements = pathElements.map {
             val key = it.value.unquoteCurlyBrackets().substringBefore(':')
             it.addPathVariableType(parametersNameWithType.getOrDefault(key, "Object"))
-        })
+        }
+        return Path(elements)
     }
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }
@@ -17,30 +18,25 @@ data class Path(private val pathElements: List<PathElement>) {
     companion object {
 
         fun isSubpathOf(sourcePath: Path, targetPath: Path): Boolean {
-            val sourcePathElements = sourcePath.pathElements.drop(1)
-            val targetPathElements = targetPath.pathElements.drop(1)
-            val allSourceElementsArePathVariables = sourcePathElements.all { it.isPathVariable }
+            val popupElements = sourcePath.pathElements.drop(1)
+            val searchPatterns = targetPath.pathElements.drop(1)
 
-            return containsAll(sourcePathElements, targetPathElements, allSourceElementsArePathVariables)
+            return containsAll(popupElements, searchPatterns, popupElements.all { it.isPathVariable })
         }
 
-        private tailrec fun containsAll(sourcePathElements: List<PathElement>, targetPathElements: List<PathElement>, allSourceElementsArePathVariables: Boolean): Boolean {
-            if (sourcePathElements.size < targetPathElements.size) {
-                return false
-            }
+        private tailrec fun containsAll(popupElements: List<PathElement>, searchPatterns: List<PathElement>, allSourceElementsArePathVariables: Boolean): Boolean {
+            if (popupElements.size < searchPatterns.size) return false
 
-            val hasExactMatching = sourcePathElements.subList(0, targetPathElements.size).any { !it.isPathVariable }
-            val pathElementsAreEqual = sourcePathElements
-                .zip(targetPathElements)
+            val hasExactMatching = popupElements.subList(0, searchPatterns.size).any { !it.isPathVariable }
+            val pathElementsAreEqual = popupElements
+                .zip(searchPatterns)
                 .all { (popupElement, searchPattern) ->
                     popupElement.compareToSearchPattern(searchPattern) || popupElement.value.startsWith(searchPattern.value)
                 }
 
-            if (pathElementsAreEqual && (hasExactMatching || allSourceElementsArePathVariables)) {
-                return true
-            }
+            if (pathElementsAreEqual && (hasExactMatching || allSourceElementsArePathVariables)) return true
 
-            return containsAll(sourcePathElements.drop(1), targetPathElements, allSourceElementsArePathVariables)
+            return containsAll(popupElements.drop(1), searchPatterns, allSourceElementsArePathVariables)
         }
     }
 }

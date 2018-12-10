@@ -22,7 +22,7 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
     override fun canNavigateToSource(): Boolean = true
 
     override fun toString(): String {
-        return "RequestMappingItem(psiElement=$psiElement, urlPath='$urlPath', requestMethod='$requestMethod', navigationElement=$navigationElement)"
+        return "RequestMappingItem(urlPath='$urlPath', requestMethod='$requestMethod')"
     }
 
     private inner class RequestMappingItemPresentation : ItemPresentation {

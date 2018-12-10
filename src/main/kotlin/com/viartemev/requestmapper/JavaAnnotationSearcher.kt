@@ -7,10 +7,8 @@ import com.intellij.psi.search.GlobalSearchScope.projectScope
 
 object JavaAnnotationSearcher {
 
-    fun search(annotationName: String, project: Project): Sequence<PsiAnnotation> {
-        return JavaAnnotationIndex
-            .getInstance()
-            .get(annotationName, project, projectScope(project))
-            .asSequence()
-    }
+    fun search(annotationName: String, project: Project): Sequence<PsiAnnotation> = JavaAnnotationIndex
+        .getInstance()
+        .get(annotationName, project, projectScope(project))
+        .asSequence()
 }

@@ -6,14 +6,11 @@ import com.viartemev.requestmapper.utils.unquote
 
 class PathParameter(private val parameter: PsiParameter) {
 
-    fun extractParameterNameWithType(annotationName: String, extractParameterNameFunction: (annotation: PsiAnnotation, defaultValue: String) -> String): Pair<String, String>? {
-        val parameterType = parameter.type.presentableText.unquote()
-
-        return parameter
+    fun extractParameterNameWithType(annotationName: String, extractParameterNameFunction: (annotation: PsiAnnotation, defaultValue: String) -> String): Pair<String, String>? =
+        parameter
             .modifierList
             ?.annotations
             ?.filter { it.qualifiedName == annotationName }
-            ?.map { Pair(extractParameterNameFunction(it, parameter.name!!), parameterType) }
+            ?.map { Pair(extractParameterNameFunction(it, parameter.name!!), parameter.type.presentableText.unquote()) }
             ?.firstOrNull()
-    }
 }

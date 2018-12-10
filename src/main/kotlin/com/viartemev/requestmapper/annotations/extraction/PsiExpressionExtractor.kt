@@ -17,18 +17,16 @@ object PsiExpressionExtractor {
         else -> ""
     }
 
-    private fun extractPath(value: PsiReferenceExpression): String {
-        return value.resolve()?.let {
-            it
-                .children
-                .asSequence()
-                .filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }
-                .map { extractExpression(it) }
-                .toList()
-                // only one exists
-                .first()
-        } ?: ""
-    }
+    private fun extractPath(value: PsiReferenceExpression): String =
+        value
+            .resolve()
+            ?.children
+            ?.asSequence()
+            ?.filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }
+            ?.map { extractExpression(it) }
+            ?.toList()
+            ?.first()
+            ?: ""
 
     private fun extractLiteralExpression(psiElement: PsiLiteralExpression) = psiElement.text.unquote()
 
@@ -37,7 +35,5 @@ object PsiExpressionExtractor {
         extractExpression(psiElement.lOperand) + extractExpression(psiElement.rOperand!!)
 
     private fun extractPsiPolyadicExpression(psiElement: PsiPolyadicExpression) =
-        psiElement
-            .operands
-            .joinToString(separator = "", transform = { extractExpression(it) })
+        psiElement.operands.joinToString(separator = "", transform = { extractExpression(it) })
 }

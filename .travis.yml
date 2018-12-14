@@ -4,12 +4,16 @@ jdk:
     - oraclejdk8
 before_script:
     - chmod +x gradlew
+    - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
 script:
     - "./gradlew check"
     - "./gradlew lintKotlin"
     - "./gradlew jacocoTestReport"
+    - "fossa init"
+    - "fossa analyze"
 after_success:
     - bash <(curl -s https://codecov.io/bash)
+    - fossa test
 before_cache:
     - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
     - rm -fr $HOME/.gradle/caches/*/plugin-resolution/

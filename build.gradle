@@ -6,7 +6,7 @@ buildscript {
         junit_plugin_version = '1.2.0'
         spek_version = '1.2.1'
         assertj_version = '3.9.1'
-        kluent_version = '1.46'
+        kluent_version = '1.47'
         log4j_version = '2.11.1'
         commons_lang3_version = '3.8.1'
 

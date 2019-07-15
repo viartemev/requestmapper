@@ -41,7 +41,3 @@ Thanks to all people who have contributed to this plugin:
 - Click ```Shift``` twice -> request mapping
 
 ![](art/requestmapper.gif)
-
-
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper?ref=badge_large)

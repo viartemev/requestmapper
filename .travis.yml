@@ -1,7 +1,7 @@
 language: java
 sudo: false
 jdk:
-    - oraclejdk8
+    - openjdk8
 before_script:
     - chmod +x gradlew
     - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"

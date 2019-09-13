@@ -9,6 +9,13 @@ import com.viartemev.requestmapper.annotations.jaxrs.OPTIONS
 import com.viartemev.requestmapper.annotations.jaxrs.PATCH
 import com.viartemev.requestmapper.annotations.jaxrs.POST
 import com.viartemev.requestmapper.annotations.jaxrs.PUT
+import com.viartemev.requestmapper.annotations.micronaut.Delete
+import com.viartemev.requestmapper.annotations.micronaut.Get
+import com.viartemev.requestmapper.annotations.micronaut.Head
+import com.viartemev.requestmapper.annotations.micronaut.Options
+import com.viartemev.requestmapper.annotations.micronaut.Patch
+import com.viartemev.requestmapper.annotations.micronaut.Post
+import com.viartemev.requestmapper.annotations.micronaut.Put
 import com.viartemev.requestmapper.annotations.spring.DeleteMapping
 import com.viartemev.requestmapper.annotations.spring.GetMapping
 import com.viartemev.requestmapper.annotations.spring.PatchMapping
@@ -34,7 +41,14 @@ interface MappingAnnotation {
             OPTIONS::class.java.simpleName,
             HEAD::class.java.simpleName,
             DELETE::class.java.simpleName,
-            PATCH::class.java.simpleName
+            PATCH::class.java.simpleName,
+            Get::class.java.simpleName,
+            Put::class.java.simpleName,
+            Post::class.java.simpleName,
+            Options::class.java.simpleName,
+            Head::class.java.simpleName,
+            Delete::class.java.simpleName,
+            Patch::class.java.simpleName
         )
 
         fun mappingAnnotation(annotationName: String, psiAnnotation: PsiAnnotation): MappingAnnotation {
@@ -52,6 +66,13 @@ interface MappingAnnotation {
                 HEAD::class.java.simpleName -> HEAD(psiAnnotation)
                 DELETE::class.java.simpleName -> DELETE(psiAnnotation)
                 PATCH::class.java.simpleName -> PATCH(psiAnnotation)
+                Get::class.java.simpleName -> Get(psiAnnotation)
+                Put::class.java.simpleName -> Put(psiAnnotation)
+                Post::class.java.simpleName -> Post(psiAnnotation)
+                Options::class.java.simpleName -> Options(psiAnnotation)
+                Head::class.java.simpleName -> Head(psiAnnotation)
+                Delete::class.java.simpleName -> Delete(psiAnnotation)
+                Patch::class.java.simpleName -> Patch(psiAnnotation)
                 else -> UnknownAnnotation
             }
         }

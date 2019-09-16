@@ -5,8 +5,8 @@ jdk:
 before_script:
     - chmod +x gradlew
 script:
+    - "./gradlew formatKotlin"
     - "./gradlew check"
-    - "./gradlew lintKotlin"
     - "./gradlew jacocoTestReport"
 after_success:
     - bash <(curl -s https://codecov.io/bash)

@@ -3,8 +3,8 @@ package com.viartemev.requestmapper.annotations.extraction
 import com.intellij.psi.PsiAnnotationMemberValue
 import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.intellij.psi.PsiBinaryExpression
-import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiPolyadicExpression
+import com.intellij.psi.PsiReferenceExpression
 
 interface PsiAnnotationValueVisitor {
 

@@ -10,6 +10,7 @@ buildscript {
         log4j_version = '2.11.1'
         commons_lang3_version = '3.9'
 
+        kotlinter_gradle_plugin = '2.1.1'
         gradle_intellij_plugin = '0.4.10'
     }
 
@@ -21,6 +22,7 @@ buildscript {
     }
     dependencies {
         classpath files('libs/ktlint-print-rule.jar')
+        classpath "org.jmailen.gradle:kotlinter-gradle:$kotlinter_gradle_plugin"
         classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:$gradle_intellij_plugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.junit.platform:junit-platform-gradle-plugin:$junit_plugin_version"
@@ -95,4 +97,14 @@ patchPluginXml {
     version '0.15'
     sinceBuild '141.0'
     untilBuild ''
+}
+
+kotlinter {
+    ignoreFailures = false
+    indentSize = 4
+    continuationIndentSize = 4
+    reporters = ['checkstyle', 'plain']
+    experimentalRules = false
+    disabledRules = []
+    fileBatchSize = 30
 }

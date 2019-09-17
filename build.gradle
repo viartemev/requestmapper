@@ -79,7 +79,7 @@ test {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version '2017.3'
+    version '2019.1'
 }
 
 jacoco {

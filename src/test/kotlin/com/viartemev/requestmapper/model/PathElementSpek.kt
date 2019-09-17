@@ -1,12 +1,12 @@
 package com.viartemev.requestmapper.model
 
+import java.math.BigInteger
 import org.amshove.kluent.shouldBeFalse
 import org.amshove.kluent.shouldBeTrue
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldNotEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import java.math.BigInteger
 
 object PathElementSpek : Spek({
     describe("PathElement") {

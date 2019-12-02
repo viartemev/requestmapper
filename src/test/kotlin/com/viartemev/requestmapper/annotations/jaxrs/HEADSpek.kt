@@ -11,7 +11,7 @@ object HEADSpek : Spek({
         context("extractMethod") {
             it("should return HEAD") {
                 val annotation = mock<PsiAnnotation> {}
-                HEAD(annotation).extractMethod() shouldBeEqualTo "HEAD"
+                Head(annotation).extractMethod() shouldBeEqualTo "HEAD"
             }
         }
     }

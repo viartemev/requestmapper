@@ -11,7 +11,7 @@ object PATCHSpek : Spek({
         context("extractMethod") {
             it("should return PATCH") {
                 val annotation = mock<PsiAnnotation> {}
-                PATCH(annotation).extractMethod() shouldBeEqualTo "PATCH"
+                Patch(annotation).extractMethod() shouldBeEqualTo "PATCH"
             }
         }
     }

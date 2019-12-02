@@ -3,9 +3,11 @@ package com.viartemev.requestmapper.annotations.micronaut
 import com.intellij.psi.PsiAnnotation
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
+import com.viartemev.requestmapper.annotations.UrlFormatter
 
 abstract class MicronautMappingAnnotation(
-    val psiAnnotation: PsiAnnotation
+    val psiAnnotation: PsiAnnotation,
+    private val urlFormatter: UrlFormatter = MicronautUrlFormatter
 ) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {

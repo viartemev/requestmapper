@@ -1,9 +1,10 @@
-package com.viartemev.requestmapper.annotations.jaxrs
+package com.viartemev.requestmapper.annotations.micronaut
 
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReferenceExpression
+
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.PathAnnotation
@@ -12,21 +13,22 @@ import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod
+import com.viartemev.requestmapper.utils.unquote
 
-abstract class JaxRsMappingAnnotation(
+abstract class MicronautMappingAnnotation(
     val psiAnnotation: PsiAnnotation,
-    private val urlFormatter: UrlFormatter = JaxRsUrlFormatter
+    private val urlFormatter: UrlFormatter = MicronautUrlFormatter
 ) : MappingAnnotation {
 
     override fun values(): List<RequestMappingItem> {
-        return fetchRequestMappingItem(psiAnnotation.fetchAnnotatedMethod(), extractMethod())
+        return fetchRequestMappingItem(psiAnnotation, psiAnnotation.fetchAnnotatedMethod(), extractMethod())
     }
 
     abstract fun extractMethod(): String
 
-    private fun fetchRequestMappingItem(psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
+    private fun fetchRequestMappingItem(annotation: PsiAnnotation, psiMethod: PsiMethod, method: String): List<RequestMappingItem> {
         val classMapping = fetchMappingFromClass(psiMethod)
-        val methodMapping = fetchMappingFromMethod(psiMethod)
+        val methodMapping = fetchMappingFromMethod(annotation, psiMethod)
         return listOf(RequestMappingItem(psiMethod, urlFormatter.format(classMapping, methodMapping), method))
     }
 
@@ -35,23 +37,26 @@ abstract class JaxRsMappingAnnotation(
             .containingClass
             ?.modifierList
             ?.annotations
-            ?.filter { it.qualifiedName == PATH_ANNOTATION }
-            ?.flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+            ?.flatMap { extractPathFromMicronautPsiAnnotations(it) }
             ?.firstOrNull() ?: ""
     }
 
-    private fun fetchMappingFromMethod(method: PsiMethod): String {
+    private fun extractPathFromMicronautPsiAnnotations(psiAnnotation: PsiAnnotation) = when (psiAnnotation.qualifiedName) {
+        CONTROLLER_ANNOTATION -> PathAnnotation(psiAnnotation).fetchMappings(ATTRIBUTE_NAME)
+        else -> emptyList()
+    }
+
+    private fun fetchMappingFromMethod(annotation: PsiAnnotation, method: PsiMethod): String {
         val parametersNameWithType = method
             .parameterList
             .parameters
-            .mapNotNull { PathParameter(it).extractParameterNameWithType(PATH_PARAM_ANNOTATION, ::extractParameterNameFromAnnotation) }
+            .mapNotNull {
+                PathParameter(it).extractParameterNameWithType(PATH_VARIABLE_ANNOTATION, ::extractParameterNameFromAnnotation)
+                    ?: Pair(it.name!!, it.type.presentableText.unquote())
+            }
             .toMap()
 
-        return method
-            .modifierList
-            .annotations
-            .filter { it.qualifiedName == PATH_ANNOTATION }
-            .flatMap { PathAnnotation(it).fetchMappings(ATTRIBUTE_NAME) }
+        return PathAnnotation(annotation).fetchMappings(ATTRIBUTE_NAME)
             .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
             .firstOrNull() ?: ""
     }
@@ -71,8 +76,9 @@ abstract class JaxRsMappingAnnotation(
     }
 
     companion object {
-        private const val PATH_ANNOTATION = "javax.ws.rs.Path"
+        private const val CONTROLLER_ANNOTATION = "io.micronaut.http.annotation.Controller"
         private const val ATTRIBUTE_NAME = "value"
-        private const val PATH_PARAM_ANNOTATION = "javax.ws.rs.PathParam"
+        private const val PATH_VARIABLE_ANNOTATION = "io.micronaut.http.annotation.PathVariable"
     }
+
 }

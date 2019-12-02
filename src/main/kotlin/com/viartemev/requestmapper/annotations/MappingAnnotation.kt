@@ -2,21 +2,8 @@ package com.viartemev.requestmapper.annotations
 
 import com.intellij.psi.PsiAnnotation
 import com.viartemev.requestmapper.RequestMappingItem
-import com.viartemev.requestmapper.annotations.jaxrs.Delete as JaxRsDelete
-import com.viartemev.requestmapper.annotations.jaxrs.Get as JaxRsGet
-import com.viartemev.requestmapper.annotations.jaxrs.Head as JaxRsHead
-import com.viartemev.requestmapper.annotations.jaxrs.Options as JaxRsOptions
-import com.viartemev.requestmapper.annotations.jaxrs.Patch as JaxRsPatch
-import com.viartemev.requestmapper.annotations.jaxrs.Post as JaxRsPost
-import com.viartemev.requestmapper.annotations.jaxrs.Put as JaxRsPut
-
-import com.viartemev.requestmapper.annotations.micronaut.Delete as MicronautDelete
-import com.viartemev.requestmapper.annotations.micronaut.Get as MicronautGet
-import com.viartemev.requestmapper.annotations.micronaut.Head as MicronautHead
-import com.viartemev.requestmapper.annotations.micronaut.Options as MicronautOptions
-import com.viartemev.requestmapper.annotations.micronaut.Patch as MicronautPatch
-import com.viartemev.requestmapper.annotations.micronaut.Post as MicronautPost
-import com.viartemev.requestmapper.annotations.micronaut.Put as MicronautPut
+import com.viartemev.requestmapper.annotations.jaxrs.*
+import com.viartemev.requestmapper.annotations.micronaut.*
 
 import com.viartemev.requestmapper.annotations.spring.DeleteMapping
 import com.viartemev.requestmapper.annotations.spring.GetMapping
@@ -38,21 +25,21 @@ interface MappingAnnotation {
             PatchMapping::class.java.simpleName,
             DeleteMapping::class.java.simpleName,
 
-            JaxRsGet::class.java.simpleName,
-            JaxRsPut::class.java.simpleName,
-            JaxRsPost::class.java.simpleName,
-            JaxRsOptions::class.java.simpleName,
-            JaxRsHead::class.java.simpleName,
-            JaxRsDelete::class.java.simpleName,
-            JaxRsPatch::class.java.simpleName,
+            GET::class.java.simpleName,
+            PUT::class.java.simpleName,
+            POST::class.java.simpleName,
+            OPTIONS::class.java.simpleName,
+            HEAD::class.java.simpleName,
+            DELETE::class.java.simpleName,
+            PATCH::class.java.simpleName,
 
-            MicronautDelete::class.java.simpleName,
-            MicronautGet::class.java.simpleName,
-            MicronautHead::class.java.simpleName,
-            MicronautOptions::class.java.simpleName,
-            MicronautPatch::class.java.simpleName,
-            MicronautPost::class.java.simpleName,
-            MicronautPut::class.java.simpleName
+            Delete::class.java.simpleName,
+            Get::class.java.simpleName,
+            Head::class.java.simpleName,
+            Options::class.java.simpleName,
+            Patch::class.java.simpleName,
+            Post::class.java.simpleName,
+            Put::class.java.simpleName
         )
 
         fun mappingAnnotation(annotationName: String, psiAnnotation: PsiAnnotation): MappingAnnotation {
@@ -64,21 +51,21 @@ interface MappingAnnotation {
                 PatchMapping::class.java.simpleName -> PatchMapping(psiAnnotation)
                 DeleteMapping::class.java.simpleName -> DeleteMapping(psiAnnotation)
 
-                JaxRsGet::class.java.simpleName -> JaxRsGet(psiAnnotation)
-                JaxRsPut::class.java.simpleName -> JaxRsPut(psiAnnotation)
-                JaxRsPost::class.java.simpleName -> JaxRsPost(psiAnnotation)
-                JaxRsOptions::class.java.simpleName -> JaxRsOptions(psiAnnotation)
-                JaxRsHead::class.java.simpleName -> JaxRsHead(psiAnnotation)
-                JaxRsDelete::class.java.simpleName -> JaxRsDelete(psiAnnotation)
-                JaxRsPatch::class.java.simpleName -> JaxRsPatch(psiAnnotation)
+                GET::class.java.simpleName -> GET(psiAnnotation)
+                PUT::class.java.simpleName -> PUT(psiAnnotation)
+                POST::class.java.simpleName -> POST(psiAnnotation)
+                OPTIONS::class.java.simpleName -> OPTIONS(psiAnnotation)
+                HEAD::class.java.simpleName -> HEAD(psiAnnotation)
+                DELETE::class.java.simpleName -> DELETE(psiAnnotation)
+                PATCH::class.java.simpleName -> PATCH(psiAnnotation)
 
-                MicronautGet::class.java.simpleName -> MicronautGet(psiAnnotation)
-                MicronautPut::class.java.simpleName -> MicronautPut(psiAnnotation)
-                MicronautPost::class.java.simpleName -> MicronautPost(psiAnnotation)
-                MicronautOptions::class.java.simpleName -> MicronautOptions(psiAnnotation)
-                MicronautHead::class.java.simpleName -> MicronautHead(psiAnnotation)
-                MicronautDelete::class.java.simpleName -> MicronautDelete(psiAnnotation)
-                MicronautPatch::class.java.simpleName -> MicronautPatch(psiAnnotation)
+                Get::class.java.simpleName -> Get(psiAnnotation)
+                Put::class.java.simpleName -> Put(psiAnnotation)
+                Post::class.java.simpleName -> Post(psiAnnotation)
+                Options::class.java.simpleName -> Options(psiAnnotation)
+                Head::class.java.simpleName -> Head(psiAnnotation)
+                Delete::class.java.simpleName -> Delete(psiAnnotation)
+                Patch::class.java.simpleName -> Patch(psiAnnotation)
 
                 else -> UnknownAnnotation
             }

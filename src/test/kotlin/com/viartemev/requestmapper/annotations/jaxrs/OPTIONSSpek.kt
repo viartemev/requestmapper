@@ -11,7 +11,7 @@ object OPTIONSSpek : Spek({
         context("extractMethod") {
             it("should return OPTIONS") {
                 val annotation = mock<PsiAnnotation> {}
-                Options(annotation).extractMethod() shouldBeEqualTo "OPTIONS"
+                OPTIONS(annotation).extractMethod() shouldBeEqualTo "OPTIONS"
             }
         }
     }

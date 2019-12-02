@@ -11,7 +11,7 @@ object PUTSpek : Spek({
         context("extractMethod") {
             it("should return PUT") {
                 val annotation = mock<PsiAnnotation> {}
-                Put(annotation).extractMethod() shouldBeEqualTo "PUT"
+                PUT(annotation).extractMethod() shouldBeEqualTo "PUT"
             }
         }
     }

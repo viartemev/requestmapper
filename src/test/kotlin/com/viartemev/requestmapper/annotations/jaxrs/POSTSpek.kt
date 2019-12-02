@@ -11,7 +11,7 @@ object POSTSpek : Spek({
         context("extractMethod") {
             it("should return POST") {
                 val annotation = mock<PsiAnnotation> {}
-                Post(annotation).extractMethod() shouldBeEqualTo "POST"
+                POST(annotation).extractMethod() shouldBeEqualTo "POST"
             }
         }
     }

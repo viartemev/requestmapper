@@ -11,7 +11,7 @@ object DELETESpek : Spek({
         context("extractMethod") {
             it("should return DELETE") {
                 val annotation = mock<PsiAnnotation> {}
-                Delete(annotation).extractMethod() shouldBeEqualTo "DELETE"
+                DELETE(annotation).extractMethod() shouldBeEqualTo "DELETE"
             }
         }
     }

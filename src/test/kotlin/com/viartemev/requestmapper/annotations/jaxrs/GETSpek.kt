@@ -29,7 +29,7 @@ object GETSpek : Spek({
             val annotation = mock<PsiAnnotation> {
                 on { parent } doReturn psiMethod
             }
-            val requestMapping = Get(annotation)
+            val requestMapping = GET(annotation)
             it("should return one root mapping with default GET method") {
                 requestMapping.values().size shouldEqual 1
                 requestMapping.values()[0].name shouldEqual "GET /"
@@ -57,7 +57,7 @@ object GETSpek : Spek({
             val annotation = mock<PsiAnnotation> {
                 on { parent } doReturn psiMethod
             }
-            val requestMapping = Get(annotation)
+            val requestMapping = GET(annotation)
             it("should return one class mapping with default GET method") {
                 requestMapping.values().size shouldEqual 1
                 requestMapping.values()[0].name shouldEqual "GET /api"

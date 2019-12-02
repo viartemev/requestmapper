@@ -9,8 +9,7 @@ import com.intellij.psi.PsiReferenceExpression
 abstract class BasePsiAnnotationValueVisitor : PsiAnnotationValueVisitor {
 
     fun visit(annotation: PsiAnnotation, parameter: String): List<String> {
-        val attributeValue = annotation.findAttributeValue(parameter)
-        return when (attributeValue) {
+        return when (val attributeValue = annotation.findAttributeValue(parameter)) {
             is PsiArrayInitializerMemberValue -> visitPsiArrayInitializerMemberValue(attributeValue)
             is PsiReferenceExpression -> visitPsiReferenceExpression(attributeValue)
             is PsiBinaryExpression -> visitPsiBinaryExpression(attributeValue)

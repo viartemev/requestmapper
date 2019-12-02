@@ -2,11 +2,11 @@ package com.viartemev.requestmapper.annotations.jaxrs
 
 import com.intellij.psi.PsiAnnotation
 
-class Post(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) {
+class GET(psiAnnotation: PsiAnnotation) : JaxRsMappingAnnotation(psiAnnotation) {
 
     override fun extractMethod() = METHOD
 
     companion object {
-        private const val METHOD = "POST"
+        private const val METHOD = "GET"
     }
 }

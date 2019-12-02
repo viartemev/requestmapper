@@ -55,7 +55,7 @@ abstract class SpringMappingAnnotation(
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
         val pathMapping = PathAnnotation(annotation).fetchMappings(PATH)
-        return if (!pathMapping.isEmpty()) pathMapping else {
+        return if (pathMapping.isNotEmpty()) pathMapping else {
             val valueMapping = PathAnnotation(annotation).fetchMappings(VALUE)
             if (valueMapping.isNotEmpty()) valueMapping else listOf("")
         }

@@ -18,8 +18,8 @@ object PsiExpressionExtractor {
     }
 
     private fun extractPath(value: PsiReferenceExpression): String {
-        return value.resolve()?.let {
-            it
+        return value.resolve()?.let { psiElement: PsiElement ->
+            psiElement
                 .children
                 .asSequence()
                 .filter { it is PsiBinaryExpression || it is PsiLiteralExpression || it is PsiPolyadicExpression }

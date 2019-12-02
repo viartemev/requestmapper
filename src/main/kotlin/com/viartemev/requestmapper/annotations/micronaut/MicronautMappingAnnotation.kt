@@ -1,13 +1,15 @@
 package com.viartemev.requestmapper.annotations.micronaut
 
-import com.intellij.psi.*
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiLiteralExpression
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiReferenceExpression
+
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.PathAnnotation
 import com.viartemev.requestmapper.annotations.UrlFormatter
 import com.viartemev.requestmapper.annotations.extraction.PsiExpressionExtractor.extractExpression
-import com.viartemev.requestmapper.annotations.spring.SpringMappingAnnotation
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PathParameter
 import com.viartemev.requestmapper.utils.fetchAnnotatedMethod

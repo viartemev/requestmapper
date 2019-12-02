@@ -57,8 +57,7 @@ abstract class JaxRsMappingAnnotation(
     }
 
     private fun extractParameterNameFromAnnotation(annotation: PsiAnnotation, defaultValue: String): String {
-        val pathVariableValue = annotation.findAttributeValue(ATTRIBUTE_NAME)
-        return when (pathVariableValue) {
+        return when (val pathVariableValue = annotation.findAttributeValue(ATTRIBUTE_NAME)) {
             is PsiLiteralExpression -> {
                 val expression = extractExpression(pathVariableValue)
                 if (expression.isNotBlank()) expression else defaultValue

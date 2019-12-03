@@ -22,8 +22,6 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
 
     override fun getCheckBoxName(): String? = null
 
-    override fun getCheckBoxMnemonic(): Char = 0.toChar()
-
     override fun loadInitialCheckBoxState(): Boolean = false
 
     override fun saveInitialCheckBoxState(state: Boolean) = Unit

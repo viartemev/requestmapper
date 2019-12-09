@@ -16,9 +16,8 @@ buildscript {
 
     repositories {
         mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
     }
     dependencies {
         classpath files('libs/ktlint-print-rule.jar')
@@ -33,6 +32,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "https://dl.bintray.com/spekframework/spek-dev" }
+    maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
 }
 
 apply plugin: "org.jetbrains.intellij"
@@ -79,7 +79,8 @@ test {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version '2019.1'
+    version '2019.3'
+    plugins = ["java", "Kotlin"]
 }
 
 jacoco {

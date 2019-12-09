@@ -69,7 +69,8 @@
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="141.0"/>
 
-    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.java</depends>
+    <depends>com.intellij.kotlin</depends>
 
     <actions>
         <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"

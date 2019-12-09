@@ -1,9 +1,9 @@
 # Request Mapper
-Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.  
+Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.
 [![JetBrains plugin](https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
 [![JetBrains plugin](https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
 [![JetBrains IntelliJ](https://img.shields.io/badge/IntelliJ-14.0%20and%20up-blue.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper?ref=badge_shield)
- 
+
 ### Status
 ![](https://travis-ci.org/viartemev/requestmapper.svg?branch=master)
 [![codecov](https://codecov.io/gh/viartemev/requestmapper/branch/master/graph/badge.svg)](https://codecov.io/gh/viartemev/requestmapper)
@@ -26,6 +26,14 @@ Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping
     - ```@HEAD```
     - ```@OPTIONS```
     - ```@PATCH```
++ Micronaut:
+    - ```@Get```
+    - ```@Post```
+    - ```@Put```
+    - ```@Delete```
+    - ```@Head```
+    - ```@Options```
+    - ```@Patch```
 
 ### Contributing
 Thanks to all people who have contributed to this plugin:
@@ -33,7 +41,7 @@ Thanks to all people who have contributed to this plugin:
 + [Paul Finkelshteyn](https://github.com/asm0dey)
 
 ### Usage
-- Keyboard shortcuts: 
+- Keyboard shortcuts:
     - MacOS: ```Cmd + Shift + Back slash```
     - Linux: ```Ctrl + Shift + Back slash```
     - Windows: ```Ctrl + Shift + Back slash```

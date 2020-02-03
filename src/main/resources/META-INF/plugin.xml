@@ -57,7 +57,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Feature: Add Micronaut support</li>
+            <li>Bugfix: Fix NoSuchElementException PsiExpressionExtractor</li>
         </ul>
     ]]>
     </change-notes>

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.17</version>
+    <version>0.18</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -57,7 +57,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Feature: Add Micronaut support</li>
+            <li>Bugfix: Fix NoSuchElementException PsiExpressionExtractor</li>
         </ul>
     ]]>
     </change-notes>

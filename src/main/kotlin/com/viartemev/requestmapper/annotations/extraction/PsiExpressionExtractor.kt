@@ -26,7 +26,7 @@ object PsiExpressionExtractor {
                 .map { extractExpression(it) }
                 .toList()
                 // only one exists
-                .first()
+                .firstOrNull()
         } ?: ""
     }
 

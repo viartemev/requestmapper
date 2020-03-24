@@ -11,7 +11,7 @@ buildscript {
         commons_lang3_version = '3.9'
 
         kotlinter_gradle_plugin = '2.3.2'
-        gradle_intellij_plugin = '0.4.16'
+        gradle_intellij_plugin = '0.4.17'
     }
 
     repositories {

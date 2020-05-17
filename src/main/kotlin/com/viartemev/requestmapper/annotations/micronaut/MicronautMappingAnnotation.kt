@@ -52,7 +52,7 @@ abstract class MicronautMappingAnnotation(
             .parameters
             .mapNotNull {
                 PathParameter(it).extractParameterNameWithType(PATH_VARIABLE_ANNOTATION, ::extractParameterNameFromAnnotation)
-                    ?: Pair(it.name!!, it.type.presentableText.unquote())
+                    ?: Pair(it.name, it.type.presentableText.unquote())
             }
             .toMap()
 

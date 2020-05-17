@@ -2,18 +2,10 @@ package com.viartemev.requestmapper
 
 import com.intellij.openapi.command.impl.DummyProject
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiAnnotationMemberValue
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiModifierList
-import com.intellij.psi.PsiParameter
-import com.intellij.psi.PsiParameterList
+import com.intellij.psi.*
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldEqualTo
+import org.amshove.kluent.shouldBeEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -23,7 +15,7 @@ object RequestMappingContributorSpek : Spek({
     describe("RequestMappingContributor") {
         context("getItemsByName on empty navigationItems list") {
             it("should return empty list") {
-                RequestMappingContributor(testAnnotationSearcher).getItemsByName("name", "pattern", DummyProject.getInstance(), false).size shouldEqualTo 0
+                RequestMappingByNameContributor(listOf(testAnnotationSearcher)).getItemsByName("name", "pattern", DummyProject.getInstance(), false).size shouldBeEqualTo 0
             }
         }
         context("getItemsByName with 2 mapping items") {
@@ -33,14 +25,14 @@ object RequestMappingContributorSpek : Spek({
                     RequestMappingItem(psiElement, "/api/v1/users", "GET"),
                     RequestMappingItem(psiElement, "/api/v2/users", "GET")
                 )
-                val itemsByName = RequestMappingContributor(testAnnotationSearcher, navigationItems).getItemsByName("GET /api/v1/users", "pattern", DummyProject.getInstance(), false)
-                itemsByName.size shouldEqualTo 1
-                itemsByName[0].name shouldEqual "GET /api/v1/users"
+                val itemsByName = RequestMappingByNameContributor(listOf(testAnnotationSearcher), navigationItems).getItemsByName("GET /api/v1/users", "pattern", DummyProject.getInstance(), false)
+                itemsByName.size shouldBeEqualTo 1
+                itemsByName[0].name shouldBeEqualTo "GET /api/v1/users"
             }
         }
         context("getNames on empty navigationItems list") {
             it("should return empty list") {
-                RequestMappingContributor(testAnnotationSearcher).getNames(DummyProject.getInstance(), false).size shouldEqualTo 0
+                RequestMappingByNameContributor(listOf(testAnnotationSearcher)).getNames(DummyProject.getInstance(), false).size shouldBeEqualTo 0
             }
         }
         context("getNames on not method annotations") {
@@ -49,7 +41,7 @@ object RequestMappingContributorSpek : Spek({
                 val psiAnnotation = mock<PsiAnnotation> {
                     on { parent } doReturn annotationParent
                 }
-                RequestMappingContributor({ _, _ -> sequenceOf(psiAnnotation) }).getNames(DummyProject.getInstance(), false).size shouldEqualTo 0
+                RequestMappingByNameContributor(listOf { _, _ -> sequenceOf(psiAnnotation) }).getNames(DummyProject.getInstance(), false).size shouldBeEqualTo 0
             }
         }
         context("getNames with one RequestMapping annotation") {
@@ -78,9 +70,9 @@ object RequestMappingContributorSpek : Spek({
                     on { parent } doReturn psiMethod
                 }
                 val annotationSearcher: (String, Project) -> Sequence<PsiAnnotation> = { name: String, _ -> if (name == "RequestMapping") sequenceOf(annotation) else emptySequence() }
-                val names = RequestMappingContributor(annotationSearcher).getNames(DummyProject.getInstance(), false)
-                names.size shouldEqualTo 1
-                names[0] shouldEqual "GET /api"
+                val names = RequestMappingByNameContributor(listOf(annotationSearcher)).getNames(DummyProject.getInstance(), false)
+                names.size shouldBeEqualTo 1
+                names[0] shouldBeEqualTo "GET /api"
             }
         }
     }

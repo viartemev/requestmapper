@@ -4,8 +4,8 @@ import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiReferenceExpression
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -21,7 +21,7 @@ object PsiReferenceExpressionExtractorSpek : Spek({
                     on { children } doReturn arrayOf(psiElement)
                 }
                 val extract = PsiReferenceExpressionExtractor().extract(psiReferenceExpression)
-                extract.size shouldEqualTo 1
+                extract.size shouldBeEqualTo 1
                 extract shouldContain "api"
             }
         }

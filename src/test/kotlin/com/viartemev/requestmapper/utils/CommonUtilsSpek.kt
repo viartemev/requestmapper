@@ -4,7 +4,6 @@ import org.amshove.kluent.shouldBeEmpty
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeFalse
 import org.amshove.kluent.shouldBeTrue
-import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -120,19 +119,19 @@ object CommonUtilsSpek : Spek({
         context("dropFirstEmptyStringIfExists on list without empty elements") {
             val list = listOf("1", "2", "3")
             it("should return original list") {
-                list.dropFirstEmptyStringIfExists() shouldEqual list
+                list.dropFirstEmptyStringIfExists() shouldBeEqualTo list
             }
         }
         context("dropFirstEmptyStringIfExists on list with empty element in the middle of array") {
             val list = listOf("1", "", "2", "3")
             it("should return original list") {
-                list.dropFirstEmptyStringIfExists() shouldEqual list
+                list.dropFirstEmptyStringIfExists() shouldBeEqualTo list
             }
         }
         context("dropFirstEmptyStringIfExists on list with first empty element") {
             val list = listOf("", "1", "2", "3")
             it("should return original list") {
-                list.dropFirstEmptyStringIfExists() shouldEqual list.subList(1, list.size)
+                list.dropFirstEmptyStringIfExists() shouldBeEqualTo list.subList(1, list.size)
             }
         }
     }

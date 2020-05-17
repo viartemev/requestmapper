@@ -216,5 +216,10 @@ object PathSpek : Spek({
                 isSubpathOf(Path("/{String:item}/{String:product}"), Path("/item/product")).shouldBeTrue()
             }
         }
+        context("isSubpathOf case 32") {
+            it("should return true") {
+                isSubpathOf(Path("/api/v1"), Path("localhost:8080/routing-path/api/v1")).shouldBeTrue()
+            }
+        }
     }
 })

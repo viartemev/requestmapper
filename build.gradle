@@ -44,7 +44,7 @@ apply plugin: "org.junit.platform.gradle.plugin"
 apply plugin: "org.jmailen.kotlinter"
 
 group "com.viartemev.requestmapper"
-version "0.18"
+version "0.19"
 
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
@@ -79,7 +79,8 @@ test {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version '2019.1'
+    version = '2020.1'
+    plugins = ["java", "org.jetbrains.kotlin"]
 }
 
 jacoco {
@@ -94,15 +95,14 @@ junitPlatformTest {
 }
 
 patchPluginXml {
-    version '0.18'
-    sinceBuild '141.0'
+    version = project.version
+    sinceBuild = '201.4'
     untilBuild ''
 }
 
 kotlinter {
     ignoreFailures = false
     indentSize = 4
-    continuationIndentSize = 4
     reporters = ['checkstyle', 'plain']
     experimentalRules = false
     disabledRules = []

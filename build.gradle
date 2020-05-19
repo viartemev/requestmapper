@@ -79,7 +79,7 @@ test {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version = '2020.1'
+    version = '2020.1.1'
     plugins = ["java", "org.jetbrains.kotlin"]
 }
 
@@ -96,7 +96,7 @@ junitPlatformTest {
 
 patchPluginXml {
     version = project.version
-    sinceBuild = '201.4'
+    sinceBuild = '201.7'
     untilBuild ''
 }
 

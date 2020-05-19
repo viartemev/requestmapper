@@ -67,7 +67,7 @@
     </extensions>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="201.4"/>
+    <idea-version since-build="201.7"/>
 
     <depends>com.intellij.java</depends>
     <depends>org.jetbrains.kotlin</depends>

@@ -49,18 +49,20 @@ abstract class SpringMappingAnnotation(
             ?.annotations
             ?.filterNotNull()
             ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS || SPRING_FEIGN_REQUEST_MAPPING_CLASSES.contains(it.qualifiedName) }
-            ?.flatMap { fetchMapping(it, FetchType.CLAZZ) } ?: emptyList()
+            ?.flatMap { fetchMapping(it) } ?: emptyList()
         return if (classMapping.isEmpty()) listOf("") else classMapping
     }
 
-    private fun fetchMapping(annotation: PsiAnnotation, fetchFromType: FetchType): List<String> {
+    private fun fetchMapping(annotation: PsiAnnotation): List<String> {
+        val urlMapping = PathAnnotation(annotation).fetchMappings(URL)
+        val root = if(urlMapping.size==1) urlMapping[0] else ""
         var pathMapping = listOf<String>()
-        val pathOrder = if (fetchFromType == FetchType.CLAZZ) listOf(URL, PATH, VALUE) else listOf(VALUE, PATH)
+        val pathOrder = listOf(VALUE, PATH)
         for (param in pathOrder) {
-            if (pathMapping.isNotEmpty()) break
             pathMapping = PathAnnotation(annotation).fetchMappings(param)
+            if (pathMapping.isNotEmpty()) break
         }
-        return if (pathMapping.isNotEmpty()) pathMapping else listOf("")
+        return if (pathMapping.isNotEmpty()) pathMapping.map { root + it } else listOf(root)
     }
 
     private fun fetchMappingsFromMethod(annotation: PsiAnnotation, method: PsiMethod): List<String> {
@@ -70,7 +72,7 @@ abstract class SpringMappingAnnotation(
             .mapNotNull { PathParameter(it).extractParameterNameWithType(SPRING_PATH_VARIABLE_CLASS, ::extractParameterNameFromAnnotation) }
             .toMap()
 
-        return fetchMapping(annotation, FetchType.METHOD)
+        return fetchMapping(annotation)
             .map { Path(it).addPathVariablesTypes(parametersNameWithType).toFullPath() }
     }
 
@@ -105,10 +107,6 @@ abstract class SpringMappingAnnotation(
         private const val SPRING_REQUEST_MAPPING_CLASS = "org.springframework.web.bind.annotation.RequestMapping"
         private val SPRING_FEIGN_REQUEST_MAPPING_CLASSES = listOf("org.springframework.cloud.openfeign.FeignClient", "org.springframework.cloud.netflix.feign.FeignClient")
         private const val SPRING_PATH_VARIABLE_CLASS = "org.springframework.web.bind.annotation.PathVariable"
-    }
-
-    enum class FetchType {
-        CLAZZ, METHOD
     }
 }
 

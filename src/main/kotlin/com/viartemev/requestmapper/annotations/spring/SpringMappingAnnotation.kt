@@ -55,7 +55,7 @@ abstract class SpringMappingAnnotation(
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
         val urlMapping = PathAnnotation(annotation).fetchMappings(URL)
-        val root = if(urlMapping.size==1) urlMapping[0] else ""
+        val root = if (urlMapping.size == 1) urlMapping[0] else ""
         var pathMapping = listOf<String>()
         val pathOrder = listOf(VALUE, PATH)
         for (param in pathOrder) {
@@ -109,4 +109,3 @@ abstract class SpringMappingAnnotation(
         private const val SPRING_PATH_VARIABLE_CLASS = "org.springframework.web.bind.annotation.PathVariable"
     }
 }
-

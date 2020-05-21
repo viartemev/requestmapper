@@ -1,6 +1,14 @@
 package com.viartemev.requestmapper.annotations.spring
 
-import com.intellij.psi.*
+import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiArrayInitializerMemberValue
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiLiteralExpression
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiModifierList
+import com.intellij.psi.PsiParameter
+import com.intellij.psi.PsiParameterList
+import com.intellij.psi.PsiType
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldBeEqualTo

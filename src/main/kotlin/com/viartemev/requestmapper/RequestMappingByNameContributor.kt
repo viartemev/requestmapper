@@ -8,8 +8,10 @@ import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.mappi
 import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.supportedAnnotations
 import com.viartemev.requestmapper.utils.isMethodAnnotation
 
-class RequestMappingByNameContributor(private var annotationSearchers: List<(string: String, project: Project) -> Sequence<PsiAnnotation>>,
-                                      private var navigationItems: List<RequestMappingItem> = emptyList()) : ChooseByNameContributor {
+class RequestMappingByNameContributor(
+    private var annotationSearchers: List<(string: String, project: Project) -> Sequence<PsiAnnotation>>,
+    private var navigationItems: List<RequestMappingItem> = emptyList()
+) : ChooseByNameContributor {
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         navigationItems = supportedAnnotations

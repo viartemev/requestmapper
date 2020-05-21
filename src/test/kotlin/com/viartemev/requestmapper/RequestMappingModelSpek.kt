@@ -7,7 +7,6 @@ import org.spekframework.spek2.style.specification.describe
 
 object RequestMappingModelSpek : Spek({
 
-
     describe("RequestMappingModel") {
         context("matches on pattern only with slash") {
             it("should return true") {

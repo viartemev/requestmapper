@@ -4,7 +4,6 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReferenceExpression
-
 import com.viartemev.requestmapper.RequestMappingItem
 import com.viartemev.requestmapper.annotations.MappingAnnotation
 import com.viartemev.requestmapper.annotations.PathAnnotation
@@ -80,5 +79,4 @@ abstract class MicronautMappingAnnotation(
         private const val ATTRIBUTE_NAME = "value"
         private const val PATH_VARIABLE_ANNOTATION = "io.micronaut.http.annotation.PathVariable"
     }
-
 }

@@ -1,7 +1,6 @@
 package com.viartemev.requestmapper.model
 
 import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

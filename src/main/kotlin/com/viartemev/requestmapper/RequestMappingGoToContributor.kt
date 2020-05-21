@@ -7,7 +7,7 @@ import com.intellij.ide.util.gotoByName.FilteringGotoByModel
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 
-class RequestMappingGoToContributor(event: AnActionEvent): AbstractGotoSEContributor(event) {
+class RequestMappingGoToContributor(event: AnActionEvent) : AbstractGotoSEContributor(event) {
 
     class Factory : SearchEverywhereContributorFactory<Any> {
         override fun createContributor(initEvent: AnActionEvent): SearchEverywhereContributor<Any> {

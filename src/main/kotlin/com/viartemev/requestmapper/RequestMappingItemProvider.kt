@@ -1,6 +1,11 @@
 package com.viartemev.requestmapper
 
-import com.intellij.ide.util.gotoByName.*
+import com.intellij.ide.util.gotoByName.ChooseByNameBase
+import com.intellij.ide.util.gotoByName.ChooseByNameItemProvider
+import com.intellij.ide.util.gotoByName.ChooseByNameModelEx
+import com.intellij.ide.util.gotoByName.ChooseByNamePopup
+import com.intellij.ide.util.gotoByName.ChooseByNameViewModel
+import com.intellij.ide.util.gotoByName.ContributorsBasedGotoByModel
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.util.CollectConsumer
 import com.intellij.util.Processor
@@ -12,14 +17,15 @@ import com.intellij.util.indexing.IdFilter
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PopupPath
 import com.viartemev.requestmapper.model.RequestedUserPath
-import java.util.*
 
 open class RequestMappingItemProvider : ChooseByNameItemProvider {
-    override fun filterElements(base: ChooseByNameBase,
-                                pattern: String,
-                                everywhere: Boolean,
-                                indicator: ProgressIndicator,
-                                consumer: Processor<Any>): Boolean {
+    override fun filterElements(
+        base: ChooseByNameBase,
+        pattern: String,
+        everywhere: Boolean,
+        indicator: ProgressIndicator,
+        consumer: Processor<Any>
+    ): Boolean {
         if (base.project != null) {
             base.project!!.putUserData(ChooseByNamePopup.CURRENT_SEARCH_PATTERN, pattern)
         }
@@ -36,12 +42,13 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
         return emptyList()
     }
 
-
     companion object {
-        private fun getSortedResults(base: ChooseByNameViewModel,
-                                     pattern: String,
-                                     indicator: ProgressIndicator,
-                                     parameters: FindSymbolParameters): List<String> {
+        private fun getSortedResults(
+            base: ChooseByNameViewModel,
+            pattern: String,
+            indicator: ProgressIndicator,
+            parameters: FindSymbolParameters
+        ): List<String> {
             if (pattern.isEmpty() && !base.canShowListForEmptyPattern()) {
                 return emptyList()
             }
@@ -66,12 +73,14 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
             return namesList
         }
 
-        private fun processByNames(base: ChooseByNameViewModel,
-                                   everywhere: Boolean,
-                                   indicator: ProgressIndicator,
-                                   consumer: Processor<Any>,
-                                   namesList: List<String>,
-                                   parameters: FindSymbolParameters): Boolean {
+        private fun processByNames(
+            base: ChooseByNameViewModel,
+            everywhere: Boolean,
+            indicator: ProgressIndicator,
+            consumer: Processor<Any>,
+            namesList: List<String>,
+            parameters: FindSymbolParameters
+        ): Boolean {
             val sameNameElements: MutableList<Any> = SmartList()
             val qualifierMatchResults: MutableMap<Any, MatchResult> = ContainerUtil.newIdentityTroveMap()
             val model = base.model

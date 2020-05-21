@@ -8,7 +8,6 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeNull
-import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

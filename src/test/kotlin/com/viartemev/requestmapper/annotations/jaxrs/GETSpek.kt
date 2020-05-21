@@ -1,6 +1,11 @@
 package com.viartemev.requestmapper.annotations.jaxrs
 
-import com.intellij.psi.*
+import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiAnnotationMemberValue
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiModifierList
+import com.intellij.psi.PsiParameter
+import com.intellij.psi.PsiParameterList
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldBeEqualTo

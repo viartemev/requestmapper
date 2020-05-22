@@ -1,8 +1,16 @@
-# Request Mapper
-Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.  
+<div align="center">
+    <a href="https://plugins.jetbrains.com/plugin/9567-request-mapper">
+        <img src="./src/main/resources/META-INF/pluginIcon.svg" width="320" height="320" alt="logo"/>
+    </a>
+</div>
+<h1 align="center">Request Mapper</h1>
+<p align="center">Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.</p>
+
+<p align="center"> 
 [![JetBrains plugin](https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
 [![JetBrains plugin](https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
 [![JetBrains IntelliJ](https://img.shields.io/badge/IntelliJ-14.0%20and%20up-blue.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper?ref=badge_shield)
+</p>
 
 ### Status
 ![](https://travis-ci.org/viartemev/requestmapper.svg?branch=master)

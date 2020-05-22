@@ -15,10 +15,14 @@
 <a href="https://snyk.io/test/github/viartemev/requestmapper?targetFile=build.gradle"><img src="https://snyk.io/test/github/viartemev/requestmapper/badge.svg?targetFile=build.gradle"></a>
 </p>
 
-### Plugin info
-##### Supported languages:
+## Plugin info
+
+#### Supported languages:
+
 - Java 
-##### Supported annotations:
+
+#### Supported annotations:
+
 | Spring  | JAX-RS  | Micronaut  |
 |:-:|:-:|:-:|
 | ```@RequestMapping``` | | |
@@ -30,12 +34,8 @@
 | | ```@OPTIONS``` |  ```@Options``` |
 | | ```@HEAD``` | ```@Head``` |
 
-### Contributors
-Thanks to all people who have contributed to this plugin:
-+ [Dmitry Chuiko](https://github.com/dchuiko)
-+ [Paul Finkelshteyn](https://github.com/asm0dey) 
+## Usage
 
-### Usage
 - Keyboard shortcuts:
     - MacOS: ```Cmd + Shift + Back slash```
     - Linux: ```Ctrl + Shift + Back slash```
@@ -43,10 +43,15 @@ Thanks to all people who have contributed to this plugin:
 - Navigate (menu bar) -> Request Mapping
 - Click ```Shift``` twice -> request mapping
 
+## Contributors
+
+Thanks to all people who have contributed to this plugin:
++ [Dmitry Chuiko](https://github.com/dchuiko)
++ [Paul Finkelshteyn](https://github.com/asm0dey) 
+
 ## Support the project
 
 You can support the project by the following actions:
-
 * Star this project on GitHub
 * Share this plugin with your friends/colleagues
 * Rate this plugin on [JetBrains plugin repository](https://plugins.jetbrains.com/plugin/9567-request-mapper)

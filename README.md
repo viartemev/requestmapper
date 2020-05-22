@@ -42,3 +42,14 @@ Thanks to all people who have contributed to this plugin:
     - Windows: ```Ctrl + Shift + Back slash```
 - Navigate (menu bar) -> Request Mapping
 - Click ```Shift``` twice -> request mapping
+
+## Support the project
+
+You can support the project by the following actions:
+
+* Star this project on GitHub
+* Share this plugin with your friends/colleagues
+* Rate this plugin on [JetBrains plugin repository](https://plugins.jetbrains.com/plugin/9567-request-mapper)
+* Make pull requests
+* Report bugs
+* Tell your ideas

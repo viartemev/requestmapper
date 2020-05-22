@@ -1,6 +1,6 @@
 <div align="center">
     <a href="https://plugins.jetbrains.com/plugin/9567-request-mapper">
-        <img src="./src/main/resources/META-INF/pluginIcon.svg" width="320" height="320" alt="logo"/>
+        <img src="./src/main/resources/META-INF/pluginIcon.svg" width="220" height="220" alt="logo"/>
     </a>
 </div>
 <h1 align="center">Request Mapper</h1>

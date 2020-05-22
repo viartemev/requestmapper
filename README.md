@@ -16,6 +16,8 @@
 </p>
 
 ### Plugin info
+##### Supported languages:
+- Java 
 ##### Supported annotations:
 | Spring  | JAX-RS  | Micronaut  |
 |:-:|:-:|:-:|
@@ -40,5 +42,3 @@ Thanks to all people who have contributed to this plugin:
     - Windows: ```Ctrl + Shift + Back slash```
 - Navigate (menu bar) -> Request Mapping
 - Click ```Shift``` twice -> request mapping
-
-![](art/requestmapper.gif)

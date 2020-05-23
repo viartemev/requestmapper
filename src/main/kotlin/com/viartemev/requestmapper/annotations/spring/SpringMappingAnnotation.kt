@@ -48,21 +48,17 @@ abstract class SpringMappingAnnotation(
             ?.modifierList
             ?.annotations
             ?.filterNotNull()
-            ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS || SPRING_FEIGN_REQUEST_MAPPING_CLASSES.contains(it.qualifiedName) }
+            ?.filter { it.qualifiedName == SPRING_REQUEST_MAPPING_CLASS }
             ?.flatMap { fetchMapping(it) } ?: emptyList()
         return if (classMapping.isEmpty()) listOf("") else classMapping
     }
 
     private fun fetchMapping(annotation: PsiAnnotation): List<String> {
-        val urlMapping = PathAnnotation(annotation).fetchMappings(URL)
-        val root = if (urlMapping.size == 1) urlMapping[0] else ""
-        var pathMapping = listOf<String>()
-        val pathOrder = listOf(VALUE, PATH)
-        for (param in pathOrder) {
-            pathMapping = PathAnnotation(annotation).fetchMappings(param)
-            if (pathMapping.isNotEmpty()) break
+        val pathMapping = PathAnnotation(annotation).fetchMappings(PATH)
+        return if (pathMapping.isNotEmpty()) pathMapping else {
+            val valueMapping = PathAnnotation(annotation).fetchMappings(VALUE)
+            if (valueMapping.isNotEmpty()) valueMapping else listOf("")
         }
-        return if (pathMapping.isNotEmpty()) pathMapping.map { root + it } else listOf(root)
     }
 
     private fun fetchMappingsFromMethod(annotation: PsiAnnotation, method: PsiMethod): List<String> {
@@ -99,13 +95,11 @@ abstract class SpringMappingAnnotation(
     }
 
     companion object {
-        private const val URL = "url"
         private const val VALUE = "value"
         private const val PATH = "path"
         private const val NAME = "name"
         private const val PARAMS = "params"
         private const val SPRING_REQUEST_MAPPING_CLASS = "org.springframework.web.bind.annotation.RequestMapping"
-        private val SPRING_FEIGN_REQUEST_MAPPING_CLASSES = listOf("org.springframework.cloud.openfeign.FeignClient", "org.springframework.cloud.netflix.feign.FeignClient")
         private const val SPRING_PATH_VARIABLE_CLASS = "org.springframework.web.bind.annotation.PathVariable"
     }
 }

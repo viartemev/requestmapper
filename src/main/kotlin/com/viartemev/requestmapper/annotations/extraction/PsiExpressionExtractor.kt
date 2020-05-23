@@ -30,7 +30,11 @@ object PsiExpressionExtractor {
         } ?: ""
     }
 
-    private fun extractLiteralExpression(psiElement: PsiLiteralExpression) = psiElement.text.unquote()
+    private fun extractLiteralExpression(psiElement: PsiLiteralExpression): String {
+        return if (psiElement.value == null) {
+            psiElement.text.unquote()
+        } else psiElement.value.toString()
+    }
 
     /** rOperand always presents in static final variables */
     private fun extractBinaryExpression(psiElement: PsiBinaryExpression) =

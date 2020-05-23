@@ -96,7 +96,7 @@ junitPlatformTest {
 
 patchPluginXml {
     version = project.version
-    sinceBuild = '201.7'
+    sinceBuild = '201.7000'
     untilBuild ''
 }
 

@@ -1,46 +1,41 @@
-# Request Mapper
-Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.  
-[![JetBrains plugin](https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
-[![JetBrains plugin](https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000)](https://plugins.jetbrains.com/plugin/9567-request-mapper)
-[![JetBrains IntelliJ](https://img.shields.io/badge/IntelliJ-14.0%20and%20up-blue.svg)](https://plugins.jetbrains.com/plugin/9567-request-mapper) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fviartemev%2Frequestmapper?ref=badge_shield)
+<div align="center">
+    <a href="https://plugins.jetbrains.com/plugin/9567-request-mapper">
+        <img src="./src/main/resources/META-INF/pluginIcon.svg" width="220" height="220" alt="logo"/>
+    </a>
+</div>
+<h1 align="center">Request Mapper</h1>
+<p align="center">Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.</p>
 
-### Status
-![](https://travis-ci.org/viartemev/requestmapper.svg?branch=master)
-[![codecov](https://codecov.io/gh/viartemev/requestmapper/branch/master/graph/badge.svg)](https://codecov.io/gh/viartemev/requestmapper)
-[![Open Source Helpers](https://www.codetriage.com/viartemev/requestmapper/badges/users.svg)](https://www.codetriage.com/viartemev/requestmapper)
-[![Known Vulnerabilities](https://snyk.io/test/github/viartemev/requestmapper/badge.svg?targetFile=build.gradle)](https://snyk.io/test/github/viartemev/requestmapper?targetFile=build.gradle)
-### Plugin info
-##### Supported annotations:
-+ Spring
-    - ```@RequestMapping```
-    - ```@GetMapping```
-    - ```@PostMapping```
-    - ```@PutMapping```
-    - ```@PatchMapping```
-    - ```@DeleteMapping```
-+ JAX-RS
-    - ```@GET```
-    - ```@POST```
-    - ```@PUT```
-    - ```@DELETE```
-    - ```@HEAD```
-    - ```@OPTIONS```
-    - ```@PATCH```
-+ Micronaut:
-    - ```@Get```
-    - ```@Post```
-    - ```@Put```
-    - ```@Delete```
-    - ```@Head```
-    - ```@Options```
-    - ```@Patch```
+<p align="center"> 
+<a href="https://travis-ci.org/viartemev/requestmapper"><img src="https://travis-ci.org/viartemev/requestmapper.svg?branch=master"></a>
+<a href="https://plugins.jetbrains.com/plugin/9567-request-mapper"><img src="https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg"></a>
+<a href="https://plugins.jetbrains.com/plugin/9567-request-mapper"><img src="https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000"></a>
+<a href="https://codecov.io/gh/viartemev/requestmapper"><img src="https://codecov.io/gh/viartemev/requestmapper/branch/master/graph/badge.svg"></a>
+<a href="https://www.codetriage.com/viartemev/requestmapper"><img src="https://www.codetriage.com/viartemev/requestmapper/badges/users.svg"></a>
+<a href="https://snyk.io/test/github/viartemev/requestmapper?targetFile=build.gradle"><img src="https://snyk.io/test/github/viartemev/requestmapper/badge.svg?targetFile=build.gradle"></a>
+</p>
 
-### Contributing
-Thanks to all people who have contributed to this plugin:
-+ [Dmitry Chuiko](https://github.com/dchuiko)
-+ [Paul Finkelshteyn](https://github.com/asm0dey) 
+## Plugin info
 
-### Usage
+#### Supported languages:
+
+- Java 
+
+#### Supported annotations:
+
+| Spring  | JAX-RS  | Micronaut  |
+|:-:|:-:|:-:|
+| ```@RequestMapping``` | | |
+| ```@GetMapping``` | ```@GET``` | ```@Get``` |
+| ```@PostMapping```  | ```@POST``` | ```@Post``` |
+| ```@PutMapping``` | ```@PUT``` | ```@Put``` |
+| ```@DeleteMapping``` | ```@DELETE``` | ```@Delete``` |
+| ```@PatchMapping``` | ```@PATCH``` |  ```@Patch``` |
+| | ```@OPTIONS``` |  ```@Options``` |
+| | ```@HEAD``` | ```@Head``` |
+
+## Usage
+
 - Keyboard shortcuts:
     - MacOS: ```Cmd + Shift + Back slash```
     - Linux: ```Ctrl + Shift + Back slash```
@@ -48,4 +43,18 @@ Thanks to all people who have contributed to this plugin:
 - Navigate (menu bar) -> Request Mapping
 - Click ```Shift``` twice -> request mapping
 
-![](art/requestmapper.gif)
+## Contributors
+
+Thanks to all people who have contributed to this plugin:
++ [Dmitry Chuiko](https://github.com/dchuiko)
++ [Paul Finkelshteyn](https://github.com/asm0dey) 
+
+## Support the project
+
+You can support the project by the following actions:
+* Star this project on GitHub
+* Share this plugin with your friends/colleagues
+* Rate this plugin on [JetBrains plugin repository](https://plugins.jetbrains.com/plugin/9567-request-mapper)
+* Make pull requests
+* Report bugs
+* Tell your ideas

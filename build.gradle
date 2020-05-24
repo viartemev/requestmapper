@@ -21,7 +21,6 @@ buildscript {
         }
     }
     dependencies {
-        classpath files('libs/ktlint-print-rule.jar')
         classpath "org.jmailen.gradle:kotlinter-gradle:$kotlinter_gradle_plugin"
         classpath "gradle.plugin.org.jetbrains.intellij.plugins:gradle-intellij-plugin:$gradle_intellij_plugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -44,7 +43,7 @@ apply plugin: "org.junit.platform.gradle.plugin"
 apply plugin: "org.jmailen.kotlinter"
 
 group "com.viartemev.requestmapper"
-version "0.19"
+version "0.2"
 
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
@@ -80,7 +79,7 @@ intellij {
     pluginName "Request mapper"
     type 'IC'
     version = '2020.1.1'
-    plugins = ["java", "org.jetbrains.kotlin"]
+    plugins = ["java", "org.jetbrains.kotlin:$kotlin_version-release-IJ2020.1-1"]
 }
 
 jacoco {

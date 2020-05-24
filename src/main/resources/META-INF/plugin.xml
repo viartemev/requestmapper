@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.18</version>
+    <version>0.19</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -67,16 +67,21 @@
     </extensions>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="141.0"/>
+    <idea-version since-build="201.7000"/>
 
-    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
 
     <actions>
         <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"
-                text="Request mapping" description="Request mapping">
+                text="Request Mapping" description="Request mapping">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
         </action>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <searchEverywhereContributor implementation="com.viartemev.requestmapper.RequestMappingGoToContributor$Factory"/>
+    </extensions>
 
 </idea-plugin>

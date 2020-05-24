@@ -6,8 +6,8 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiType
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeNull
-import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -46,7 +46,7 @@ object PathParameterSpek : Spek({
                     on { type } doReturn psiType
                     on { name } doReturn "Long"
                 }
-                PathParameter(mock).extractParameterNameWithType(annotationName, { _: PsiAnnotation, _: String -> "id" }) shouldEqual Pair("id", "long")
+                PathParameter(mock).extractParameterNameWithType(annotationName) { _: PsiAnnotation, _: String -> "id" } shouldBeEqualTo Pair("id", "long")
             }
         }
     }

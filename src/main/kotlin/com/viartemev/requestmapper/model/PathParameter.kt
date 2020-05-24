@@ -13,7 +13,7 @@ class PathParameter(private val parameter: PsiParameter) {
             .modifierList
             ?.annotations
             ?.filter { it.qualifiedName == annotationName }
-            ?.map { Pair(extractParameterNameFunction(it, parameter.name!!), parameterType) }
+            ?.map { Pair(extractParameterNameFunction(it, parameter.name), parameterType) }
             ?.firstOrNull()
     }
 }

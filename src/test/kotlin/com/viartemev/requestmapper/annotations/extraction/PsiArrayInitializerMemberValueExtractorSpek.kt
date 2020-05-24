@@ -5,8 +5,8 @@ import com.intellij.psi.PsiArrayInitializerMemberValue
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldBeEmpty
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainAll
-import org.amshove.kluent.shouldEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -29,7 +29,7 @@ object PsiArrayInitializerMemberValueExtractorSpek : Spek({
                     on { initializers } doReturn arrayOf(psiAnnotationMemberValue, psiAnnotationMemberValue)
                 }
                 val extract = PsiArrayInitializerMemberValueExtractor().extract(psiArrayInitializerMemberValue)
-                extract.size shouldEqualTo 2
+                extract.size shouldBeEqualTo 2
                 extract shouldContainAll listOf("api", "api")
             }
         }

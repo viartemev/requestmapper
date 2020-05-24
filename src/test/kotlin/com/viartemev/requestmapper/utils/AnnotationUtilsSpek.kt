@@ -6,9 +6,9 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeFalse
 import org.amshove.kluent.shouldBeTrue
-import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldThrow
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -64,7 +64,7 @@ object AnnotationUtilsSpek : Spek({
                 val annotation = mock<PsiAnnotation> {
                     on { parent } doReturn method
                 }
-                annotation.fetchAnnotatedMethod() shouldEqual method
+                annotation.fetchAnnotatedMethod() shouldBeEqualTo method
             }
         }
     }

@@ -4,8 +4,8 @@ import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiLiteralExpression
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -22,7 +22,7 @@ object PsiBinaryExpressionExtractorSpek : Spek({
                     on { rOperand } doReturn literalExpression
                 }
                 val extract = PsiBinaryExpressionExtractor().extract(psiBinaryExpression)
-                extract.size shouldEqualTo 1
+                extract.size shouldBeEqualTo 1
                 extract shouldContain "apiapi"
             }
         }

@@ -1,10 +1,10 @@
 package com.viartemev.requestmapper.model
 
 import java.math.BigInteger
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeFalse
 import org.amshove.kluent.shouldBeTrue
-import org.amshove.kluent.shouldEqual
-import org.amshove.kluent.shouldNotEqual
+import org.amshove.kluent.shouldNotBeEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -24,17 +24,17 @@ object PathElementSpek : Spek({
         context("addPathVariableType on a path element without curly brackets") {
             it("should return the original element") {
                 val originalPath = "id"
-                PathElement(originalPath).addPathVariableType("String").value shouldEqual originalPath
+                PathElement(originalPath).addPathVariableType("String").value shouldBeEqualTo originalPath
             }
         }
         context("addPathVariableType on a path element with curly brackets") {
             it("should return the original element with a type") {
-                PathElement("{id}").addPathVariableType("String").value shouldEqual "{String:id}"
+                PathElement("{id}").addPathVariableType("String").value shouldBeEqualTo "{String:id}"
             }
         }
         context("addPathVariableType on a path element with curly brackets with a blank type") {
             it("should return the original element with a type String") {
-                PathElement("{id}").addPathVariableType("").value shouldEqual "{String:id}"
+                PathElement("{id}").addPathVariableType("").value shouldBeEqualTo "{String:id}"
             }
         }
 
@@ -165,12 +165,12 @@ object PathElementSpek : Spek({
         }
         context("equals on an element with null") {
             it("should return false") {
-                PathElement("{BigInteger:id}") shouldNotEqual null
+                PathElement("{BigInteger:id}") shouldNotBeEqualTo null
             }
         }
         context("equals on an element with an element different class") {
             it("should return false") {
-                PathElement("{BigInteger:id}") shouldNotEqual BigInteger("1")
+                PathElement("{BigInteger:id}") shouldNotBeEqualTo BigInteger("1")
             }
         }
     }

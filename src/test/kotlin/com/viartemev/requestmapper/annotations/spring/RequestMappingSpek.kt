@@ -11,8 +11,8 @@ import com.intellij.psi.PsiParameterList
 import com.intellij.psi.PsiType
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainAll
-import org.amshove.kluent.shouldEqual
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -32,8 +32,8 @@ object RequestMappingSpek : Spek({
             val requestMapping = RequestMapping(annotation)
             it("should return one root mapping with default GET method") {
                 val values = requestMapping.values()
-                values.size shouldEqual 1
-                values[0].name shouldEqual "GET /"
+                values.size shouldBeEqualTo 1
+                values[0].name shouldBeEqualTo "GET /"
             }
         }
 
@@ -64,8 +64,8 @@ object RequestMappingSpek : Spek({
             val requestMapping = RequestMapping(annotation)
             it("should return one class mapping with default GET method") {
                 val values = requestMapping.values()
-                values.size shouldEqual 1
-                values[0].name shouldEqual "GET /api"
+                values.size shouldBeEqualTo 1
+                values[0].name shouldBeEqualTo "GET /api"
             }
         }
 
@@ -100,8 +100,8 @@ object RequestMappingSpek : Spek({
             val requestMapping = RequestMapping(methodMappingAnnotation)
             it("should return one mapping with default GET method and path which contains class and method mapping") {
                 val values = requestMapping.values()
-                values.size shouldEqual 1
-                values[0].name shouldEqual "GET /api/method"
+                values.size shouldBeEqualTo 1
+                values[0].name shouldBeEqualTo "GET /api/method"
             }
         }
 
@@ -136,8 +136,8 @@ object RequestMappingSpek : Spek({
             val requestMapping = RequestMapping(methodMappingAnnotation)
             it("should return one mapping with default GET method and path which contains class and method mapping") {
                 val values = requestMapping.values()
-                values.size shouldEqual 1
-                values[0].name shouldEqual "GET /api/{Object:id}"
+                values.size shouldBeEqualTo 1
+                values[0].name shouldBeEqualTo "GET /api/{Object:id}"
             }
         }
         context("values on annotation with annotated class and method with path variable with Long type") {
@@ -189,8 +189,8 @@ object RequestMappingSpek : Spek({
             val methodMappingAnnotation = RequestMapping(methodPsiAnnotation)
             it("should return one mapping with default GET method and path which contains class and method mapping") {
                 val values = methodMappingAnnotation.values()
-                values.size shouldEqual 1
-                values[0].name shouldEqual "GET /api/{Long:id}"
+                values.size shouldBeEqualTo 1
+                values[0].name shouldBeEqualTo "GET /api/{Long:id}"
             }
         }
 
@@ -227,8 +227,8 @@ object RequestMappingSpek : Spek({
             val requestMapping = RequestMapping(annotation)
             it("should return one class mapping with default GET method") {
                 val values = requestMapping.values()
-                values.size shouldEqual 2
-                values.map { it.name } shouldContainAll listOf<String>("GET /api", "GET /api/v2")
+                values.size shouldBeEqualTo 2
+                values.map { it.name } shouldContainAll listOf("GET /api", "GET /api/v2")
             }
         }
     }

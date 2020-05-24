@@ -5,7 +5,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
@@ -23,13 +23,13 @@ object RequestMappingItemSpek : Spek({
             val item = RequestMappingItem(psiElement, "/api/v1/users", "POST")
             val presentation = item.presentation
             it("should return presentation with presentableText equal to the method with the path") {
-                presentation.presentableText shouldEqual "POST /api/v1/users"
+                presentation.presentableText shouldBeEqualTo "POST /api/v1/users"
             }
             it("should return presentation with getLocationString equal to the method with the path") {
-                presentation.locationString shouldEqual "Controller"
+                presentation.locationString shouldBeEqualTo "Controller"
             }
             it("should return presentation with the RequestMapperIcons.SEARCH icon") {
-                presentation.getIcon(false) shouldEqual RequestMapperIcons.SEARCH
+                presentation.getIcon(false) shouldBeEqualTo RequestMapperIcons.SEARCH
             }
         }
         context("getPresentation on method PsiElement") {
@@ -43,13 +43,13 @@ object RequestMappingItemSpek : Spek({
             val item = RequestMappingItem(psiElement, "/api/v1/users", "POST")
             val presentation = item.presentation
             it("should return presentation with presentableText equal to the method with the path") {
-                presentation.presentableText shouldEqual "POST /api/v1/users"
+                presentation.presentableText shouldBeEqualTo "POST /api/v1/users"
             }
             it("should return presentation with getLocationString equal to the method with the path") {
-                presentation.locationString shouldEqual "Controller.method"
+                presentation.locationString shouldBeEqualTo "Controller.method"
             }
             it("should return presentation with the RequestMapperIcons.SEARCH icon") {
-                presentation.getIcon(false) shouldEqual RequestMapperIcons.SEARCH
+                presentation.getIcon(false) shouldBeEqualTo RequestMapperIcons.SEARCH
             }
         }
         context("getPresentation on file PsiElement") {
@@ -59,13 +59,13 @@ object RequestMappingItemSpek : Spek({
             val item = RequestMappingItem(psiElement, "/api/v1/users", "POST")
             val presentation = item.presentation
             it("should return presentation with presentableText equal to the method with the path") {
-                presentation.presentableText shouldEqual "POST /api/v1/users"
+                presentation.presentableText shouldBeEqualTo "POST /api/v1/users"
             }
             it("should return presentation with getLocationString equal unknownLocation") {
-                presentation.locationString shouldEqual "unknownLocation"
+                presentation.locationString shouldBeEqualTo "unknownLocation"
             }
             it("should return presentation with the RequestMapperIcons.SEARCH icon") {
-                presentation.getIcon(false) shouldEqual RequestMapperIcons.SEARCH
+                presentation.getIcon(false) shouldBeEqualTo RequestMapperIcons.SEARCH
             }
         }
     }

@@ -17,8 +17,15 @@ data class Path(private val pathElements: List<PathElement>) {
     companion object {
 
         fun isSubpathOf(sourcePath: Path, targetPath: Path): Boolean {
-            val sourcePathElements = sourcePath.pathElements.drop(1)
-            val targetPathElements = targetPath.pathElements.drop(1)
+            var sourcePathElements = sourcePath.pathElements
+            var targetPathElements = targetPath.pathElements
+
+            // align by right if pattern is longer
+            val subtractSizeOfPath = targetPathElements.size - sourcePathElements.size
+            val addDrop = if (subtractSizeOfPath > 0) subtractSizeOfPath else 0
+
+            sourcePathElements = sourcePathElements.drop(1)
+            targetPathElements = targetPathElements.drop(1 + addDrop)
             val allSourceElementsArePathVariables = sourcePathElements.all { it.isPathVariable }
 
             return containsAll(sourcePathElements, targetPathElements, allSourceElementsArePathVariables)

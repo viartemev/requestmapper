@@ -1,16 +1,22 @@
 package com.viartemev.requestmapper
 
-import com.intellij.ide.util.gotoByName.CustomMatcherModel
+import com.intellij.ide.util.gotoByName.ChooseByNameItemProvider
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
-import com.viartemev.requestmapper.model.Path
-import com.viartemev.requestmapper.model.PopupPath
-import com.viartemev.requestmapper.model.RequestedUserPath
+import com.intellij.psi.PsiElement
 
-class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project, arrayOf(RequestMappingContributor(JavaAnnotationSearcher::search))), DumbAware, CustomMatcherModel {
+class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project,
+    arrayOf(RequestMappingByNameContributor(listOf(
+        JavaAnnotationSearcher::search,
+        KotlinAnnotationSearcher::search
+    )))), DumbAware {
+
+    override fun getItemProvider(context: PsiElement?): ChooseByNameItemProvider {
+        return RequestMappingItemProvider()
+    }
 
     override fun filterValueFor(item: NavigationItem): FileType? = null
 
@@ -31,18 +37,4 @@ class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(pro
     override fun getFullName(element: Any): String? = getElementName(element)
 
     override fun willOpenEditor(): Boolean = false
-
-    override fun matches(popupItem: String, userPattern: String): Boolean {
-        return if (userPattern == "/") {
-            true
-        } else if (!userPattern.contains('/')) {
-            val (method, path) = popupItem.split(" ", limit = 2)
-            path.contains(userPattern) || method.contains(userPattern, ignoreCase = true)
-        } else {
-            Path.isSubpathOf(
-                PopupPath(popupItem).toPath(),
-                RequestedUserPath(userPattern).toPath()
-            )
-        }
-    }
 }

@@ -11,7 +11,8 @@ class GoToRequestMappingAction : GotoActionBase(), DumbAware {
     override fun gotoActionPerformed(e: AnActionEvent) {
         val project = e.getData(PROJECT) ?: return
 
-        showNavigationPopup(e, RequestMappingModel(project), GoToRequestMappingActionCallback(), false)
+        val requestMappingModel = RequestMappingModel(project)
+        showNavigationPopup(e, requestMappingModel, GoToRequestMappingActionCallback(), null, true, false)
     }
 
     private class GoToRequestMappingActionCallback : GotoActionBase.GotoActionCallback<String>() {

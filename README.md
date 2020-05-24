@@ -48,6 +48,7 @@
 Thanks to all people who have contributed to this plugin:
 + [Dmitry Chuiko](https://github.com/dchuiko)
 + [Paul Finkelshteyn](https://github.com/asm0dey) 
++ [Pyltsin Mikhail](https://github.com/pyltsin)
 
 ## Support the project
 

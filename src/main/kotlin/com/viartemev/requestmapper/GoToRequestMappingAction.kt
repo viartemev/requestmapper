@@ -5,15 +5,18 @@ import com.intellij.ide.util.gotoByName.ChooseByNamePopup
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT
 import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.project.Project
 
-class GoToRequestMappingAction : GotoActionBase(), DumbAware {
+abstract class GoToRequestMappingAction : GotoActionBase(), DumbAware {
 
     override fun gotoActionPerformed(e: AnActionEvent) {
         val project = e.getData(PROJECT) ?: return
 
-        val requestMappingModel = RequestMappingModel(project)
+        val requestMappingModel = getRequestMappingModel(project)
         showNavigationPopup(e, requestMappingModel, GoToRequestMappingActionCallback(), null, true, false)
     }
+
+    abstract fun getRequestMappingModel(project: Project): RequestMappingModel
 
     private class GoToRequestMappingActionCallback : GotoActionBase.GotoActionCallback<String>() {
 

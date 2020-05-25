@@ -70,17 +70,17 @@
     <idea-version since-build="201.7000"/>
 
     <depends>com.intellij.java</depends>
-    <depends>org.jetbrains.kotlin</depends>
+    <depends optional="true" config-file="pluginKotlin.xml">org.jetbrains.kotlin</depends>
 
     <actions>
-        <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"
+        <action id="GoToRequestMapping" class="com.viartemev.requestmapper.JavaGoToRequestMappingAction"
                 text="Request Mapping" description="Request mapping">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
         </action>
     </actions>
 
-    <extensions defaultExtensionNs="com.intellij">
+    <extensions  defaultExtensionNs="com.intellij">
         <searchEverywhereContributor implementation="com.viartemev.requestmapper.RequestMappingGoToContributor$Factory"/>
     </extensions>
 

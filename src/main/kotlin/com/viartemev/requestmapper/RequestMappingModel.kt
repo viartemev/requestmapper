@@ -2,17 +2,14 @@ package com.viartemev.requestmapper
 
 import com.intellij.ide.util.gotoByName.ChooseByNameItemProvider
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel
+import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 
-class RequestMappingModel(project: Project) : FilteringGotoByModel<FileType>(project,
-    arrayOf(RequestMappingByNameContributor(listOf(
-        JavaAnnotationSearcher::search,
-        KotlinAnnotationSearcher::search
-    )))), DumbAware {
+class RequestMappingModel(project: Project, contributors: List<ChooseByNameContributor>) : FilteringGotoByModel<FileType>(project, contributors), DumbAware {
 
     override fun getItemProvider(context: PsiElement?): ChooseByNameItemProvider {
         return RequestMappingItemProvider()

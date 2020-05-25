@@ -1,63 +1,30 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>0.19</version>
+    <version>1.0</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>
-      Usage:
+      Supported languages:
       <ul>
-        <li>Keyboard shortcuts:</li>
-            <ul>
-                <li>MacOS: <code>Cmd + Shift + Back slash</code></li>
-                <li>Linux: <code>Win + Shift + Back slash</code></li>
-                <li>Windows: <code>Win + Shift + Back slash</code></li>
-            </ul>
-        <li>Navigate (menu bar) -> Request Mapping</li>
-        <li>Click <b>Shift</b> twice -> request mapping</li>
+        <li>Java</li>
+        <li>Kotlin</li>
       </ul>
-      Supported annotations:
+      Supported frameworks:
       <ul>
-        <li>Spring:</li>
-            <ul>
-                <li>@RequestMapping</li>
-                <li>@GetMapping</li>
-                <li>@PostMapping</li>
-                <li>@PutMapping</li>
-                <li>@PatchMapping</li>
-                <li>@DeleteMapping</li>
-            </ul>
-      </ul>
-      <ul>
-        <li>JAX-RS:</li>
-            <ul>
-                <li>@GET</li>
-                <li>@POST</li>
-                <li>@PUT</li>
-                <li>@DELETE</li>
-                <li>@HEAD</li>
-                <li>@OPTIONS</li>
-                <li>@PATCH</li>
-            </ul>
-      </ul>
-      <ul>
-        <li>Micronaut:</li>
-            <ul>
-                <li>@Get</li>
-                <li>@Post</li>
-                <li>@Put</li>
-                <li>@Delete</li>
-                <li>@Head</li>
-                <li>@Options</li>
-                <li>@Patch</li>
-            </ul>
+        <li>Spring</li>
+        <li>JAX-RS</li>
+        <li>Micronaut</li>
       </ul>
     ]]></description>
 
     <change-notes><![CDATA[
         <ul>
-            <li>Bugfix: Fix NoSuchElementException PsiExpressionExtractor</li>
+            <li>Feature: Kotlin support</li>
+            <li>Feature: Include request mappings in "Search everywhere"</li>
+            <li>Improve: Search</li>
+            <li>Bugfix: Full url matching</li>
         </ul>
     ]]>
     </change-notes>

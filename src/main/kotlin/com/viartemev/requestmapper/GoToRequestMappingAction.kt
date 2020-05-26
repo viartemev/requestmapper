@@ -12,6 +12,7 @@ import com.intellij.openapi.project.Project
 private const val EXTENSION_POINT_NAME = "com.viartemev.requestmapper.requestMappingContributor"
 
 class GoToRequestMappingAction : GotoActionBase(), DumbAware {
+    private val extensionPoints = ExtensionPointName.create<ChooseByNameContributor>(EXTENSION_POINT_NAME).extensionList
 
     override fun gotoActionPerformed(e: AnActionEvent) {
         val project = e.getData(PROJECT) ?: return
@@ -21,8 +22,7 @@ class GoToRequestMappingAction : GotoActionBase(), DumbAware {
     }
 
     fun getRequestMappingModel(project: Project): RequestMappingModel {
-        val extensionPoints: ExtensionPointName<ChooseByNameContributor> = ExtensionPointName.create(EXTENSION_POINT_NAME)
-        return RequestMappingModel(project, extensionPoints.extensionList)
+        return RequestMappingModel(project, extensionPoints)
     }
 
     private class GoToRequestMappingActionCallback : GotoActionBase.GotoActionCallback<String>() {

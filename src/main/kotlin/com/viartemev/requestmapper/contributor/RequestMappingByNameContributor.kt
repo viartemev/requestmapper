@@ -9,10 +9,11 @@ import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.mappi
 import com.viartemev.requestmapper.annotations.MappingAnnotation.Companion.supportedAnnotations
 import com.viartemev.requestmapper.utils.isMethodAnnotation
 
-open class RequestMappingByNameContributor(
-    private var annotationSearchers: List<(string: String, project: Project) -> Sequence<PsiAnnotation>>,
+abstract class RequestMappingByNameContributor(
     private var navigationItems: List<RequestMappingItem> = emptyList()
 ) : ChooseByNameContributor {
+
+    abstract fun getAnnotationSearchers(): (string: String, project: Project) -> Sequence<PsiAnnotation>
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         navigationItems = supportedAnnotations
@@ -31,8 +32,7 @@ open class RequestMappingByNameContributor(
     }
 
     private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> {
-        return annotationSearchers.asSequence()
-            .flatMap { it(annotationName, project) }
+        return getAnnotationSearchers()(annotationName, project)
             .filterNotNull()
             .filter { it.isMethodAnnotation() }
             .map { annotation -> mappingAnnotation(annotationName, annotation) }

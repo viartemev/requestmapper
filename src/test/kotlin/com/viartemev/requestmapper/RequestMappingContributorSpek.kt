@@ -23,7 +23,10 @@ object RequestMappingContributorSpek : Spek({
     describe("RequestMappingContributor") {
         context("getItemsByName on empty navigationItems list") {
             it("should return empty list") {
-                RequestMappingByNameContributor(listOf(testAnnotationSearcher)).getItemsByName("name", "pattern", DummyProject.getInstance(), false).size shouldBeEqualTo 0
+                val contributor = object : RequestMappingByNameContributor() {
+                    override fun getAnnotationSearchers() = testAnnotationSearcher
+                }
+                contributor.getItemsByName("name", "pattern", DummyProject.getInstance(), false).size shouldBeEqualTo 0
             }
         }
         context("getItemsByName with 2 mapping items") {
@@ -33,14 +36,20 @@ object RequestMappingContributorSpek : Spek({
                     RequestMappingItem(psiElement, "/api/v1/users", "GET"),
                     RequestMappingItem(psiElement, "/api/v2/users", "GET")
                 )
-                val itemsByName = RequestMappingByNameContributor(listOf(testAnnotationSearcher), navigationItems).getItemsByName("GET /api/v1/users", "pattern", DummyProject.getInstance(), false)
+                val contributor = object : RequestMappingByNameContributor(navigationItems) {
+                    override fun getAnnotationSearchers() = testAnnotationSearcher
+                }
+                val itemsByName = contributor.getItemsByName("GET /api/v1/users", "pattern", DummyProject.getInstance(), false)
                 itemsByName.size shouldBeEqualTo 1
                 itemsByName[0].name shouldBeEqualTo "GET /api/v1/users"
             }
         }
         context("getNames on empty navigationItems list") {
             it("should return empty list") {
-                RequestMappingByNameContributor(listOf(testAnnotationSearcher)).getNames(DummyProject.getInstance(), false).size shouldBeEqualTo 0
+                val contributor = object : RequestMappingByNameContributor() {
+                    override fun getAnnotationSearchers() = testAnnotationSearcher
+                }
+                contributor.getNames(DummyProject.getInstance(), false).size shouldBeEqualTo 0
             }
         }
         context("getNames on not method annotations") {
@@ -49,7 +58,10 @@ object RequestMappingContributorSpek : Spek({
                 val psiAnnotation = mock<PsiAnnotation> {
                     on { parent } doReturn annotationParent
                 }
-                RequestMappingByNameContributor(listOf { _, _ -> sequenceOf(psiAnnotation) }).getNames(DummyProject.getInstance(), false).size shouldBeEqualTo 0
+                val contributor = object : RequestMappingByNameContributor() {
+                    override fun getAnnotationSearchers() = { _: String, _: Project -> sequenceOf(psiAnnotation) }
+                }
+                contributor.getNames(DummyProject.getInstance(), false).size shouldBeEqualTo 0
             }
         }
         context("getNames with one RequestMapping annotation") {
@@ -78,7 +90,10 @@ object RequestMappingContributorSpek : Spek({
                     on { parent } doReturn psiMethod
                 }
                 val annotationSearcher: (String, Project) -> Sequence<PsiAnnotation> = { name: String, _ -> if (name == "RequestMapping") sequenceOf(annotation) else emptySequence() }
-                val names = RequestMappingByNameContributor(listOf(annotationSearcher)).getNames(DummyProject.getInstance(), false)
+                val contributor = object : RequestMappingByNameContributor() {
+                    override fun getAnnotationSearchers() = annotationSearcher
+                }
+                val names = contributor.getNames(DummyProject.getInstance(), false)
                 names.size shouldBeEqualTo 1
                 names[0] shouldBeEqualTo "GET /api"
             }

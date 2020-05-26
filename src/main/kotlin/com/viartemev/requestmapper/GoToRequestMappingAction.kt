@@ -2,12 +2,14 @@ package com.viartemev.requestmapper
 
 import com.intellij.ide.actions.GotoActionBase
 import com.intellij.ide.util.gotoByName.ChooseByNamePopup
+import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT
+import com.intellij.openapi.extensions.ExtensionPointName
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 
-abstract class GoToRequestMappingAction : GotoActionBase(), DumbAware {
+class GoToRequestMappingAction : GotoActionBase(), DumbAware {
 
     override fun gotoActionPerformed(e: AnActionEvent) {
         val project = e.getData(PROJECT) ?: return
@@ -16,7 +18,10 @@ abstract class GoToRequestMappingAction : GotoActionBase(), DumbAware {
         showNavigationPopup(e, requestMappingModel, GoToRequestMappingActionCallback(), null, true, false)
     }
 
-    abstract fun getRequestMappingModel(project: Project): RequestMappingModel
+    fun getRequestMappingModel(project: Project): RequestMappingModel {
+        val extensionPoints: ExtensionPointName<ChooseByNameContributor> = ExtensionPointName.create("com.viartemev.requestmapper.requestMappingContributor")
+        return RequestMappingModel(project, extensionPoints.extensionList)
+    }
 
     private class GoToRequestMappingActionCallback : GotoActionBase.GotoActionCallback<String>() {
 

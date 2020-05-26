@@ -1,9 +1,5 @@
 <idea-plugin>
-    <actions>
-        <action overrides="true" id="GoToRequestMapping" class="com.viartemev.requestmapper.KotlinGoToRequestMappingAction"
-                text="Request Mapping" description="Request mapping">
-            <add-to-group group-id="GoToTargetEx" anchor="first"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
-        </action>
-    </actions>
+    <extensions defaultExtensionNs="com.viartemev.requestmapper">
+        <requestMappingContributor implementation="com.viartemev.requestmapper.contributor.KotlinRequestMappingContributor"/>
+    </extensions>
 </idea-plugin>

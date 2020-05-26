@@ -73,15 +73,22 @@
     <depends optional="true" config-file="pluginKotlin.xml">org.jetbrains.kotlin</depends>
 
     <actions>
-        <action id="GoToRequestMapping" class="com.viartemev.requestmapper.JavaGoToRequestMappingAction"
+        <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"
                 text="Request Mapping" description="Request mapping">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
         </action>
     </actions>
 
+    <extensionPoints>
+        <extensionPoint name="requestMappingContributor" interface="com.intellij.navigation.ChooseByNameContributor"/>
+    </extensionPoints>
+
     <extensions  defaultExtensionNs="com.intellij">
         <searchEverywhereContributor implementation="com.viartemev.requestmapper.RequestMappingGoToContributor$Factory"/>
     </extensions>
 
+    <extensions defaultExtensionNs="com.viartemev.requestmapper">
+        <requestMappingContributor implementation="com.viartemev.requestmapper.contributor.JavaRequestMappingContributor"/>
+    </extensions>
 </idea-plugin>

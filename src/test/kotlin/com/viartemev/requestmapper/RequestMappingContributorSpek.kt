@@ -12,6 +12,7 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiParameterList
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import com.viartemev.requestmapper.contributor.RequestMappingByNameContributor
 import org.amshove.kluent.shouldBeEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe

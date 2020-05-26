@@ -6,7 +6,7 @@
 <h1 align="center">Request Mapper</h1>
 <p align="center">Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.</p>
 
-<p align="center"> 
+<p align="center">
 <a href="https://travis-ci.org/viartemev/requestmapper"><img src="https://travis-ci.org/viartemev/requestmapper.svg?branch=master"></a>
 <a href="https://plugins.jetbrains.com/plugin/9567-request-mapper"><img src="https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg"></a>
 <a href="https://plugins.jetbrains.com/plugin/9567-request-mapper"><img src="https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000"></a>
@@ -19,7 +19,8 @@
 
 #### Supported languages:
 
-- Java 
+- Java
+- Kotlin
 
 #### Supported annotations:
 
@@ -36,18 +37,19 @@
 
 ## Usage
 
+- Search everywhere (```Shift``` twice)
 - Keyboard shortcuts:
     - MacOS: ```Cmd + Shift + Back slash```
     - Linux: ```Ctrl + Shift + Back slash```
     - Windows: ```Ctrl + Shift + Back slash```
-- Navigate (menu bar) -> Request Mapping
-- Click ```Shift``` twice -> request mapping
+- Navigate (menu bar) -> Request mapping
 
 ## Contributors
 
 Thanks to all people who have contributed to this plugin:
 + [Dmitry Chuiko](https://github.com/dchuiko)
-+ [Paul Finkelshteyn](https://github.com/asm0dey) 
++ [Paul Finkelshteyn](https://github.com/asm0dey)
++ [Pyltsin Mikhail](https://github.com/pyltsin)
 
 ## Support the project
 

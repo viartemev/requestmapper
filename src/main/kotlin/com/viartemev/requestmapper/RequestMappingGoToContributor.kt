@@ -4,21 +4,14 @@ import com.intellij.ide.actions.searcheverywhere.AbstractGotoSEContributor
 import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributor
 import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributorFactory
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel
-import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
+import com.viartemev.requestmapper.extensions.Extensions
 
-class RequestMappingGoToContributor(event: AnActionEvent, private val action: GoToRequestMappingAction) : AbstractGotoSEContributor(event) {
-
-    class Factory : SearchEverywhereContributorFactory<Any> {
-        override fun createContributor(initEvent: AnActionEvent): SearchEverywhereContributor<Any> {
-            val action: GoToRequestMappingAction = ActionManager.getInstance().getAction("GoToRequestMapping") as GoToRequestMappingAction
-            return RequestMappingGoToContributor(initEvent, action)
-        }
-    }
+class RequestMappingGoToContributor(event: AnActionEvent) : AbstractGotoSEContributor(event) {
 
     override fun createModel(project: Project): FilteringGotoByModel<*> {
-        return action.getRequestMappingModel(project)
+        return RequestMappingModel(project, Extensions.getExtensions())
     }
 
     override fun getSortWeight(): Int {
@@ -31,5 +24,11 @@ class RequestMappingGoToContributor(event: AnActionEvent, private val action: Go
 
     override fun showInFindResults(): Boolean {
         return false
+    }
+
+    class Factory : SearchEverywhereContributorFactory<Any> {
+        override fun createContributor(initEvent: AnActionEvent): SearchEverywhereContributor<Any> {
+            return RequestMappingGoToContributor(initEvent)
+        }
     }
 }

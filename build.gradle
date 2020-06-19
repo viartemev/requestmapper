@@ -10,7 +10,7 @@ buildscript {
         log4j_version = '2.11.1'
         commons_lang3_version = '3.10'
 
-        kotlinter_gradle_plugin = '2.3.2'
+        kotlinter_gradle_plugin = '2.4.1'
         gradle_intellij_plugin = '0.4.21'
     }
 

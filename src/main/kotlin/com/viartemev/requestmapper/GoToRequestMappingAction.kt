@@ -7,7 +7,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT
 import com.intellij.openapi.project.DumbAware
 import com.viartemev.requestmapper.extensions.Extensions
 
-
 class GoToRequestMappingAction : GotoActionBase(), DumbAware {
 
     override fun gotoActionPerformed(e: AnActionEvent) {

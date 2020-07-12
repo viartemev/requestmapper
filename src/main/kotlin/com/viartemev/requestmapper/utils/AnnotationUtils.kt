@@ -12,8 +12,6 @@ fun PsiAnnotation.fetchAnnotatedMethod() = fetchAnnotatedPsiElement(this) as Psi
 
 private tailrec fun fetchAnnotatedPsiElement(psiElement: PsiElement): PsiElement {
     val parent: PsiElement = psiElement.parent ?: return PsiUtilCore.NULL_PSI_ELEMENT
-    if (parent is PsiMethod || parent is PsiClass) {
-        return parent
-    }
+    if (parent is PsiMethod || parent is PsiClass) return parent
     return fetchAnnotatedPsiElement(parent)
 }

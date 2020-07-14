@@ -13,7 +13,7 @@ abstract class RequestMappingByNameContributor(
     private var navigationItems: List<RequestMappingItem> = emptyList()
 ) : ChooseByNameContributor {
 
-    abstract fun getAnnotationSearchers(): (string: String, project: Project) -> Sequence<PsiAnnotation>
+    abstract fun getAnnotationSearchers(annotationName: String, project: Project): Sequence<PsiAnnotation>
 
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         navigationItems = supportedAnnotations
@@ -32,7 +32,7 @@ abstract class RequestMappingByNameContributor(
     }
 
     private fun findRequestMappingItems(project: Project, annotationName: String): List<RequestMappingItem> {
-        return getAnnotationSearchers()(annotationName, project)
+        return getAnnotationSearchers(annotationName, project)
             .filterNotNull()
             .filter { it.isMethodAnnotation() }
             .map { annotation -> mappingAnnotation(annotationName, annotation) }

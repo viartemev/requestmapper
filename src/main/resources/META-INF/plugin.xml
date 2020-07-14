@@ -29,15 +29,12 @@
     ]]>
     </change-notes>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-    </extensions>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+    <depends optional="true" config-file="pluginKotlin.xml">org.jetbrains.kotlin</depends>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="201.7000"/>
-
-    <depends>com.intellij.java</depends>
-    <depends optional="true" config-file="pluginKotlin.xml">org.jetbrains.kotlin</depends>
 
     <actions>
         <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"

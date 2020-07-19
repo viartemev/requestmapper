@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
-    <version>1.0</version>
+    <version>1.1</version>
     <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
@@ -37,22 +37,31 @@
     <idea-version since-build="201.7000"/>
 
     <actions>
-        <action id="GoToRequestMapping" class="com.viartemev.requestmapper.GoToRequestMappingAction"
+        <action id="GoToInRequestMapping" class="com.viartemev.requestmapper.actions.GoToInRequestMappingAction"
                 text="Request Mapping" description="Request mapping">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
         </action>
+        <action id="GoToOutRequestMapping" class="com.viartemev.requestmapper.actions.GoToOutRequestMappingAction"
+                text="Request Mapping" description="Request mapping">
+            <add-to-group group-id="GoToTargetEx" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl o"/>
+        </action>
     </actions>
 
     <extensionPoints>
-        <extensionPoint name="requestMappingContributor" interface="com.intellij.navigation.ChooseByNameContributor"/>
+        <extensionPoint name="requestMappingContributor" interface="com.viartemev.requestmapper.contributor.RequestMappingByNameFinder"/>
     </extensionPoints>
 
     <extensions  defaultExtensionNs="com.intellij">
-        <searchEverywhereContributor implementation="com.viartemev.requestmapper.RequestMappingGoToContributor$Factory"/>
+        <searchEverywhereContributor implementation="com.viartemev.requestmapper.actions.InRequestMappingGoToContributor$Factory"/>
+    </extensions>
+
+    <extensions  defaultExtensionNs="com.intellij">
+        <searchEverywhereContributor implementation="com.viartemev.requestmapper.actions.OutRequestMappingGoToContributor$Factory"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.viartemev.requestmapper">
-        <requestMappingContributor implementation="com.viartemev.requestmapper.contributor.JavaRequestMappingContributor"/>
+        <requestMappingContributor implementation="com.viartemev.requestmapper.contributor.JavaRequestMappingFinder"/>
     </extensions>
 </idea-plugin>

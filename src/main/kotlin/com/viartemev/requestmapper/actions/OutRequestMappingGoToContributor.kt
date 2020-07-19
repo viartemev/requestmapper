@@ -1,4 +1,4 @@
-package com.viartemev.requestmapper
+package com.viartemev.requestmapper.actions
 
 import com.intellij.ide.actions.searcheverywhere.AbstractGotoSEContributor
 import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributor
@@ -6,20 +6,20 @@ import com.intellij.ide.actions.searcheverywhere.SearchEverywhereContributorFact
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
-import com.viartemev.requestmapper.extensions.Extensions
+import com.viartemev.requestmapper.RequestMappingModel
 
-class RequestMappingGoToContributor(event: AnActionEvent) : AbstractGotoSEContributor(event) {
+class OutRequestMappingGoToContributor(event: AnActionEvent) : AbstractGotoSEContributor(event) {
 
     override fun createModel(project: Project): FilteringGotoByModel<*> {
-        return RequestMappingModel(project, Extensions.getExtensions())
+        return RequestMappingModel(project, GoToOutRequestMappingAction().getContributors())
     }
 
     override fun getSortWeight(): Int {
-        return 1000
+        return 2000
     }
 
     override fun getGroupName(): String {
-        return "Request mapping"
+        return "Outbound requests"
     }
 
     override fun showInFindResults(): Boolean {
@@ -28,7 +28,7 @@ class RequestMappingGoToContributor(event: AnActionEvent) : AbstractGotoSEContri
 
     class Factory : SearchEverywhereContributorFactory<Any> {
         override fun createContributor(initEvent: AnActionEvent): SearchEverywhereContributor<Any> {
-            return RequestMappingGoToContributor(initEvent)
+            return OutRequestMappingGoToContributor(initEvent)
         }
     }
 }

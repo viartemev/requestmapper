@@ -5,7 +5,7 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex
 import com.intellij.psi.search.GlobalSearchScope
 
-class JavaRequestMappingContributor : RequestMappingByNameContributor() {
+class JavaRequestMappingFinder : RequestMappingByNameFinder() {
 
     override fun getAnnotationSearchers(annotationName: String, project: Project): Sequence<PsiAnnotation> {
         return JavaAnnotationIndex

@@ -7,7 +7,12 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 
-class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String, private val requestMethod: String) : NavigationItem {
+class RequestMappingItem(
+    val psiElement: PsiElement,
+    private val urlPath: String,
+    private val requestMethod: String,
+    val boundType: Set<BoundType> = setOf(BoundType.INBOUND)
+) : NavigationItem {
 
     private val navigationElement = psiElement.navigationElement as? Navigatable
 

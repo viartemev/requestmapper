@@ -1,4 +1,4 @@
-package com.viartemev.requestmapper.contributor
+package com.viartemev.requestmapper.contributors
 
 import com.intellij.navigation.ChooseByNameContributorEx
 import com.intellij.navigation.NavigationItem
@@ -10,12 +10,12 @@ import com.intellij.util.indexing.IdFilter
 import com.viartemev.requestmapper.RequestMappingItem
 
 class CustomFilterWrapperMappingContributor(
-    private var finder: RequestMappingByNameFinder,
+    private var finder: RequestMappingItemFinder,
     private val customFilter: (RequestMappingItem) -> Boolean = { true },
     private var navigationItems: List<RequestMappingItem> = emptyList()
 ) : ChooseByNameContributorEx {
     override fun processNames(processor: Processor<in String>, scope: GlobalSearchScope, filter: IdFilter?) {
-        navigationItems = finder.findItems(scope)
+        navigationItems = finder.findItems(scope.project)
             .filter(customFilter)
 
         val names = navigationItems

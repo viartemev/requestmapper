@@ -50,7 +50,7 @@
     </actions>
 
     <extensionPoints>
-        <extensionPoint name="requestMappingContributor" interface="com.viartemev.requestmapper.contributor.RequestMappingByNameFinder"/>
+        <extensionPoint name="requestMappingContributor" interface="com.viartemev.requestmapper.contributors.RequestMappingByRequestMappingItemFinder"/>
     </extensionPoints>
 
     <extensions  defaultExtensionNs="com.intellij">
@@ -62,6 +62,6 @@
     </extensions>
 
     <extensions defaultExtensionNs="com.viartemev.requestmapper">
-        <requestMappingContributor implementation="com.viartemev.requestmapper.contributor.JavaRequestMappingFinder"/>
+        <requestMappingContributor implementation="com.viartemev.requestmapper.contributors.JavaRequestMappingFinder"/>
     </extensions>
 </idea-plugin>

@@ -1,4 +1,4 @@
-package com.viartemev.requestmapper
+package com.viartemev.requestmapper.contributors
 
 import com.intellij.openapi.command.impl.DummyProject
 import com.intellij.openapi.project.Project
@@ -12,7 +12,6 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiParameterList
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import com.viartemev.requestmapper.contributors.RequestMappingByRequestMappingItemFinder
 import org.amshove.kluent.shouldBeEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe

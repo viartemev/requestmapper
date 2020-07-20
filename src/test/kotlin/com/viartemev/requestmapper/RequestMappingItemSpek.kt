@@ -12,6 +12,13 @@ import org.spekframework.spek2.style.specification.describe
 object RequestMappingItemSpek : Spek({
 
     describe("RequestMappingItem") {
+        context("by defaults settings") {
+            val psiElement = mock<PsiClass> {}
+            val item = RequestMappingItem(psiElement, "/api/v1/users", "POST")
+            it("should return INBOUND type") {
+                item.boundType shouldBeEqualTo setOf(BoundType.INBOUND)
+            }
+        }
         context("getPresentation on class PsiElement") {
             val psiFile = mock<PsiFile> {
                 on { name } doReturn "Controller"

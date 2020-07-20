@@ -8,11 +8,11 @@ const val URL = "url"
 const val PATH = "path"
 const val NAME = "name"
 
-class FeignClientMapping(val annotation: PsiAnnotation) : SpringClassMappingAnnotation {
+class ClassFeignClientMapping(val annotation: PsiAnnotation) : SpringClassMappingAnnotation {
     override fun fetchClassMapping(): List<String> {
-        val name = getString(PathAnnotation(annotation).fetchMappings(NAME))
-        var url = getString(PathAnnotation(annotation).fetchMappings(URL))
-        val path = getString(PathAnnotation(annotation).fetchMappings(PATH))
+        val name = PathAnnotation(annotation).fetchMappings(NAME).firstOrNull() ?: ""
+        var url = PathAnnotation(annotation).fetchMappings(URL).firstOrNull() ?: ""
+        val path = PathAnnotation(annotation).fetchMappings(PATH).firstOrNull() ?: ""
 
         // analogue of org.springframework.cloud.openfeign.FeignClientFactoryBean#getTarget
         if (url.isBlank()) {
@@ -26,10 +26,6 @@ class FeignClientMapping(val annotation: PsiAnnotation) : SpringClassMappingAnno
         var normalizedPath = if (!path.startsWith("/")) "/$path" else path
         normalizedPath = if (normalizedPath.endsWith("/")) normalizedPath.substring(0, normalizedPath.length - 1) else normalizedPath
         return normalizedPath
-    }
-
-    private fun getString(fetchMappings: List<String>): String {
-        return if (fetchMappings.isEmpty()) "" else fetchMappings[0]
     }
 
     override fun fetchBoundMappingFromClass(): Set<BoundType> {

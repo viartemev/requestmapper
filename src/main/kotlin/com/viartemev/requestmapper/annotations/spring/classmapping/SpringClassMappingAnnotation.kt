@@ -15,26 +15,26 @@ interface SpringClassMappingAnnotation {
         private fun mappingAnnotation(psiAnnotation: PsiAnnotation): SpringClassMappingAnnotation {
             return when (psiAnnotation.qualifiedName) {
                 SPRING_REQUEST_MAPPING_CLASS -> ClassRequestMapping(psiAnnotation)
-                SPRING_OPEN_FEIGN_CLASS -> FeignClientMapping(psiAnnotation)
-                SPRING_NETFLIX_FEIGN_CLASS -> FeignClientMapping(psiAnnotation)
+                SPRING_OPEN_FEIGN_CLASS -> ClassFeignClientMapping(psiAnnotation)
+                SPRING_NETFLIX_FEIGN_CLASS -> ClassFeignClientMapping(psiAnnotation)
                 else -> ClassUnknownAnnotation()
             }
         }
 
         fun fetchMappingsFromClass(psiMethod: PsiMethod): List<String> {
-            val classMapping = getAnnotations(psiMethod)
+            val classMapping = findClassAnnotations(psiMethod)
                 ?.flatMap { mappingAnnotation(it).fetchClassMapping() } ?: emptyList()
             return if (classMapping.isEmpty()) listOf("") else classMapping
         }
 
         fun fetchBoundMappingFromClass(psiMethod: PsiMethod): Set<BoundType> {
-            val classMapping = getAnnotations(psiMethod)
+            val classMapping = findClassAnnotations(psiMethod)
                 ?.flatMap { mappingAnnotation(it).fetchBoundMappingFromClass() }
                 ?.toSet() ?: emptySet()
             return if (classMapping.isEmpty()) setOf(BoundType.INBOUND) else classMapping
         }
 
-        private fun getAnnotations(psiMethod: PsiMethod): List<PsiAnnotation>? {
+        private fun findClassAnnotations(psiMethod: PsiMethod): List<PsiAnnotation>? {
             return psiMethod
                 .containingClass
                 ?.modifierList

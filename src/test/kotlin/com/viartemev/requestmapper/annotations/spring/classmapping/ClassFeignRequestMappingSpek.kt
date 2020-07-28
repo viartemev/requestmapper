@@ -12,7 +12,7 @@ import org.spekframework.spek2.style.specification.describe
 object ClassFeignRequestMappingSpek : Spek({
     describe("FeignRequestMapping") {
         context("extract properties") {
-            it("should return one mapping used path and name properties with outbound type") {
+            it("should return one mapping using path and name properties with outbound type") {
                 val pathMemberText = mock<PsiLiteralExpression> {
                     on { text } doReturn "/api"
                 }
@@ -29,7 +29,7 @@ object ClassFeignRequestMappingSpek : Spek({
                 classRequestMapping.fetchBoundMappingFromClass() shouldBeEqualTo setOf(BoundType.OUTBOUND)
                 classRequestMapping.fetchClassMapping() shouldBeEqualTo listOf("v2/api")
             }
-            it("should return one mapping used path and name properties with outbound type") {
+            it("should return one mapping using path and name properties with outbound type") {
                 val pathMemberText = mock<PsiLiteralExpression> {
                     on { text } doReturn "api"
                 }

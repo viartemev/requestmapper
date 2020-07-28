@@ -14,14 +14,14 @@ class ClassFeignClientMapping(val annotation: PsiAnnotation) : SpringClassMappin
         var url = PathAnnotation(annotation).fetchMappings(URL).firstOrNull() ?: ""
         val path = PathAnnotation(annotation).fetchMappings(PATH).firstOrNull() ?: ""
 
-        // analogue of org.springframework.cloud.openfeign.FeignClientFactoryBean#getTarget
+        // analogue from org.springframework.cloud.openfeign.FeignClientFactoryBean#getTarget
         if (url.isBlank()) {
             url = name
         }
         return listOf(url + getCleanPath(path))
     }
 
-    // analogue of org.springframework.cloud.openfeign.FeignClientFactoryBean#cleanPath
+    // analogue from org.springframework.cloud.openfeign.FeignClientFactoryBean#cleanPath
     private fun getCleanPath(path: String): String {
         var normalizedPath = if (!path.startsWith("/")) "/$path" else path
         normalizedPath = if (normalizedPath.endsWith("/")) normalizedPath.substring(0, normalizedPath.length - 1) else normalizedPath

@@ -12,7 +12,7 @@ import org.spekframework.spek2.style.specification.describe
 object ClassRequestMappingSpek : Spek({
     describe("ClassRequestMapping") {
         context("extract properties") {
-            it("should return one mapping used path property with default bound type") {
+            it("should return one mapping using path property with default bound type") {
                 val classMappingMemberValue = mock<PsiLiteralExpression> {
                     on { text } doReturn "api"
                 }
@@ -25,7 +25,7 @@ object ClassRequestMappingSpek : Spek({
                 classRequestMapping.fetchBoundMappingFromClass() shouldBeEqualTo setOf(BoundType.INBOUND)
                 classRequestMapping.fetchClassMapping() shouldBeEqualTo listOf("api")
             }
-            it("should return one mapping used value property ") {
+            it("should return one mapping using value property ") {
                 val classMappingMemberValue = mock<PsiLiteralExpression> {
                     on { text } doReturn "api"
                 }

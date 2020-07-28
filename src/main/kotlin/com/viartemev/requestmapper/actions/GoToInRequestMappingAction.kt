@@ -8,8 +8,7 @@ import com.viartemev.requestmapper.extensions.Extensions
 class GoToInRequestMappingAction : AbstractGoToRequestMappingAction() {
     override fun getContributors(): List<ChooseByNameContributor> {
         return Extensions.getContributors().map {
-            CustomFilterWrapperMappingContributor(
-                it,
+            CustomFilterWrapperMappingContributor(it,
                 { requestMappingItem -> requestMappingItem.boundType.contains(BoundType.INBOUND) }
             )
         }

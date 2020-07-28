@@ -57,17 +57,14 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
             val model = base.model
             if (model is ChooseByNameModelEx) {
                 indicator.checkCanceled()
-                model.processNames(
-                    { sequence: String? ->
-                        indicator.checkCanceled()
-                        if (matches(sequence, pattern)) {
-                            collect.consume(sequence)
-                            return@processNames true
-                        }
-                        return@processNames false
-                    },
-                    parameters
-                )
+                model.processNames({ sequence: String? ->
+                    indicator.checkCanceled()
+                    if (matches(sequence, pattern)) {
+                        collect.consume(sequence)
+                        return@processNames true
+                    }
+                    return@processNames false
+                }, parameters)
             }
 
             namesList.sortWith(compareBy { PopupPath(it) })

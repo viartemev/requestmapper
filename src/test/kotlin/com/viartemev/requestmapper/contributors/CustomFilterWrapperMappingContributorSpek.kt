@@ -12,7 +12,6 @@ import org.amshove.kluent.shouldBeEqualTo
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
-// todo добавить тесты на class mapping - 3 шт и на bound
 object CustomFilterWrapperMappingContributorSpek : Spek({
 
     describe("RequestMappingContributor") {
@@ -31,7 +30,7 @@ object CustomFilterWrapperMappingContributorSpek : Spek({
                 itemsByName.size shouldBeEqualTo 0
             }
         }
-        context("processNames with 2 mapping items") {
+        context("processNames on 2 mapping items") {
             it("should return item a particular name") {
                 val psiElement = mock<PsiElement> {}
                 val navigationItems = listOf(
@@ -88,7 +87,7 @@ object CustomFilterWrapperMappingContributorSpek : Spek({
                 names[0] shouldBeEqualTo "GET /api"
             }
         }
-        context("filter with one RequestMapping annotation") {
+        context("processNames with filter on one RequestMapping annotation") {
             it("should return one name of mapping") {
                 val psiElement = mock<PsiElement> {}
                 val navigationItems = listOf(

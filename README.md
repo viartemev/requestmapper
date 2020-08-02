@@ -38,11 +38,16 @@
 ## Usage
 
 - Search everywhere (```Shift``` twice)
-- Keyboard shortcuts:
-    - MacOS: ```Cmd + Shift + Back slash```
-    - Linux: ```Ctrl + Shift + Back slash```
-    - Windows: ```Ctrl + Shift + Back slash```
-- Navigate (menu bar) -> Request mapping
+- Keyboard shortcuts
+    - for Inbound requests:
+        - MacOS: ```Cmd + Shift + Back slash```
+        - Linux: ```Ctrl + Shift + Back slash```
+        - Windows: ```Ctrl + Shift + Back slash```
+    - for Outbound requests:
+        - MacOS: ```Cmd + Shift + o```
+        - Linux: ```Ctrl + Shift + o```
+        - Windows: ```Ctrl + Shift + o```
+- Navigate (menu bar) -> ```Inbound requests``` or ```Outbound requests```
 
 ## Contributors
 

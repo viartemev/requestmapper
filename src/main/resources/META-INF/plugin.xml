@@ -34,16 +34,16 @@
     <depends optional="true" config-file="pluginKotlin.xml">org.jetbrains.kotlin</depends>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="201.7000"/>
+    <idea-version since-build="202.6000"/>
 
     <actions>
-        <action id="GoToInRequestMapping" class="com.viartemev.requestmapper.actions.GoToInRequestMappingAction"
-                text="Request Mapping" description="Request mapping">
+        <action id="InboundRequestMapping" class="com.viartemev.requestmapper.actions.InboundRequestMappingAction"
+                text="Inbound Requests" description="Request mapping">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl BACK_SLASH"/>
         </action>
-        <action id="GoToOutRequestMapping" class="com.viartemev.requestmapper.actions.GoToOutRequestMappingAction"
-                text="Request Mapping" description="Request mapping">
+        <action id="OutBoundRequestMapping" class="com.viartemev.requestmapper.actions.OutBoundRequestMappingAction"
+                text="Outbound Requests" description="Request mapping">
             <add-to-group group-id="GoToTargetEx" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl o"/>
         </action>
@@ -54,11 +54,11 @@
     </extensionPoints>
 
     <extensions  defaultExtensionNs="com.intellij">
-        <searchEverywhereContributor implementation="com.viartemev.requestmapper.actions.InRequestMappingGoToContributor$Factory"/>
+        <searchEverywhereContributor implementation="com.viartemev.requestmapper.actions.InboundRequestMappingContributor$Factory"/>
     </extensions>
 
     <extensions  defaultExtensionNs="com.intellij">
-        <searchEverywhereContributor implementation="com.viartemev.requestmapper.actions.OutRequestMappingGoToContributor$Factory"/>
+        <searchEverywhereContributor implementation="com.viartemev.requestmapper.actions.OutboundRequestMappingContributor$Factory"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.viartemev.requestmapper">

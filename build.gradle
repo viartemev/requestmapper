@@ -79,7 +79,7 @@ test {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version = '2020.1.1'
+    version = '2020.2'
     plugins = ["java", "org.jetbrains.kotlin:$kotlin_version-release-IJ2020.1-1"]
 }
 

@@ -6,10 +6,12 @@ data class Path(private val pathElements: List<PathElement>) {
     constructor(string: String) : this(string.split("/").map { PathElement(it) })
 
     fun addPathVariablesTypes(parametersNameWithType: Map<String, String>): Path {
-        return Path(pathElements.map {
-            val key = it.value.unquoteCurlyBrackets().substringBefore(':')
-            it.addPathVariableType(parametersNameWithType.getOrDefault(key, "Object"))
-        })
+        return Path(
+            pathElements.map {
+                val key = it.value.unquoteCurlyBrackets().substringBefore(':')
+                it.addPathVariableType(parametersNameWithType.getOrDefault(key, "Object"))
+            }
+        )
     }
 
     fun toFullPath() = pathElements.joinToString("/") { it.value }

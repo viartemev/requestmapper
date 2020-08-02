@@ -1,12 +1,14 @@
 package com.viartemev.requestmapper
 
-import com.intellij.ide.util.gotoByName.ChooseByNameBase
-import com.intellij.ide.util.gotoByName.ChooseByNameItemProvider
+import com.intellij.ide.actions.searcheverywhere.FoundItemDescriptor
 import com.intellij.ide.util.gotoByName.ChooseByNameModelEx
 import com.intellij.ide.util.gotoByName.ChooseByNamePopup
 import com.intellij.ide.util.gotoByName.ChooseByNameViewModel
 import com.intellij.ide.util.gotoByName.ContributorsBasedGotoByModel
+import com.intellij.ide.util.gotoByName.DefaultChooseByNameItemProvider
 import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.psi.PsiElement
 import com.intellij.util.CollectConsumer
 import com.intellij.util.Processor
 import com.intellij.util.SmartList
@@ -18,28 +20,28 @@ import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PopupPath
 import com.viartemev.requestmapper.model.RequestedUserPath
 
-open class RequestMappingItemProvider : ChooseByNameItemProvider {
-    override fun filterElements(
-        base: ChooseByNameBase,
-        pattern: String,
-        everywhere: Boolean,
+open class RequestMappingItemProvider(context: PsiElement?) : DefaultChooseByNameItemProvider(context) {
+
+    override fun filterElementsWithWeights(
+        base: ChooseByNameViewModel,
+        parameters: FindSymbolParameters,
         indicator: ProgressIndicator,
-        consumer: Processor<Any>
+        consumer: Processor<in FoundItemDescriptor<*>?>
     ): Boolean {
+        return ProgressManager.getInstance().computePrioritized<Boolean, RuntimeException> { filter(base, parameters.completePattern, indicator, consumer) }
+    }
+
+    private fun filter(base: ChooseByNameViewModel, pattern: String, indicator: ProgressIndicator, consumer: Processor<in FoundItemDescriptor<*>?>): Boolean {
         if (base.project != null) {
             base.project!!.putUserData(ChooseByNamePopup.CURRENT_SEARCH_PATTERN, pattern)
         }
         val idFilter: IdFilter? = null
-        val searchScope = FindSymbolParameters.searchScopeFor(base.project, everywhere)
+        val searchScope = FindSymbolParameters.searchScopeFor(base.project, false)
         val parameters = FindSymbolParameters(pattern, pattern, searchScope, idFilter)
 
         val namesList = getSortedResults(base, pattern, indicator, parameters)
         indicator.checkCanceled()
-        return processByNames(base, everywhere, indicator, consumer, namesList, parameters)
-    }
-
-    override fun filterNames(base: ChooseByNameBase, names: Array<String>, pattern: String): List<String> {
-        return emptyList()
+        return processByNames(base, indicator, consumer, namesList, parameters)
     }
 
     companion object {
@@ -57,14 +59,17 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
             val model = base.model
             if (model is ChooseByNameModelEx) {
                 indicator.checkCanceled()
-                model.processNames({ sequence: String? ->
-                    indicator.checkCanceled()
-                    if (matches(sequence, pattern)) {
-                        collect.consume(sequence)
-                        return@processNames true
-                    }
-                    return@processNames false
-                }, parameters)
+                model.processNames(
+                    { sequence: String? ->
+                        indicator.checkCanceled()
+                        if (matches(sequence, pattern)) {
+                            collect.consume(sequence)
+                            return@processNames true
+                        }
+                        return@processNames false
+                    },
+                    parameters
+                )
             }
 
             namesList.sortWith(compareBy { PopupPath(it) })
@@ -75,35 +80,35 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
 
         private fun processByNames(
             base: ChooseByNameViewModel,
-            everywhere: Boolean,
             indicator: ProgressIndicator,
-            consumer: Processor<Any>,
+            consumer: Processor<in FoundItemDescriptor<*>?>,
             namesList: List<String>,
             parameters: FindSymbolParameters
         ): Boolean {
             val sameNameElements: MutableList<Any> = SmartList()
-            val qualifierMatchResults: MutableMap<Any, MatchResult> = ContainerUtil.newIdentityTroveMap()
             val model = base.model
             for (name in namesList) {
                 indicator.checkCanceled()
-                val elements = if (model is ContributorsBasedGotoByModel) model.getElementsByName(name, parameters, indicator) else model.getElementsByName(name, everywhere, parameters.completePattern)
+                val elements = if (model is ContributorsBasedGotoByModel) model.getElementsByName(name, parameters, indicator) else model.getElementsByName(name, false, parameters.completePattern)
                 if (elements.size > 1) {
                     sameNameElements.clear()
-                    qualifierMatchResults.clear()
                     for (element in elements) {
                         indicator.checkCanceled()
                         sameNameElements.add(element)
                     }
-                    if (!ContainerUtil.process(sameNameElements, consumer)) return false
+                    val processedItems: List<FoundItemDescriptor<*>> = ContainerUtil.map(sameNameElements) {
+                        FoundItemDescriptor(it, 0)
+                    }
+
+                    if (!ContainerUtil.process(processedItems, consumer)) return false
                 } else if (elements.size == 1) {
-                    if (!consumer.process(elements[0])) return false
+                    if (!consumer.process(FoundItemDescriptor(elements[0], 0))) return false
                 }
             }
             return true
         }
 
         fun matches(name: String?, pattern: String): Boolean {
-
             if (name == null) {
                 return false
             }

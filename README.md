@@ -27,6 +27,7 @@
 | Spring  | JAX-RS  | Micronaut  |
 |:-:|:-:|:-:|
 | ```@RequestMapping``` | | |
+| ```@FeignClient``` | | |
 | ```@GetMapping``` | ```@GET``` | ```@Get``` |
 | ```@PostMapping```  | ```@POST``` | ```@Post``` |
 | ```@PutMapping``` | ```@PUT``` | ```@Put``` |

@@ -1,17 +1,17 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.4.0'
-        junit_jupiter_version = '5.6.2'
+        kotlin_version = '1.4.10'
+        junit_jupiter_version = '5.7.0'
         junit_plugin_version = '1.2.0'
-        spek_version = '1.2.1'
+        spek_version = '2.0.14'
         assertj_version = '3.9.1'
-        kluent_version = '1.61'
+        kluent_version = '1.64'
         log4j_version = '2.11.1'
+        mockito_kotlin = '1.6.0'
         commons_lang3_version = '3.11'
-
-        kotlinter_gradle_plugin = '3.0.0'
-        gradle_intellij_plugin = '0.4.21'
+        kotlinter_gradle_plugin = '3.2.0'
+        gradle_intellij_plugin = '0.4.26'
     }
 
     repositories {
@@ -50,16 +50,16 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
     compile("org.apache.commons:commons-lang3:$commons_lang3_version")
 
-    testImplementation('org.spekframework.spek2:spek-dsl-jvm:2.0.12') {
+    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version") {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testRuntimeOnly('org.spekframework.spek2:spek-runner-junit5:2.0.12') {
+    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spek_version") {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
     testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
-    testCompile("com.nhaarman:mockito-kotlin:1.6.0")
+    testCompile("com.nhaarman:mockito-kotlin:$mockito_kotlin")
     testImplementation "org.amshove.kluent:kluent:$kluent_version"
 }
 

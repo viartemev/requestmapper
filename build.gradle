@@ -10,7 +10,6 @@ buildscript {
         log4j_version = '2.11.1'
         mockito_kotlin = '1.6.0'
         commons_lang3_version = '3.11'
-        spek_version = '2.0.13'
         kotlinter_gradle_plugin = '3.2.0'
         gradle_intellij_plugin = '0.4.26'
     }
@@ -44,7 +43,7 @@ apply plugin: "org.junit.platform.gradle.plugin"
 apply plugin: "org.jmailen.kotlinter"
 
 group "com.viartemev.requestmapper"
-version "1.0"
+version "1.1"
 
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
@@ -79,8 +78,8 @@ test {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version = '2020.1.1'
-    plugins = ["java", "org.jetbrains.kotlin:$kotlin_version-release-IJ2020.1-1"]
+    version = '2020.2.1'
+    plugins = ["java", "org.jetbrains.kotlin:$kotlin_version-release-IJ2020.2-1"]
 }
 
 jacoco {

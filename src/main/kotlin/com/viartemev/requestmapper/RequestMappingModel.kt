@@ -12,7 +12,7 @@ import com.intellij.psi.PsiElement
 class RequestMappingModel(project: Project, contributors: List<ChooseByNameContributor>) : FilteringGotoByModel<FileType>(project, contributors), DumbAware {
 
     override fun getItemProvider(context: PsiElement?): ChooseByNameItemProvider {
-        return RequestMappingItemProvider()
+        return RequestMappingItemProvider(context)
     }
 
     override fun filterValueFor(item: NavigationItem): FileType? = null

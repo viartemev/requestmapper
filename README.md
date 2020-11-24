@@ -8,7 +8,6 @@
 
 <p align="center">
 <a href="https://github.com/viartemev/requestmapper/actions?query=workflow%3ACI"><img src="https://github.com/viartemev/requestmapper/workflows/CI/badge.svg?branch=master"></a>
-<a href="https://travis-ci.org/viartemev/requestmapper"><img src="https://travis-ci.org/viartemev/requestmapper.svg?branch=master"></a>
 <a href="https://plugins.jetbrains.com/plugin/9567-request-mapper"><img src="https://img.shields.io/jetbrains/plugin/d/9567-request-mapper.svg"></a>
 <a href="https://plugins.jetbrains.com/plugin/9567-request-mapper"><img src="https://img.shields.io/jetbrains/plugin/v/9567-request-mapper.svg?maxAge=2592000"></a>
 <a href="https://codecov.io/gh/viartemev/requestmapper"><img src="https://codecov.io/gh/viartemev/requestmapper/branch/master/graph/badge.svg"></a>

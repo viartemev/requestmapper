@@ -16,15 +16,13 @@
         <li>Spring</li>
         <li>JAX-RS</li>
         <li>Micronaut</li>
+        <li>Helidon</li>
       </ul>
     ]]></description>
 
     <change-notes><![CDATA[
         <ul>
-            <li>Feature: Kotlin support</li>
-            <li>Feature: Include request mappings in "Search everywhere"</li>
-            <li>Improve: Search</li>
-            <li>Bugfix: Full url matching</li>
+            <li></li>
         </ul>
     ]]>
     </change-notes>

@@ -24,16 +24,16 @@
 
 #### Supported annotations:
 
-| Spring  | JAX-RS  | Micronaut  |
-|:-:|:-:|:-:|
-| ```@RequestMapping``` | | |
-| ```@GetMapping``` | ```@GET``` | ```@Get``` |
-| ```@PostMapping```  | ```@POST``` | ```@Post``` |
-| ```@PutMapping``` | ```@PUT``` | ```@Put``` |
-| ```@DeleteMapping``` | ```@DELETE``` | ```@Delete``` |
-| ```@PatchMapping``` | ```@PATCH``` |  ```@Patch``` |
-| | ```@OPTIONS``` |  ```@Options``` |
-| | ```@HEAD``` | ```@Head``` |
+| Spring  | JAX-RS  | Micronaut  | Helidon (JAX-RS) |
+|:-:|:-:|:-:|:-:|
+| ```@RequestMapping``` | | | |
+| ```@GetMapping``` | ```@GET``` | ```@Get``` | ```@GET``` |
+| ```@PostMapping```  | ```@POST``` | ```@Post``` | ```@POST``` |
+| ```@PutMapping``` | ```@PUT``` | ```@Put``` | ```@PUT``` |
+| ```@DeleteMapping``` | ```@DELETE``` | ```@Delete``` | ```@DELETE``` |
+| ```@PatchMapping``` | ```@PATCH``` |  ```@Patch``` | ```@PATCH``` |
+| | ```@OPTIONS``` |  ```@Options``` | ```@OPTIONS``` |
+| | ```@HEAD``` | ```@Head``` | ```@HEAD``` |
 
 ## Usage
 

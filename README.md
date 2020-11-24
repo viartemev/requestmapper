@@ -4,7 +4,7 @@
     </a>
 </div>
 <h1 align="center">Request Mapper</h1>
-<p align="center">Request mapper is a plugin for IntelliJ IDEA for quick navigation to URL mapping declarations.</p>
+<p align="center">Request mapper is <a href="https://plugins.jetbrains.com/search?tags=Navigation">#2 plugin</a> for IntelliJ IDEA for quick navigation to URL mapping declarations with over 72 000 downloads.</p>
 
 <p align="center">
 <a href="https://github.com/viartemev/requestmapper/actions?query=workflow%3ACI"><img src="https://github.com/viartemev/requestmapper/workflows/CI/badge.svg?branch=master"></a>

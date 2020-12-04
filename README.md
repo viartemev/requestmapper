@@ -16,7 +16,7 @@
 </p>
 
 ## Plugin info
-
+<script defer src="https://plugins.jetbrains.com/assets/scripts/mp-widget.js"></script>
 #### Supported languages:
 
 - Java

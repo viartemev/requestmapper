@@ -9,7 +9,7 @@ buildscript {
         kluent_version = '1.65'
         log4j_version = '2.11.1'
         mockito_kotlin = '1.6.0'
-        commons_lang3_version = '3.11'
+        commons_lang3_version = '3.12.0'
         spek_version = '2.0.13'
         kotlinter_gradle_plugin = '3.3.0'
         gradle_intellij_plugin = '0.4.26'

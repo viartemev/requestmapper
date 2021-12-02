@@ -1,11 +1,6 @@
 package com.viartemev.requestmapper
 
-import com.intellij.ide.util.gotoByName.ChooseByNameBase
-import com.intellij.ide.util.gotoByName.ChooseByNameItemProvider
-import com.intellij.ide.util.gotoByName.ChooseByNameModelEx
-import com.intellij.ide.util.gotoByName.ChooseByNamePopup
-import com.intellij.ide.util.gotoByName.ChooseByNameViewModel
-import com.intellij.ide.util.gotoByName.ContributorsBasedGotoByModel
+import com.intellij.ide.util.gotoByName.*
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.util.CollectConsumer
 import com.intellij.util.Processor
@@ -17,13 +12,26 @@ import com.intellij.util.indexing.IdFilter
 import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PopupPath
 import com.viartemev.requestmapper.model.RequestedUserPath
+import kotlin.text.MatchResult
+import kotlin.text.contains
+import kotlin.text.isEmpty
+import kotlin.text.split
 
 open class RequestMappingItemProvider : ChooseByNameItemProvider {
+
+    override fun filterNames(
+        base: ChooseByNameViewModel,
+        names: Array<out String>,
+        pattern: String
+    ): MutableList<String> {
+        return java.util.ArrayList()
+    }
+
     override fun filterElements(
-        base: ChooseByNameBase,
+        base: ChooseByNameViewModel,
         pattern: String,
         everywhere: Boolean,
-        indicator: ProgressIndicator,
+        cancelled: ProgressIndicator,
         consumer: Processor<Any>
     ): Boolean {
         if (base.project != null) {
@@ -33,14 +41,12 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
         val searchScope = FindSymbolParameters.searchScopeFor(base.project, everywhere)
         val parameters = FindSymbolParameters(pattern, pattern, searchScope, idFilter)
 
-        val namesList = getSortedResults(base, pattern, indicator, parameters)
-        indicator.checkCanceled()
-        return processByNames(base, everywhere, indicator, consumer, namesList, parameters)
+        val namesList = getSortedResults(base, pattern, cancelled, parameters)
+        cancelled.checkCanceled()
+        return processByNames(base, everywhere, cancelled, consumer, namesList, parameters)
     }
 
-    override fun filterNames(base: ChooseByNameBase, names: Array<String>, pattern: String): List<String> {
-        return emptyList()
-    }
+
 
     companion object {
         private fun getSortedResults(
@@ -129,4 +135,5 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
             }
         }
     }
+
 }

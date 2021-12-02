@@ -2,7 +2,7 @@
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
     <version>1.0</version>
-    <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Upgraded By 625</vendor>
+    <vendor email="stupid1t@qq.com" url="https://github.com/stupid1t">Upgraded By 625</vendor>
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>
@@ -22,7 +22,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li></li>
+            <li>从原作者处升级, 使支持版本2021.1 — 2021.2.3</li>
         </ul>
     ]]>
     </change-notes>

@@ -1,7 +1,6 @@
 buildscript {
-
     ext {
-        kotlin_version = '1.4.21'
+        kotlin_version = '1.6.0'
         junit_jupiter_version = '5.8.2'
         junit_plugin_version = '1.2.0'
         spek_version = '2.0.17'
@@ -10,11 +9,9 @@ buildscript {
         log4j_version = '2.11.1'
         mockito_kotlin = '1.6.0'
         commons_lang3_version = '3.12.0'
-        spek_version = '2.0.13'
-        kotlinter_gradle_plugin = '3.4.0'
+        kotlinter_gradle_plugin = '3.7.0'
         gradle_intellij_plugin = '0.4.26'
     }
-
     repositories {
         mavenCentral()
         maven {
@@ -31,8 +28,6 @@ buildscript {
 
 repositories {
     mavenCentral()
-    jcenter()
-    maven { url "https://dl.bintray.com/spekframework/spek-dev" }
 }
 
 apply plugin: "org.jetbrains.intellij"
@@ -47,9 +42,9 @@ group "com.viartemev.requestmapper"
 version "1.0"
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
-    compile("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
-    compile("org.apache.commons:commons-lang3:$commons_lang3_version")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
+    implementation("org.apache.commons:commons-lang3:$commons_lang3_version")
 
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spek_version") {
         exclude group: 'org.jetbrains.kotlin'
@@ -58,10 +53,10 @@ dependencies {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
-    testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
-    testCompile("com.nhaarman:mockito-kotlin:$mockito_kotlin")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
+    testImplementation("com.nhaarman:mockito-kotlin:$mockito_kotlin")
     testImplementation "org.amshove.kluent:kluent:$kluent_version"
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
 }
 
 jacocoTestReport {
@@ -79,8 +74,8 @@ test {
 intellij {
     pluginName "Request mapper"
     type 'IC'
-    version = '2020.1.1'
-    plugins = ["java", "org.jetbrains.kotlin:$kotlin_version-release-IJ2020.1-1"]
+    version = '2021.2.3'
+    plugins = ["java", "org.jetbrains.kotlin:212-$kotlin_version-release-799-IJ5457.46"]
 }
 
 jacoco {

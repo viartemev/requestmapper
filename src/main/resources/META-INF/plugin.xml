@@ -2,7 +2,7 @@
     <id>com.viartemev.requestmapper</id>
     <name>Request mapper</name>
     <version>1.0</version>
-    <vendor email="stupid1t@qq.com" url="https://github.com/stupid1t">Upgraded By 625</vendor>
+    <vendor email="viartemev@gmail.com" url="https://github.com/viartemev">Vyacheslav Artemyev</vendor>
 
     <description><![CDATA[
       Plugin for quick navigation to url mapping declaration.<br/>

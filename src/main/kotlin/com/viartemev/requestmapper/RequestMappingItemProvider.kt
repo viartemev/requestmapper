@@ -2,58 +2,45 @@ package com.viartemev.requestmapper
 
 import com.intellij.ide.util.gotoByName.*
 import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.psi.codeStyle.NameUtil
 import com.intellij.util.CollectConsumer
 import com.intellij.util.Processor
 import com.intellij.util.SmartList
 import com.intellij.util.SynchronizedCollectConsumer
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.indexing.FindSymbolParameters
-import com.intellij.util.indexing.IdFilter
-import com.viartemev.requestmapper.model.Path
 import com.viartemev.requestmapper.model.PopupPath
-import com.viartemev.requestmapper.model.RequestedUserPath
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap
 import kotlin.text.MatchResult
-import kotlin.text.contains
-import kotlin.text.isEmpty
-import kotlin.text.split
 
 open class RequestMappingItemProvider : ChooseByNameItemProvider {
 
-    override fun filterNames(
-        base: ChooseByNameViewModel,
-        names: Array<out String>,
-        pattern: String
-    ): MutableList<String> {
-        return java.util.ArrayList()
+    override fun filterNames(base: ChooseByNameViewModel, names: Array<out String>, pattern: String): List<String> {
+        return emptyList()
     }
 
     override fun filterElements(
         base: ChooseByNameViewModel,
         pattern: String,
         everywhere: Boolean,
-        cancelled: ProgressIndicator,
+        indicator: ProgressIndicator,
         consumer: Processor<Any>
     ): Boolean {
         if (base.project != null) {
             base.project!!.putUserData(ChooseByNamePopup.CURRENT_SEARCH_PATTERN, pattern)
         }
-        val idFilter: IdFilter? = null
         val searchScope = FindSymbolParameters.searchScopeFor(base.project, everywhere)
-        val parameters = FindSymbolParameters(pattern, pattern, searchScope, idFilter)
+        val parameters = FindSymbolParameters(pattern, pattern, searchScope, null)
 
-        val namesList = getSortedResults(base, pattern, cancelled, parameters)
-        cancelled.checkCanceled()
-        return processByNames(base, everywhere, cancelled, consumer, namesList, parameters)
+        val namesList = getSortedResults(base, pattern, indicator, parameters)
+        indicator.checkCanceled()
+        return processByNames(base, everywhere, indicator, consumer, namesList, parameters)
     }
-
 
 
     companion object {
         private fun getSortedResults(
-            base: ChooseByNameViewModel,
-            pattern: String,
-            indicator: ProgressIndicator,
-            parameters: FindSymbolParameters
+            base: ChooseByNameViewModel, pattern: String, indicator: ProgressIndicator, parameters: FindSymbolParameters
         ): List<String> {
             if (pattern.isEmpty() && !base.canShowListForEmptyPattern()) {
                 return emptyList()
@@ -71,8 +58,7 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
                             return@processNames true
                         }
                         return@processNames false
-                    },
-                    parameters
+                    }, parameters
                 )
             }
 
@@ -91,11 +77,13 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
             parameters: FindSymbolParameters
         ): Boolean {
             val sameNameElements: MutableList<Any> = SmartList()
-            val qualifierMatchResults: MutableMap<Any, MatchResult> = ContainerUtil.newIdentityTroveMap()
+            val qualifierMatchResults: MutableMap<Any, MatchResult> = Reference2ObjectOpenHashMap()
             val model = base.model
             for (name in namesList) {
                 indicator.checkCanceled()
-                val elements = if (model is ContributorsBasedGotoByModel) model.getElementsByName(name, parameters, indicator) else model.getElementsByName(name, everywhere, parameters.completePattern)
+                val elements =
+                    if (model is ContributorsBasedGotoByModel) model.getElementsByName(name, parameters, indicator)
+                    else model.getElementsByName(name, everywhere, parameters.completePattern)
                 if (elements.size > 1) {
                     sameNameElements.clear()
                     qualifierMatchResults.clear()
@@ -111,7 +99,7 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
             return true
         }
 
-        fun matches(name: String?, pattern: String): Boolean {
+        private fun matches(name: String?, pattern: String): Boolean {
 
             if (name == null) {
                 return false
@@ -119,16 +107,9 @@ open class RequestMappingItemProvider : ChooseByNameItemProvider {
             return try {
                 if (pattern == "/") {
                     true
-                } else if (!pattern.contains('/')) {
-                    val (method, path) = name.split(" ", limit = 2)
-                    path.contains(pattern) || method.contains(pattern, ignoreCase = true)
                 } else {
-                    val popupPath = PopupPath(name)
-                    val requestedUserPath = RequestedUserPath(pattern)
-                    Path.isSubpathOf(
-                        popupPath.toPath(),
-                        requestedUserPath.toPath()
-                    )
+                    val (_, path) = name.split(" ", limit = 2)
+                    NameUtil.buildMatcher("*$pattern", NameUtil.MatchingCaseSensitivity.NONE).matches(path)
                 }
             } catch (e: Exception) {
                 false // no matches appears valid result for "bad" pattern

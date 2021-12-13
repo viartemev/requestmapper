@@ -25,7 +25,7 @@ class RequestMappingItem(val psiElement: PsiElement, private val urlPath: String
         return "RequestMappingItem(psiElement=$psiElement, urlPath='$urlPath', requestMethod='$requestMethod', navigationElement=$navigationElement)"
     }
 
-    private inner class RequestMappingItemPresentation : ItemPresentation {
+    internal inner class RequestMappingItemPresentation : ItemPresentation {
 
         override fun getPresentableText() = this@RequestMappingItem.requestMethod + " " + this@RequestMappingItem.urlPath
 

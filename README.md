@@ -15,6 +15,7 @@
 <a href="https://snyk.io/test/github/viartemev/requestmapper?targetFile=build.gradle"><img src="https://snyk.io/test/github/viartemev/requestmapper/badge.svg?targetFile=build.gradle"></a>
 </p>
 
+<!-- Plugin description -->
 ## Plugin info
 
 #### Supported languages:
@@ -44,6 +45,8 @@
     - Windows: ```Ctrl + Shift + Back slash```
 - Navigate (menu bar) -> Request mapping
 
+<!-- Plugin description end -->
+
 ## Contributors
 
 Thanks to all people who have contributed to this plugin:
@@ -60,8 +63,6 @@ You can support the project by the following actions:
 * Make pull requests
 * Report bugs
 * Tell your ideas
-
-<a href="https://www.buymeacoffee.com/vartemyev" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ## Demo
 
